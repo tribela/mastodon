@@ -36,7 +36,8 @@ class ActivityPub::ActorSerializer < ActivityPub::Serializer
 
   has_one :endpoints, serializer: EndpointsSerializer
 
-  has_one :icon,  serializer: ActivityPub::ImageSerializer, if: :avatar_exists?
+  # Use default avatar if not exists
+  has_one :icon,  serializer: ActivityPub::ImageSerializer
   has_one :image, serializer: ActivityPub::ImageSerializer, if: :header_exists?
 
   delegate :suspended?, :instance_actor?, to: :object

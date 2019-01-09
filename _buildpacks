@@ -1,0 +1,4 @@
+https://github.com/kjwon15/heroku-buildpack-apt#fix-lib-path
+https://github.com/gaffneyc/heroku-buildpack-jemalloc.git
+https://github.com/heroku/heroku-buildpack-ruby
+https://github.com/danp/heroku-buildpack-runit

@@ -1,0 +1,12 @@
+#!/bin/bash
+
+set -eo pipefail
+
+# Finalise DB migration
+bundle exec rails db:migrate
+
+# pushd public/packs
+# comm -23 <(find . -type f | grep -v manifest.json | sort) <(grep '"' manifest.json | awk '{print $2}' | sed -e 's/^"//' -e 's/",\?$//' -e 's#/packs#.#' | sort) | xargs -i rm {}
+# popd
+
+bin/tootctl cache clear

@@ -106,6 +106,7 @@ const keyMap = {
   toggleHidden: 'x',
   toggleSensitive: 'h',
   openMedia: 'e',
+  hiddenHappy: 'right down up right right down right right up up down down left right left right',
 };
 
 class SwitchingColumnsArea extends React.PureComponent {
@@ -507,6 +508,15 @@ class UI extends React.PureComponent {
     this.context.router.history.push('/follow_requests');
   }
 
+  handleHiddenCommand = () => {
+    // eslint-disable-next-line no-console
+    console.log(`
+⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢤⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡤⠄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠠⣤⠀⠀⠀⠤⠀⠤⣤
+⣿⠼⠃⢹⡞⠙⣾⠽⠆⠺⢯⣅⠺⢯⣅⠀⠀⠀⣾⢹⡇⣾⢹⡎⢧⣧⡏⣷⢹⡆⠀⠀⠀⢹⡏⠁⣾⢹⡆⢹⡞⠙⠀⠀⠀⣺⢽⡆⠀⠀⠈⢧⣧⡇⣿⢹⡆⠉⣿⠀⠀⣿⠀⣾⠽⠆
+⠉⠁⠀⠉⠉⠀⠈⠉⠁⠉⠉⠁⠉⠉⠁⠀⠀⠀⠈⠉⠉⠈⠉⠀⠈⠈⠀⠉⠈⠁⠀⠀⠀⠉⠉⠁⠈⠉⠀⠉⠉⠀⠀⠀⠀⠉⠉⠉⠀⠀⠀⠈⠈⠀⠉⠈⠁⠉⠉⠉⠉⠉⠉⠈⠉⠁
+`.trim());
+  }
+
   render () {
     const { draggingOver } = this.state;
     const { children, isComposing, location, dropdownMenuIsOpen, layout } = this.props;
@@ -531,6 +541,7 @@ class UI extends React.PureComponent {
       goToBlocked: this.handleHotkeyGoToBlocked,
       goToMuted: this.handleHotkeyGoToMuted,
       goToRequests: this.handleHotkeyGoToRequests,
+      hiddenHappy: this.handleHiddenCommand,
     };
 
     return (

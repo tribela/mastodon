@@ -33,8 +33,8 @@ defaults: &defaults
   system_emoji_font: false
   noindex: false
   hide_followers_count: false
-  flavour: 'glitch'
-  skin: 'default'
+  flavour: 'vanilla'
+  skin: 'qdon'
   aggregate_reblogs: true
   advanced_layout: false
   use_blurhash: true

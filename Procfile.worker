@@ -1,0 +1,8 @@
+# default: bundle exec sidekiq -q default -c ${WORKER_CONCURRENCY:-10}
+# push: bundle exec sidekiq -q push -c ${WORKER_CONCURRENCY_PUSH:-5}
+# pull: bundle exec sidekiq -q pull -c ${WORKER_CONCURRENCY_PULL:-5}
+# mailers: bundle exec sidekiq -q mailers -c ${WORKER_CONCURRENCY_MAIL:-1}
+# scheduler: bundle exec sidekiq -q scheduler -c ${WORKER_CONCURRENCY_SCHEDULER:-1}
+
+default: bundle exec sidekiq -q default -q push -c ${WORKER_CONCURRENCY:-5}
+lower: bundle exec sidekiq -q pull -q mailers -q scheduler -c ${WORKER_CONCURRENCY_LOWER:-2}

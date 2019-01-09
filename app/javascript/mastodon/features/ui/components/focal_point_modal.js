@@ -242,7 +242,7 @@ class FocalPointModal extends ImmutablePureComponent {
         await worker.load();
         await worker.loadLanguage('eng');
         await worker.initialize('eng');
-        const { data: { text } } = await worker.recognize(media_url);
+        const { data: { text } } = await worker.recognize(media_url, 'eng+kor');
         this.setState({ detecting: false });
         this.props.onChangeDescription(removeExtraLineBreaks(text));
         await worker.terminate();

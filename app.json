@@ -13,6 +13,11 @@
       "description": "The domain that your Mastodon instance will run on (this can be appname.herokuapp.com or a custom domain)",
       "required": true
     },
+    "STREAMING_PORT": {
+      "description": "Binding port for streaming server.",
+      "value": "4000",
+      "required": true
+    },
     "SECRET_KEY_BASE": {
       "description": "The secret key base",
       "generator": "secret"
@@ -90,13 +95,31 @@
     },
     {
       "url": "heroku/ruby"
+    },
+    {
+      "url": "https://github.com/danp/heroku-buildpack-runit"
     }
   ],
   "scripts": {
-    "postdeploy": "bundle exec rails db:migrate && bundle exec rails db:seed"
+    "predeploy": "bin/predeploy",
+    "postdeploy": "bin/postdeploy",
+    "dokku": {
+      "predeploy": "bin/predeploy",
+      "postdeploy": "bin/postdeploy"
+    }
   },
   "addons": [
     "heroku-postgresql",
     "heroku-redis"
+  ],
+  "cron": [
+    {
+      "command": "tootctl media remove --days 180",
+      "schedule": "0 2 1 * *"
+    },
+    {
+      "command": "tootctl accounts cull",
+      "schedule": "0 2 2 * *"
+    }
   ]
 }
