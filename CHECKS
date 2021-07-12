@@ -2,4 +2,4 @@ WAIT=10
 TIMEOUT=60
 ATTEMPTS=5
 
-//qdon.space/health OK
+/health OK
