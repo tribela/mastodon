@@ -15,6 +15,8 @@ Rails.application.routes.draw do
     mount PgHero::Engine, at: 'pghero', as: :pghero
   end
 
+  get 'metrics', to: 'metrics#show', default: { format: 'text' }
+
   use_doorkeeper do
     controllers authorizations: 'oauth/authorizations',
                 authorized_applications: 'oauth/authorized_applications',

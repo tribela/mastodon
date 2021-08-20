@@ -126,4 +126,7 @@ Rails.application.configure do
   }
 
   config.x.otp_secret = ENV.fetch('OTP_SECRET')
+
+  config.x.trusted_metrics = []
+  config.x.trusted_metrics = ENV['TRUSTED_METRICS_IP'].split.map { |item| IPAddr.new(item) } if ENV['TRUSTED_METRICS_IP'].present?
 end
