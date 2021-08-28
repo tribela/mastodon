@@ -120,6 +120,10 @@
     {
       "command": "tootctl accounts cull",
       "schedule": "0 2 2 * *"
+    },
+    {
+      "command": "tootctl statuses remove",
+      "schedule": "0 2 3 * *"
     }
   ]
 }
