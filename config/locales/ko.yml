@@ -466,6 +466,8 @@ ko:
         title: 중재
       private_comment: 비공개 주석
       public_comment: 공개 주석
+      statuses:
+        title: 게시물
       title: 연합
       total_blocked_by_us: 우리에게 차단 됨
       total_followed_by_them: 우리를 팔로우

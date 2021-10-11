@@ -48,6 +48,10 @@ class Instance < ApplicationRecord
     @blocks_count ||= Block.where(target_account: accounts).count
   end
 
+  def statuses_count
+    @statuses_count ||= Status.where(account: accounts).count
+  end
+
   def public_comment
     domain_block&.public_comment
   end

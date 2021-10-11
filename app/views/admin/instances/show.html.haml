@@ -19,6 +19,10 @@
       .dashboard__counters__num= number_with_delimiter @instance.accounts_count
       .dashboard__counters__label= t 'admin.accounts.title'
   %div
+    %div
+      .dashboard__counters__num= number_with_delimiter @instance.statuses_count
+      .dashboard__counters__label= t 'admin.instances.statuses.title'
+  %div
     = link_to admin_reports_path(by_target_domain: @instance.domain) do
       .dashboard__counters__num= number_with_delimiter @instance.reports_count
       .dashboard__counters__label= t 'admin.instances.total_reported'
