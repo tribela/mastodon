@@ -3,4 +3,5 @@
 Rails.application.config.session_store :cookie_store,
   key: '_mastodon_session',
   secure: (Rails.env.production? || ENV['LOCAL_HTTPS'] == 'true'),
+  domain: :all,
   same_site: :lax

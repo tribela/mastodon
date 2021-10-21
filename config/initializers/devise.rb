@@ -12,6 +12,7 @@ Warden::Manager.after_set_user except: :fetch do |user, warden|
     expires: 1.year.from_now,
     httponly: true,
     secure: (Rails.env.production? || ENV['LOCAL_HTTPS'] == 'true'),
+    domain: :all,
     same_site: :lax,
   }
 end
