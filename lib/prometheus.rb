@@ -23,6 +23,8 @@ module MastodonPrometheus
     reg.gauge(:mastodon_database_size, docstring: 'The size of postgres db.')
     reg.gauge(:mastodon_redis_size, docstring: 'The size of redis db.')
 
+    reg.gauge(:mastodon_media_size, labels: [:type, :by], docstring: 'The size of media files.')
+
     reg
   end
 

@@ -47,6 +47,10 @@ class MetricsController < ActionController::Base
         })
     end
 
+    media_size.each do |k, v|
+      MastodonPrometheus.get(:mastodon_media_size).set(v, labels: { type: k[:type], by: k[:by] })
+    end
+
     MastodonPrometheus.get(:mastodon_database_size).set(database_size)
     MastodonPrometheus.get(:mastodon_redis_size).set(redis_size)
   end
@@ -65,5 +69,24 @@ class MetricsController < ActionController::Base
     else
       Redis.current.info
     end['used_memory'].to_i
+  end
+
+  def media_size
+    {
+      {type: 'media_attachments', by: 'remote'} => MediaAttachment.where(account: Account.remote).sum(
+        Arel.sql('COALESCE(file_file_size, 0) + COALESCE(thumbnail_file_size, 0)')),
+      {type: 'media_attachments', by: 'local'} => MediaAttachment.where(account: Account.local).sum(
+        Arel.sql('COALESCE(file_file_size, 0) + COALESCE(thumbnail_file_size, 0)')),
+      {type: 'custom_emojis', by:'remote'} => CustomEmoji.remote.sum(:image_file_size),
+      {type: 'custom_emojis', by: 'local'} => CustomEmoji.local.sum(:image_file_size),
+      {type: 'avatars', by: 'remote'} => Account.remote.sum(:avatar_file_size),
+      {type: 'avatars', by: 'local'} => Account.local.sum(:avatar_file_size),
+      {type: 'headers', by: 'remote'} => Account.remote.sum(:header_file_size),
+      {type: 'headers', by: 'local'} => Account.local.sum(:header_file_size),
+      {type: 'preview_cards'} => PreviewCard.sum(:image_file_size),
+      {type: 'backups'} => Backup.sum(:dump_file_size),
+      {type: 'imports'} => Import.sum(:data_file_size),
+      {type: 'settings'} => SiteUpload.sum(:file_file_size),
+    }
   end
 end
