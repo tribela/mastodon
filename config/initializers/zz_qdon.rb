@@ -1,20 +1,16 @@
-def host_to_url(str)
-  "http#{Rails.configuration.x.use_https ? 's' : ''}://#{str}" unless str.blank?
-end
+if Rails.env.production?
+  Rails.application.reloader.to_prepare do
+    default_directives = Rails.application.config.content_security_policy.directives.deep_dup
 
-base_host = Rails.configuration.x.web_domain
+    AboutController.content_security_policy do |p|
+      p.script_src *default_directives['script-src'], 'https://*.patreon.com', 'https://liberapay.com', 'https://static.cloudflareinsights.com/'
+      p.worker_src *default_directives['worker-src'], 'https://*.patreon.com', 'https://liberapay.com' 
+      p.style_src *default_directives['style-src'], :unsafe_inline 
+      p.img_src *default_directives['img-src'], 'https://liberapay.com' 
+    end
 
-assets_host   = Rails.configuration.action_controller.asset_host
-assets_host ||= host_to_url(base_host)
-
-Rails.application.reloader.to_prepare do
-  AboutController.content_security_policy do |p|
-    p.script_src  :self, assets_host, "https://*.patreon.com", "https://liberapay.com", "https://static.cloudflareinsights.com/"
-    p.worker_src  :self, :blob, assets_host, "https://*.patreon.com", "https://liberapay.com"
-    p.style_src :self, :unsafe_inline, assets_host
-  end
-
-  AboutController.after_action do
-    request.content_security_policy_nonce_generator = nil
+    AboutController.after_action do
+      request.content_security_policy_nonce_generator = nil
+    end
   end
 end
