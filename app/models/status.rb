@@ -287,8 +287,8 @@ class Status < ApplicationRecord
 
     def as_home_timeline(account, limit = 20, max_id = nil, since_id = nil, min_id = nil)
       selected = where(account: [account] + account.following)
-        .where(visibility: [:public, :unlisted, :private])
-        .limit(limit)
+                 .where(visibility: [:public, :unlisted, :private])
+                 .limit(limit)
       if min_id.present?
         selected.paginate_by_min_id(limit, min_id)
       else

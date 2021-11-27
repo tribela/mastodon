@@ -16,7 +16,7 @@ class HomeFeed < Feed
     since_id = since_id.to_i if since_id.present?
     min_id   = min_id.to_i if min_id.present?
 
-    if min_id.present? and (redis_min_id.nil? or redis_min_id > min_id)
+    if min_id.present? && (redis_min_id.nil? || redis_min_id > min_id)
       # Redis doesn't have enough data for this min_id, so fetch it from only the database
       statuses = from_database(limit, max_id, since_id, min_id)
     else
@@ -24,9 +24,9 @@ class HomeFeed < Feed
 
       if statuses.size < limit
         remaining_limit = limit - statuses.size
-        max_id = statuses.last.id if statuses.size > 0
+        max_id = statuses.last.id if !statuses.empty?
 
-        statuses += from_database(limit, max_id, since_id, min_id)
+        statuses += from_database(remaining_limit, max_id, since_id, min_id)
       end
     end
 
@@ -43,6 +43,6 @@ class HomeFeed < Feed
     Status
       .as_home_timeline(@account, limit, max_id, since_id, min_id)
       .reject { |status| FeedManager.instance.filter?(:home, status, @account) }
-      .sort_by{ |status| -status.id }
+      .sort_by { |status| -status.id }
   end
 end
