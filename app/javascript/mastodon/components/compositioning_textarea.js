@@ -47,7 +47,7 @@ export default class Textarea extends React.Component {
       value: this.state.value,
       onChange: this.onChange,
       onCompositionStart: this.onCompositionChange,
-      onCompositionEnd: this.onCompositionChange,
+      onCompositionUpdate: this.onCompositionChange,
     });
   }
 
