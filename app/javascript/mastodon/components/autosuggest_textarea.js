@@ -5,7 +5,8 @@ import AutosuggestHashtag from './autosuggest_hashtag';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import PropTypes from 'prop-types';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import Textarea from 'react-textarea-autosize';
+import Textarea from './compositioning_textarea';
+import TextareaAutoSize from 'react-textarea-autosize';
 import classNames from 'classnames';
 
 const textAtCursorMatchesToken = (str, caretPosition) => {
@@ -72,6 +73,8 @@ export default class AutosuggestTextarea extends ImmutablePureComponent {
       this.setState({ lastToken: null });
       this.props.onSuggestionsClearRequested();
     }
+
+    console.log(`onChange: ${e.target.value}`);
 
     this.props.onChange(e);
   }
@@ -202,7 +205,8 @@ export default class AutosuggestTextarea extends ImmutablePureComponent {
             <span style={{ display: 'none' }}>{placeholder}</span>
 
             <Textarea
-              ref={this.setTextarea}
+              element={TextareaAutoSize}
+              forwardedRef={this.setTextarea}
               className='autosuggest-textarea__textarea'
               disabled={disabled}
               placeholder={placeholder}
