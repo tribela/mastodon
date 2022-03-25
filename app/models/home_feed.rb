@@ -16,18 +16,22 @@ class HomeFeed < Feed
     since_id = since_id.to_i if since_id.present?
     min_id   = min_id.to_i if min_id.present?
 
-    if min_id.present? and (redis_min_id.nil? or redis_min_id > min_id)
-      # Redis doesn't have enough data for this min_id, so fetch it from only the database
-      statuses = from_database(limit, max_id, since_id, min_id)
-    else
-      statuses = from_redis(limit, max_id, since_id, min_id)
+    redis_min_id = from_redis(1, nil, nil, 0).first&.id
 
-      if statuses.size < limit
-        remaining_limit = limit - statuses.size
-        max_id = statuses.last.id if statuses.size > 0
+    statuses = from_redis(limit, max_id, since_id, min_id)
 
-        statuses += from_database(limit, max_id, since_id, min_id)
-      end
+    redis_sufficient = (
+      (statuses.size >= limit) ||
+      (redis_min_id && (
+        (min_id.present? && min_id >= redis_min_id) ||
+        (since_id.present? && since_id >= redis_min_id)
+      ))
+    )
+
+    if not redis_sufficient
+      remaining_limit = limit - statuses.size
+      max_id = statuses.last.id if !statuses.empty?
+      statuses += from_database(remaining_limit, max_id, since_id, min_id)
     end
 
     statuses
@@ -35,14 +39,10 @@ class HomeFeed < Feed
 
   protected
 
-  def redis_min_id
-    from_redis(1, nil, nil, 0).first&.id
-  end
-
   def from_database(limit, max_id, since_id, min_id)
     Status
       .as_home_timeline(@account, limit, max_id, since_id, min_id)
       .reject { |status| FeedManager.instance.filter?(:home, status, @account) }
-      .sort_by{ |status| -status.id }
+      .sort_by { |status| -status.id }
   end
 end
