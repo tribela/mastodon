@@ -28,9 +28,9 @@ class HomeFeed < Feed
       ))
     )
 
-    if not redis_sufficient
+    unless redis_sufficient
       remaining_limit = limit - statuses.size
-      max_id = statuses.last.id if !statuses.empty?
+      max_id = statuses.last.id unless statuses.empty?
       statuses += from_database(remaining_limit, max_id, since_id, min_id)
     end
 
