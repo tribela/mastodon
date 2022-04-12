@@ -40,7 +40,7 @@ class HomeFeed < Feed
   def from_database(limit, max_id, since_id, min_id)
     # Note that this query will not contains direct messages
     Status
-      .where(account: [account] + account.following)
+      .where(account: [@account] + @account.following)
       .where(visibility: [:public, :unlisted, :private])
       .to_a_paginated_by_id(limit, min_id: min_id, max_id: max_id, since_id: since_id)
       .reject { |status| FeedManager.instance.filter?(:home, status, @account) }
