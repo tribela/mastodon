@@ -16,16 +16,15 @@ class HomeFeed < Feed
     since_id = since_id.to_i if since_id.present?
     min_id   = min_id.to_i if min_id.present?
 
-    redis_min_id = from_redis(1, nil, nil, 0).first&.id
-
     statuses = from_redis(limit, max_id, since_id, min_id)
 
-    redis_sufficient = (
-      (statuses.size >= limit) ||
-      (redis_min_id && (
-        (min_id.present? && min_id >= redis_min_id) ||
-        (since_id.present? && since_id >= redis_min_id)
-      ))
+    return statuses if statuses.size >= limit
+    return statuses if min_id.blank? && since_id.blank?
+
+    redis_min_id = from_redis(1, nil, nil, 0).first&.id
+    redis_sufficient = redis_min_id && (
+      (min_id.present? && min_id >= redis_min_id) ||
+      (since_id.present? && since_id >= redis_min_id)
     )
 
     unless redis_sufficient
@@ -40,8 +39,11 @@ class HomeFeed < Feed
   protected
 
   def from_database(limit, max_id, since_id, min_id)
+    # Note that this query will not contains direct messages
     Status
-      .as_home_timeline(@account, limit, max_id, since_id, min_id)
+      .where(account: [account] + account.following)
+      .where(visibility: [:public, :unlisted, :private])
+      .to_a_paginated_by_id(limit, min_id: min_id, max_id: max_id, since_id: since_id)
       .reject { |status| FeedManager.instance.filter?(:home, status, @account) }
       .sort_by { |status| -status.id }
   end
