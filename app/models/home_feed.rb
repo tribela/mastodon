@@ -19,9 +19,8 @@ class HomeFeed < Feed
     statuses = from_redis(limit, max_id, since_id, min_id)
 
     return statuses if statuses.size >= limit
-    return statuses if min_id.blank? && since_id.blank?
 
-    redis_min_id = from_redis(1, nil, nil, 0).first&.id
+    redis_min_id = from_redis(1, nil, nil, 0).first&.id if min_id.present? || since_id.present?
     redis_sufficient = redis_min_id && (
       (min_id.present? && min_id >= redis_min_id) ||
       (since_id.present? && since_id >= redis_min_id)
