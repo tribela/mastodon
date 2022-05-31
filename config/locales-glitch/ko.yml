@@ -19,7 +19,7 @@ ko:
         description_html: 도메인 차단 목록을 불러오려고 합니다. 이 목록을 조심스럽게 검토하세요, 특히 자신이 직접 작성한 목록이 아니라면 더 조심하세요.
         existing_relationships_warning: 팔로우 관계가 존재합니다
         private_comment_description_html: '어디서 불러온 것인지 추적을 원활하게 하기 위해서, 불러온 차단들은 다음과 같은 비공개 주석과 함께 생성될 것입니다: <q>%{comment}</q>'
-        private_comment_template: %{date}에 %{source}에서 불러옴
+        private_comment_template: '%{date}에 %{source}에서 불러옴'
         title: 도메인 차단 불러오기
       new:
         title: 도메인 차단 불러오기
