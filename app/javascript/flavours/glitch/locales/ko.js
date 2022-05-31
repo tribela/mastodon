@@ -37,7 +37,6 @@ const messages = {
   'compose_form.poll.single_choice': '하나만 선택 가능',
   'compose_form.spoiler': '경고 메시지로 숨기기',
   'confirmation_modal.do_not_ask_again': '다음부터 확인창을 띄우지 않기',
-  'confirmations.discard_edit_media.confirm': '취소',
   'confirmations.discard_edit_media.message': '저장하지 않은 미디어 설명이나 미리보기가 있습니다, 그냥 닫을까요?',
   'confirmations.missing_media_description.confirm': '그냥 보내기',
   'confirmations.missing_media_description.edit': '미디어 편집',
