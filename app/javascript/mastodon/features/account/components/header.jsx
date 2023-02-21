@@ -37,6 +37,8 @@ const messages = defineMessages({
   media: { id: 'account.media', defaultMessage: 'Media' },
   blockDomain: { id: 'account.block_domain', defaultMessage: 'Block domain {domain}' },
   unblockDomain: { id: 'account.unblock_domain', defaultMessage: 'Unblock domain {domain}' },
+  muteDomain: { id: 'account.mute_domain', defaultMessage: 'Mute domain {domain}' },
+  unmuteDomain: { id: 'account.unmute_domain', defaultMessage: 'Unmute domain {domain}' },
   hideReblogs: { id: 'account.hide_reblogs', defaultMessage: 'Hide boosts from @{name}' },
   showReblogs: { id: 'account.show_reblogs', defaultMessage: 'Show boosts from @{name}' },
   enableNotifications: { id: 'account.enable_notifications', defaultMessage: 'Notify me when @{name} posts' },
@@ -95,6 +97,8 @@ class Header extends ImmutablePureComponent {
     onMute: PropTypes.func.isRequired,
     onBlockDomain: PropTypes.func.isRequired,
     onUnblockDomain: PropTypes.func.isRequired,
+    onMuteDomain: PropTypes.func.isRequired,
+    onUnmuteDomain: PropTypes.func.isRequired,
     onEndorseToggle: PropTypes.func.isRequired,
     onAddToList: PropTypes.func.isRequired,
     onEditAccountNote: PropTypes.func.isRequired,
@@ -287,6 +291,12 @@ class Header extends ImmutablePureComponent {
         menu.push({ text: intl.formatMessage(messages.unblockDomain, { domain: remoteDomain }), action: this.props.onUnblockDomain });
       } else {
         menu.push({ text: intl.formatMessage(messages.blockDomain, { domain: remoteDomain }), action: this.props.onBlockDomain });
+      }
+
+      if (account.getIn(['relationship', 'domain_muting'])) {
+        menu.push({ text: intl.formatMessage(messages.unmuteDomain, { domain: remoteDomain }), action: this.props.onUnmuteDomain });
+      } else {
+        menu.push({ text: intl.formatMessage(messages.muteDomain, { domain: remoteDomain }), action: this.props.onMuteDomain });
       }
     }
 

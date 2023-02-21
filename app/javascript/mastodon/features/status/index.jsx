@@ -662,6 +662,8 @@ class Status extends ImmutablePureComponent {
                   onUnblock={this.handleUnblockClick}
                   onBlockDomain={this.handleBlockDomainClick}
                   onUnblockDomain={this.handleUnblockDomainClick}
+                  onMuteDomain={this.handleMuteDomainClick}
+                  onUnmuteDomain={this.handleUnmuteDomainClick}
                   onReport={this.handleReport}
                   onPin={this.handlePin}
                   onEmbed={this.handleEmbed}
