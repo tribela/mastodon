@@ -2,11 +2,13 @@
 #
 # Table name: account_domain_mutes
 #
-#  id         :bigint(8)        not null, primary key
-#  domain     :string
-#  account_id :integer
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id                 :bigint(8)        not null, primary key
+#  domain             :string
+#  account_id         :integer
+#  hide_notifications :boolean
+#  hide_from_home     :boolean
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
 #
 class AccountDomainMute < ApplicationRecord
   include Paginable

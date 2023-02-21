@@ -107,7 +107,7 @@ class Status < ApplicationRecord
   scope :not_domain_blocked_by_account, ->(account) { account.excluded_from_timeline_domains.blank? ? left_outer_joins(:account) : left_outer_joins(:account).where('accounts.domain IS NULL OR accounts.domain NOT IN (?)', account.excluded_from_timeline_domains) }
   scope :not_domain_muted_by_account, lambda { |account|
     left_outer_joins(:account)
-      .where('accounts.dommain is NULL or statuses.account_id in (?) or accounts.domain not in (?)',
+      .where('accounts.domain is NULL or statuses.account_id in (?) or accounts.domain not in (?)',
              Follow.where(account_id: account.id).select(:target_account_id),
              account.muted_from_timeline_domains)
   }

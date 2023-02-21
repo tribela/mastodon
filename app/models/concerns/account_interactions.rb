@@ -103,6 +103,7 @@ module AccountInteractions
     has_many :muted_by, -> { order('mutes.id desc') }, through: :muted_by_relationships, source: :account
     has_many :conversation_mutes, dependent: :destroy
     has_many :domain_blocks, class_name: 'AccountDomainBlock', dependent: :destroy
+    has_many :domain_mutes, class_name: 'AccountDomainMute', dependent: :destroy
     has_many :announcement_mutes, dependent: :destroy
   end
 
@@ -164,6 +165,10 @@ module AccountInteractions
     domain_blocks.find_or_create_by!(domain: other_domain)
   end
 
+  def mute_domain!(other_domain)
+    domain_mutes.find_or_create_by!(domain: other_domain)
+  end
+
   def unfollow!(other_account)
     follow = active_relationships.find_by(target_account: other_account)
     follow&.destroy
@@ -187,6 +192,11 @@ module AccountInteractions
   def unblock_domain!(other_domain)
     block = domain_blocks.find_by(domain: other_domain)
     block&.destroy
+  end
+
+  def unmute_domain!(other_domain)
+    mute = domain_mutes.find_by(domain: other_domain)
+    mute&.destroy
   end
 
   def following?(other_account)
