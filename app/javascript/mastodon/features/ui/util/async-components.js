@@ -106,6 +106,10 @@ export function DomainBlocks () {
   return import(/* webpackChunkName: "features/domain_blocks" */'../../domain_blocks');
 }
 
+export function DomainMutes () {
+  return import(/* webpackChunkName: "features/domain_mutes" */'../../domain_mutes');
+}
+
 export function Mutes () {
   return import(/* webpackChunkName: "features/mutes" */'../../mutes');
 }

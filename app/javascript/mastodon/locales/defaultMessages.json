@@ -1245,6 +1245,10 @@
         "id": "account.domain_blocked"
       },
       {
+        "defaultMessage": "Domain muted",
+        "id": "account.domain_muted"
+      },
+      {
         "defaultMessage": "Bot",
         "id": "account.badges.bot"
       },
