@@ -8,7 +8,7 @@ import { debounce } from 'lodash';
 import LoadingIndicator from '../../components/loading_indicator';
 import Column from '../ui/components/column';
 import ColumnBackButtonSlim from '../../components/column_back_button_slim';
-import DomainContainer from '../../containers/domain_container';
+import MutedDomainContainer from '../../containers/muted_domain_container';
 import { fetchDomainMutes, expandDomainMutes } from '../../actions/domain_mutes';
 import ScrollableList from '../../components/scrollable_list';
 import { Helmet } from 'react-helmet';
@@ -69,7 +69,7 @@ class Mutes extends ImmutablePureComponent {
           bindToDocument={!multiColumn}
         >
           {domains.map(domain =>
-            <DomainContainer key={domain} domain={domain} for_muted_list />,
+            <MutedDomainContainer key={domain} domain={domain} />,
           )}
         </ScrollableList>
 
