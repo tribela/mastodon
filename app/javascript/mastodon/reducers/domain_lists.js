@@ -7,6 +7,7 @@ import {
   DOMAIN_MUTES_FETCH_SUCCESS,
   DOMAIN_MUTES_EXPAND_SUCCESS,
   DOMAIN_UNMUTE_SUCCESS,
+  DOMAIN_MUTE_NOTIFICATIONS_SUCCESS,
 } from '../actions/domain_mutes';
 import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet } from 'immutable';
 
@@ -30,6 +31,10 @@ export default function domainLists(state = initialState, action) {
     return state.updateIn(['mutes', 'items'], set => set.union(action.domains)).setIn(['mutes', 'next'], action.next);
   case DOMAIN_UNMUTE_SUCCESS:
     return state.updateIn(['mutes', 'items'], set => set.delete(action.domain));
+  case DOMAIN_MUTE_NOTIFICATIONS_SUCCESS:
+    // TODO: Change ImmutableOrderedSet to ImmutableMap
+    // TODO: update state
+    return state;
   default:
     return state;
   }

@@ -4,7 +4,7 @@
 #
 #  id                 :bigint(8)        not null, primary key
 #  domain             :string
-#  account_id         :integer
+#  account_id         :bigint(8)
 #  hide_notifications :boolean
 #  hide_from_home     :boolean
 #  created_at         :datetime         not null

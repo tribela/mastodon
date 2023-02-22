@@ -4,6 +4,10 @@ export const DOMAIN_MUTE_REQUEST = 'DOMAIN_MUTE_REQUEST';
 export const DOMAIN_MUTE_SUCCESS = 'DOMAIN_MUTE_SUCCESS';
 export const DOMAIN_MUTE_FAIL    = 'DOMAIN_MUTE_FAIL';
 
+export const DOMAIN_MUTE_NOTIFICATIONS_REQUEST = 'DOMAIN_MUTE_NOTIFICATIONS_REQUEST';
+export const DOMAIN_MUTE_NOTIFICATIONS_SUCCESS = 'DOMAIN_MUTE_NOTIFICATIONS_SUCCESS';
+export const DOMAIN_MUTE_NOTIFICATIONS_FAIL    = 'DOMAIN_MUTE_NOTIFICATIONS_FAIL';
+
 export const DOMAIN_UNMUTE_REQUEST = 'DOMAIN_UNMUTE_REQUEST';
 export const DOMAIN_UNMUTE_SUCCESS = 'DOMAIN_UNMUTE_SUCCESS';
 export const DOMAIN_UNMUTE_FAIL    = 'DOMAIN_UNMUTE_FAIL';
@@ -31,10 +35,33 @@ export function muteDomain(domain) {
   };
 }
 
+export function muteDomainNotifications(domain, muteNotifications) {
+  return (dispatch, getState) => {
+    dispatch(muteDomainNotificationsRequest(domain, muteNotifications));
+
+    api(getState).post('/api/v1/domain_mutes', { domain, notifications: muteNotifications }).then(() => {
+      const at_domain = '@' + domain;
+      const accounts = getState().get('accounts').filter(item => item.get('acct').endsWith(at_domain)).valueSeq().map(item => item.get('id'));
+
+      dispatch(muteDomainNotificationsSuccess(domain, muteNotifications, accounts, muteNotifications));
+    }).catch(err => {
+      dispatch(muteDomainNotificationsFail(domain, muteNotifications, err));
+    });
+  };
+}
+
 export function muteDomainRequest(domain) {
   return {
     type: DOMAIN_MUTE_REQUEST,
     domain,
+  };
+}
+
+export function muteDomainNotificationsRequest(domain, muteNotifications) {
+  return {
+    type: DOMAIN_MUTE_NOTIFICATIONS_REQUEST,
+    domain,
+    notifications: muteNotifications,
   };
 }
 
@@ -50,6 +77,24 @@ export function muteDomainFail(domain, error) {
   return {
     type: DOMAIN_MUTE_FAIL,
     domain,
+    error,
+  };
+}
+
+export function muteDomainNotificationsSuccess(domain, muteNotifications, accounts) {
+  return {
+    type: DOMAIN_MUTE_NOTIFICATIONS_SUCCESS,
+    domain,
+    notifications: muteNotifications,
+    accounts,
+  };
+}
+
+export function muteDomainNotificationsFail(domain, muteNotifications, error) {
+  return {
+    type: DOMAIN_MUTE_NOTIFICATIONS_FAIL,
+    domain,
+    notifications: muteNotifications,
     error,
   };
 }

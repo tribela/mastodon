@@ -10,11 +10,16 @@ class Api::V1::DomainMutesController < Api::BaseController
 
   def show
     @mutes = load_domain_mutes
-    render json: @mutes.map(&:domain)
+    render json: @mutes.map { |domain_mute| domain_mute.as_json(only: %i(domain hide_notifications hide_from_home)) }
   end
 
   def create
-    current_account.mute_domain!(domain_mute_params[:domain])
+    current_account.mute_domain!(
+      domain_mute_params[:domain],
+      notifications: domain_mute_params[:notifications],
+      home_timeline: domain_mute_params[:home_timeline]
+    )
+
     # TODO
     # AfterAccountDomainMuteWorker.perform_async(current_account.id, domain_mute_params[:domain])
     render_empty
@@ -68,6 +73,6 @@ class Api::V1::DomainMutesController < Api::BaseController
   end
 
   def domain_mute_params
-    params.permit(:domain)
+    params.permit(:domain, :notifications, :home_timeline)
   end
 end
