@@ -31,7 +31,7 @@ class Mutes extends ImmutablePureComponent {
     params: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
     hasMore: PropTypes.bool,
-    domains: ImmutablePropTypes.orderedSet,
+    domains: ImmutablePropTypes.orderedMap.isRequired,
     intl: PropTypes.object.isRequired,
     multiColumn: PropTypes.bool,
   };
@@ -69,7 +69,7 @@ class Mutes extends ImmutablePureComponent {
           bindToDocument={!multiColumn}
         >
           {domains.map(domain =>
-            <MutedDomainContainer key={domain} domain={domain} />,
+            <MutedDomainContainer key={domain.domain} domain={domain} />,
           )}
         </ScrollableList>
 

@@ -8,6 +8,10 @@ export const DOMAIN_MUTE_NOTIFICATIONS_REQUEST = 'DOMAIN_MUTE_NOTIFICATIONS_REQU
 export const DOMAIN_MUTE_NOTIFICATIONS_SUCCESS = 'DOMAIN_MUTE_NOTIFICATIONS_SUCCESS';
 export const DOMAIN_MUTE_NOTIFICATIONS_FAIL    = 'DOMAIN_MUTE_NOTIFICATIONS_FAIL';
 
+export const DOMAIN_MUTE_HOME_TIMELINE_REQUEST = 'DOMAIN_MUTE_HOME_TIMELINE_REQUEST';
+export const DOMAIN_MUTE_HOME_TIMELINE_SUCCESS = 'DOMAIN_MUTE_HOME_TIMELINE_SUCCESS';
+export const DOMAIN_MUTE_HOME_TIMELINE_FAIL    = 'DOMAIN_MUTE_HOME_TIMELINE_FAIL';
+
 export const DOMAIN_UNMUTE_REQUEST = 'DOMAIN_UNMUTE_REQUEST';
 export const DOMAIN_UNMUTE_SUCCESS = 'DOMAIN_UNMUTE_SUCCESS';
 export const DOMAIN_UNMUTE_FAIL    = 'DOMAIN_UNMUTE_FAIL';
@@ -43,9 +47,24 @@ export function muteDomainNotifications(domain, muteNotifications) {
       const at_domain = '@' + domain;
       const accounts = getState().get('accounts').filter(item => item.get('acct').endsWith(at_domain)).valueSeq().map(item => item.get('id'));
 
-      dispatch(muteDomainNotificationsSuccess(domain, muteNotifications, accounts, muteNotifications));
+      dispatch(muteDomainNotificationsSuccess(domain, muteNotifications, accounts));
     }).catch(err => {
       dispatch(muteDomainNotificationsFail(domain, muteNotifications, err));
+    });
+  };
+}
+
+export function excludeDomainHomeTimeline(domain, excludeHomeTimeline) {
+  return (dispatch, getState) => {
+    dispatch(excludeDomainHomeTimelineRequest(domain, excludeHomeTimeline));
+
+    api(getState).post('/api/v1/domain_mutes', { domain, hide_from_home: excludeHomeTimeline }).then(() => {
+      const at_domain = '@' + domain;
+      const accounts = getState().get('accounts').filter(item => item.get('acct').endsWith(at_domain)).valueSeq().map(item => item.get('id'));
+
+      dispatch(excludeDomainHomeTimelineSuccess(domain, excludeHomeTimeline, accounts));
+    }).catch(err => {
+      dispatch(excludeDomainHomeTimelineFail(domain, excludeHomeTimeline, err));
     });
   };
 }
@@ -62,6 +81,14 @@ export function muteDomainNotificationsRequest(domain, muteNotifications) {
     type: DOMAIN_MUTE_NOTIFICATIONS_REQUEST,
     domain,
     notifications: muteNotifications,
+  };
+}
+
+export function excludeDomainHomeTimelineRequest(domain, excludeHomeTimeline) {
+  return {
+    type: DOMAIN_MUTE_HOME_TIMELINE_REQUEST,
+    domain,
+    home_timeline: excludeHomeTimeline,
   };
 }
 
@@ -95,6 +122,24 @@ export function muteDomainNotificationsFail(domain, muteNotifications, error) {
     type: DOMAIN_MUTE_NOTIFICATIONS_FAIL,
     domain,
     notifications: muteNotifications,
+    error,
+  };
+}
+
+export function excludeDomainHomeTimelineSuccess(domain, excludeHomeTimeline, accounts) {
+  return {
+    type: DOMAIN_MUTE_HOME_TIMELINE_SUCCESS,
+    domain,
+    homeTimeline: excludeHomeTimeline,
+    accounts,
+  };
+}
+
+export function excludeDomainHomeTimelineFail(domain, excludeHomeTimeline, error) {
+  return {
+    type: DOMAIN_MUTE_HOME_TIMELINE_FAIL,
+    domain,
+    homeTimeline: excludeHomeTimeline,
     error,
   };
 }

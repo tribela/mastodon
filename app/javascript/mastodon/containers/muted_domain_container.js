@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { muteDomain, unmuteDomain, muteDomainNotifications } from '../actions/domain_mutes';
+import { muteDomain, unmuteDomain, muteDomainNotifications, excludeDomainHomeTimeline } from '../actions/domain_mutes';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import MutedDomain from '../components/muted_domain';
 import { openModal } from '../actions/modal';
@@ -30,6 +30,10 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
 
   onMuteDomainNotifications (domain, muteNotifications) {
     dispatch(muteDomainNotifications(domain, muteNotifications));
+  },
+
+  onExcludeDomainHomeTimeline (domain, excludeHomeTimeline) {
+    dispatch(excludeDomainHomeTimeline(domain, excludeHomeTimeline));
   },
 });
 

@@ -25,7 +25,7 @@ class MutedDomain extends ImmutablePureComponent {
   };
 
   handleDomainUnmute = () => {
-    this.props.onUnmuteDomain(this.props.domain);
+    this.props.onUnmuteDomain(this.props.domain.domain);
   };
 
   handleDomainMuteNotifications = () => {
