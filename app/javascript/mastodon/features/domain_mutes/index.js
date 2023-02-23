@@ -68,7 +68,7 @@ class Mutes extends ImmutablePureComponent {
           emptyMessage={emptyMessage}
           bindToDocument={!multiColumn}
         >
-          {domains.map(domain =>
+          {domains.toList().map(domain =>
             <MutedDomainContainer key={domain.domain} domain={domain} />,
           )}
         </ScrollableList>

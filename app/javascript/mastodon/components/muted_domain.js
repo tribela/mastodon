@@ -17,7 +17,7 @@ export default @injectIntl
 class MutedDomain extends ImmutablePureComponent {
 
   static propTypes = {
-    domain: ImmutablePropTypes.map,
+    domain: PropTypes.object.isRequired,
     onUnmuteDomain: PropTypes.func.isRequired,
     onMuteDomainNotifications: PropTypes.func.isRequired,
     onExcludeDomainHomeTimeline: PropTypes.func.isRequired,
