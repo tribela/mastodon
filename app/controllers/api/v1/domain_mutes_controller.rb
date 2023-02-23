@@ -10,13 +10,12 @@ class Api::V1::DomainMutesController < Api::BaseController
 
   def show
     @mutes = load_domain_mutes
-    render json: @mutes.map { |domain_mute| domain_mute.as_json(only: %i(domain hide_notifications hide_from_home)) }
+    render json: @mutes.map { |domain_mute| domain_mute.as_json(only: %i(domain hide_from_home)) }
   end
 
   def create
     current_account.mute_domain!(
       domain_mute_params[:domain],
-      notifications: domain_mute_params[:notifications],
       home_timeline: domain_mute_params[:home_timeline]
     )
 
@@ -73,6 +72,6 @@ class Api::V1::DomainMutesController < Api::BaseController
   end
 
   def domain_mute_params
-    params.permit(:domain, :notifications, :home_timeline)
+    params.permit(:domain, :home_timeline)
   end
 end

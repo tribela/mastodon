@@ -1,5 +1,4 @@
 import React from 'react';
-import ImmutablePropTypes from 'react-immutable-proptypes';
 import PropTypes from 'prop-types';
 import IconButton from './icon_button';
 import { defineMessages, injectIntl } from 'react-intl';
@@ -7,8 +6,6 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 
 const messages = defineMessages({
   unmute_domain: { id: 'account.unmute_domain', defaultMessage: 'Unmute domain {domain}' },
-  mute_domain_notifications: { id: 'account.mute_domain_notifications', defaultMessage: 'Mute domain notifications for {domain}' },
-  unmute_domain_notifications: { id: 'account.unmute_domain_notifications', defaultMessage: 'Unmute domain notifications for {domain}' },
   exclude_domain_from_home_timeline: { id: 'account.exclude_domain_from_home_timeline', defaultMessage: 'Exclude domain {domain} from home timeline' },
   include_domain_from_home_timeline: { id: 'account.include_domain_from_home_timeline', defaultMessage: 'Include domain {domain} from home timeline' },
 });
@@ -19,21 +16,12 @@ class MutedDomain extends ImmutablePureComponent {
   static propTypes = {
     domain: PropTypes.object.isRequired,
     onUnmuteDomain: PropTypes.func.isRequired,
-    onMuteDomainNotifications: PropTypes.func.isRequired,
     onExcludeDomainHomeTimeline: PropTypes.func.isRequired,
     intl: PropTypes.object.isRequired,
   };
 
   handleDomainUnmute = () => {
     this.props.onUnmuteDomain(this.props.domain.domain);
-  };
-
-  handleDomainMuteNotifications = () => {
-    this.props.onMuteDomainNotifications(this.props.domain.domain, true);
-  };
-
-  handleDomainUnmuteNotifications = () => {
-    this.props.onMuteDomainNotifications(this.props.domain.domain, false);
   };
 
   handleDomainExcludeHomeTimeline = () => {
@@ -45,7 +33,7 @@ class MutedDomain extends ImmutablePureComponent {
   };
 
   render () {
-    const { domain: { domain, hide_notifications, hide_from_home }, intl } = this.props;
+    const { domain: { domain, hide_from_home }, intl } = this.props;
 
     const buttons = [];
     if (hide_from_home) {
@@ -55,16 +43,6 @@ class MutedDomain extends ImmutablePureComponent {
     } else {
       buttons.push(
         <IconButton active icon='eye-slash' title={intl.formatMessage(messages.exclude_domain_from_home_timeline, { domain })} onClick={this.handleDomainExcludeHomeTimeline} />,
-      );
-    }
-
-    if (hide_notifications) {
-      buttons.push(
-        <IconButton active icon='bell' title={intl.formatMessage(messages.unmute_domain_notifications, { domain })} onClick={this.handleDomainUnmuteNotifications} />,
-      );
-    } else {
-      buttons.push(
-        <IconButton active icon='bell-slash' title={intl.formatMessage(messages.mute_domain_notifications, { domain })} onClick={this.handleDomainMuteNotifications} />,
       );
     }
 

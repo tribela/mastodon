@@ -7,7 +7,6 @@ import {
   DOMAIN_MUTES_FETCH_SUCCESS,
   DOMAIN_MUTES_EXPAND_SUCCESS,
   DOMAIN_UNMUTE_SUCCESS,
-  DOMAIN_MUTE_NOTIFICATIONS_SUCCESS,
   DOMAIN_MUTE_HOME_TIMELINE_SUCCESS,
 } from '../actions/domain_mutes';
 import { Map as ImmutableMap, OrderedMap as ImmutableOrderedMap, OrderedSet as ImmutableOrderedSet } from 'immutable';
@@ -43,8 +42,6 @@ export default function domainLists(state = initialState, action) {
     return state.updateIn(['mutes', 'items'], map => expandDomains(map, action.domains)).setIn(['mutes', 'next'], action.next);
   case DOMAIN_UNMUTE_SUCCESS:
     return state.updateIn(['mutes', 'items'], map => map.delete(action.domain));
-  case DOMAIN_MUTE_NOTIFICATIONS_SUCCESS:
-    return state.updateIn(['mutes', 'items', action.domain, 'hide_notifications'], () => action.notifications);
   case DOMAIN_MUTE_HOME_TIMELINE_SUCCESS:
     return state.updateIn(['mutes', 'items', action.domain, 'hide_from_home'], () => action.homeTimeline);
   default:
