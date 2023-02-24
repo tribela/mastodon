@@ -37,7 +37,7 @@ import {
   unblockDomain,
 } from '../actions/domain_blocks';
 import {
-  muteDomain,
+  initDomainMuteModal,
   unmuteDomain,
 } from '../actions/domain_mutes';
 import {
@@ -63,7 +63,6 @@ const messages = defineMessages({
   editConfirm: { id: 'confirmations.edit.confirm', defaultMessage: 'Edit' },
   editMessage: { id: 'confirmations.edit.message', defaultMessage: 'Editing now will overwrite the message you are currently composing. Are you sure you want to proceed?' },
   blockDomainConfirm: { id: 'confirmations.domain_block.confirm', defaultMessage: 'Hide entire domain' },
-  muteDomainConfirm: { id: 'confirmations.domain_mute.confirm', defaultMessage: 'Mute entire domain' },
 });
 
 const makeMapStateToProps = () => {
@@ -252,11 +251,7 @@ const mapDispatchToProps = (dispatch, { intl, contextType }) => ({
   },
 
   onMuteDomain (domain) {
-    dispatch(openModal('CONFIRM', {
-      message: <FormattedMessage id='confirmations.domain_mute.message' defaultMessage='Are you really, really sure you want to mute the entire {domain}? In most cases a few targeted mutes are sufficient and preferable. You will not see content from that domain in any public timelines.' values={{ domain: <strong>{domain}</strong> }} />,
-      confirm: intl.formatMessage(messages.muteDomainConfirm),
-      onConfirm: () => dispatch(muteDomain(domain)),
-    }));
+    dispatch(initDomainMuteModal(domain));
   },
 
   onUnmuteDomain (domain) {

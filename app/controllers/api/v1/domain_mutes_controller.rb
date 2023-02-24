@@ -16,7 +16,7 @@ class Api::V1::DomainMutesController < Api::BaseController
   def create
     current_account.mute_domain!(
       domain_mute_params[:domain],
-      home_timeline: domain_mute_params[:home_timeline]
+      hide_from_home: domain_mute_params[:hide_from_home]
     )
 
     # TODO
@@ -72,6 +72,6 @@ class Api::V1::DomainMutesController < Api::BaseController
   end
 
   def domain_mute_params
-    params.permit(:domain, :home_timeline)
+    params.permit(:domain, :hide_from_home)
   end
 end

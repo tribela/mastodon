@@ -1,4 +1,5 @@
 import api, { getLinks } from '../api';
+import { openModal } from './modal';
 
 export const DOMAIN_MUTE_REQUEST = 'DOMAIN_MUTE_REQUEST';
 export const DOMAIN_MUTE_SUCCESS = 'DOMAIN_MUTE_SUCCESS';
@@ -20,11 +21,14 @@ export const DOMAIN_MUTES_EXPAND_REQUEST = 'DOMAIN_MUTES_EXPAND_REQUEST';
 export const DOMAIN_MUTES_EXPAND_SUCCESS = 'DOMAIN_MUTES_EXPAND_SUCCESS';
 export const DOMAIN_MUTES_EXPAND_FAIL    = 'DOMAIN_MUTES_EXPAND_FAIL';
 
-export function muteDomain(domain) {
+export const DOMAIN_MUTES_INIT_MODAL = 'DOMAIN_MUTES_INIT_MODAL';
+export const DOMAIN_MUTES_TOGGLE_HIDE_FROM_HOME = 'DOMAIN_MUTES_TOGGLE_HIDE_FROM_HOME';
+
+export function muteDomain(domain, hideFromHome) {
   return (dispatch, getState) => {
     dispatch(muteDomainRequest(domain));
 
-    api(getState).post('/api/v1/domain_mutes', { domain }).then(() => {
+    api(getState).post('/api/v1/domain_mutes', { domain, hide_from_home: hideFromHome }).then(() => {
       const at_domain = '@' + domain;
       const accounts = getState().get('accounts').filter(item => item.get('acct').endsWith(at_domain)).valueSeq().map(item => item.get('id'));
 
@@ -207,5 +211,22 @@ export function expandDomainMutesFail(error) {
   return {
     type: DOMAIN_MUTES_EXPAND_FAIL,
     error,
+  };
+}
+
+export function initDomainMuteModal(domain) {
+  return dispatch => {
+    dispatch({
+      type: DOMAIN_MUTES_INIT_MODAL,
+      domain,
+    });
+
+    dispatch(openModal('DOMAIN_MUTE'));
+  };
+}
+
+export function toggleHideFromHome() {
+  return dispatch => {
+    dispatch({ type: DOMAIN_MUTES_TOGGLE_HIDE_FROM_HOME });
   };
 }

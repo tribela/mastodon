@@ -19,7 +19,7 @@ import { initBlockModal } from '../../../actions/blocks';
 import { initReport } from '../../../actions/reports';
 import { openModal } from '../../../actions/modal';
 import { blockDomain, unblockDomain } from '../../../actions/domain_blocks';
-import { muteDomain, unmuteDomain } from '../../../actions/domain_mutes';
+import { initDomainMuteModal, unmuteDomain } from '../../../actions/domain_mutes';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { unfollowModal } from '../../../initial_state';
 
@@ -27,7 +27,6 @@ const messages = defineMessages({
   cancelFollowRequestConfirm: { id: 'confirmations.cancel_follow_request.confirm', defaultMessage: 'Withdraw request' },
   unfollowConfirm: { id: 'confirmations.unfollow.confirm', defaultMessage: 'Unfollow' },
   blockDomainConfirm: { id: 'confirmations.domain_block.confirm', defaultMessage: 'Hide entire domain' },
-  muteDomainConfirm: { id: 'confirmations.domain_mute.confirm', defaultMessage: 'Mute entire domain' },
 });
 
 const makeMapStateToProps = () => {
@@ -143,11 +142,7 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
   },
 
   onMuteDomain (domain) {
-    dispatch(openModal('CONFIRM', {
-      message: <FormattedMessage id='confirmations.domain_mute.message' defaultMessage='Are you really, really sure you want to mute the entire {domain}? In most cases a few targeted mutes are sufficient and preferable. You will not see content from that domain in any public timelines.' values={{ domain: <strong>{domain}</strong> }} />,
-      confirm: intl.formatMessage(messages.muteDomainConfirm),
-      onConfirm: () => dispatch(muteDomain(domain)),
-    }));
+    dispatch(initDomainMuteModal(domain));
   },
 
   onUnmuteDomain (domain) {

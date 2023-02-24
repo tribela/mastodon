@@ -165,16 +165,14 @@ module AccountInteractions
     domain_blocks.find_or_create_by!(domain: other_domain)
   end
 
-  def mute_domain!(other_domain, notifications: nil, home_timeline: nil)
-    notifications = false if notifications.nil?
-    home_timeline = false if home_timeline.nil?
+  def mute_domain!(other_domain, hide_from_home: nil)
+    hide_from_home = false if hide_from_home.nil?
 
-    domain_mute = domain_mutes.create_with(hide_notifications: notifications, hide_from_home: home_timeline).find_or_initialize_by(domain: other_domain)
+    domain_mute = domain_mutes.create_with(hide_from_home: hide_from_home).find_or_initialize_by(domain: other_domain)
     domain_mute.save!
 
     # When toggling a mute between hiding and allowing notifications, the mute will already exist, so the find_or_create_by! call will return the existing Mute without updating the hide_notifications attribute. Therefore, we check that hide_notifications? is what we want and set it if it isn't.
-    domain_mute.update(hide_notifications: notifications) if domain_mute.hide_notifications? != notifications
-    domain_mute.update(hide_from_home: home_timeline) if domain_mute.hide_from_home? != home_timeline
+    domain_mute.update(hide_from_home: hide_from_home) if domain_mute.hide_from_home? != hide_from_home
 
     domain_mute.save!
   end
