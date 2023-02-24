@@ -1046,6 +1046,10 @@
         "id": "onboarding.done"
       },
       {
+        "defaultMessage": "Domain muted",
+        "id": "account.domain_muted"
+      },
+      {
         "defaultMessage": "Skip",
         "id": "onboarding.skip"
       }
