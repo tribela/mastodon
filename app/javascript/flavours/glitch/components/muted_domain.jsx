@@ -10,7 +10,6 @@ const messages = defineMessages({
   include_domain_from_home_timeline: { id: 'account.include_domain_from_home_timeline', defaultMessage: 'Include domain {domain} from home timeline' },
 });
 
-export default @injectIntl
 class MutedDomain extends ImmutablePureComponent {
 
   static propTypes = {
@@ -66,3 +65,5 @@ class MutedDomain extends ImmutablePureComponent {
   }
 
 }
+
+export default injectIntl(MutedDomain);

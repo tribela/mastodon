@@ -23,8 +23,6 @@ const mapStateToProps = state => ({
   hasMore: !!state.getIn(['domain_lists', 'mutes', 'next']),
 });
 
-export default @connect(mapStateToProps)
-@injectIntl
 class Mutes extends ImmutablePureComponent {
 
   static propTypes = {
@@ -81,3 +79,5 @@ class Mutes extends ImmutablePureComponent {
   }
 
 }
+
+export default connect(mapStateToProps)(injectIntl(Mutes));

@@ -30,8 +30,6 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default @connect(mapStateToProps, mapDispatchToProps)
-@injectIntl
 class DomainMuteModal extends React.PureComponent {
 
   static propTypes = {
@@ -104,3 +102,5 @@ class DomainMuteModal extends React.PureComponent {
   }
 
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(DomainMuteModal));
