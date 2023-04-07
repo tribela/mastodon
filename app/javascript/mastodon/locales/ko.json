@@ -23,6 +23,7 @@
   "account.direct": "@{name} 님에게 개인적으로 멘션",
   "account.disable_notifications": "@{name} 의 게시물 알림 끄기",
   "account.domain_blocked": "도메인 차단됨",
+  "account.domain_muted": "도메인 뮤트됨",
   "account.edit_profile": "프로필 편집",
   "account.enable_notifications": "@{name} 의 게시물 알림 켜기",
   "account.endorse": "프로필에 추천하기",

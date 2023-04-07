@@ -197,6 +197,10 @@ class Header extends ImmutablePureComponent {
       info.push(<span key='domain_blocked' className='relationship-tag'><FormattedMessage id='account.domain_blocked' defaultMessage='Domain blocked' /></span>);
     }
 
+    if (me !== account.get('id') && account.getIn(['relationship', 'domain_muting'])) {
+      info.push(<span key='domain_muted' clasName='relationship-tag'><FormattedMessage id='account.domain_muted' defaultMessage='Domain muted' /></span>);
+    }
+
     if (account.getIn(['relationship', 'requested']) || account.getIn(['relationship', 'following'])) {
       bellBtn = <IconButton icon={account.getIn(['relationship', 'notifying']) ? 'bell' : 'bell-o'} size={24} active={account.getIn(['relationship', 'notifying'])} title={intl.formatMessage(account.getIn(['relationship', 'notifying']) ? messages.disableNotifications : messages.enableNotifications, { name: account.get('username') })} onClick={this.props.onNotifyToggle} />;
     }
