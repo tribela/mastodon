@@ -55,45 +55,26 @@ RSpec.describe Api::V1::MediaController do
       end
     end
 
-    context 'with image/gif' do
-      before do
-        post :create, params: { file: fixture_file_upload('attachment.gif', 'image/gif') }
+    context 'with deprecated videos' do
+      context 'with image/gif' do
+        before do
+          post :create, params: { file: fixture_file_upload('attachment.gif', 'image/gif') }
+        end
+
+        it 'returns http success' do
+          expect(response).to have_http_status(422)
+        end
       end
 
-      it 'returns http success' do
-        expect(response).to have_http_status(200)
-      end
+      context 'with video/webm' do
+        before do
+          post :create, params: { file: fixture_file_upload('attachment.webm', 'video/webm') }
+        end
 
-      it 'creates a media attachment' do
-        expect(MediaAttachment.first).to_not be_nil
-      end
-
-      it 'uploads a file' do
-        expect(MediaAttachment.first).to have_attached_file(:file)
-      end
-
-      it 'returns media ID in JSON' do
-        expect(body_as_json[:id]).to eq MediaAttachment.first.id.to_s
-      end
-    end
-
-    context 'with video/webm' do
-      before do
-        post :create, params: { file: fixture_file_upload('attachment.webm', 'video/webm') }
-      end
-
-      it do
-        # returns http success
-        expect(response).to have_http_status(200)
-
-        # creates a media attachment
-        expect(MediaAttachment.first).to_not be_nil
-
-        # uploads a file
-        expect(MediaAttachment.first).to have_attached_file(:file)
-
-        # returns media ID in JSON
-        expect(body_as_json[:id]).to eq MediaAttachment.first.id.to_s
+        it do
+          # returns 422
+          expect(response).to have_http_status(422)
+        end
       end
     end
   end
