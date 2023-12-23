@@ -22,7 +22,7 @@ const messages = defineMessages({
 });
 
 const colCount = function(size) {
-  return Math.floor(Math.sqrt(size));
+  return Math.max(Math.floor(Math.sqrt(size)), 2);
 };
 
 const rowCount = function(size) {
@@ -105,7 +105,7 @@ class Item extends PureComponent {
     const cols = colCount(size);
     const remaining = (-size % cols + cols) % cols;
 
-    if (remaining === 3 && index === 0) {
+    if (remaining === 3 && index === 0 || size === 1) {
       width = 100;
       height = 100;
     } else if (remaining === 2 && index < 2) {
@@ -115,7 +115,13 @@ class Item extends PureComponent {
         height = 100;
       }
     } else if (remaining === 1 && index === 0) {
-      width  = 100;
+      if (size === 3) {
+        height = 100;
+      } else {
+        width  = 100;
+      }
+    } else if (size === 2) {
+      height = 100;
     }
 
     if (attachment.get('description')?.length > 0) {
@@ -318,12 +324,16 @@ class MediaGallery extends PureComponent {
     if (this.isFullSizeEligible()) {
       style.aspectRatio = `${this.props.media.getIn([0, 'meta', 'small', 'aspect'])}`;
     } else {
-      const cols = colCount(media.size);
-      const rows = rowCount(media.size);
-      style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
-      style.gridTemplateRows = `repeat(${rows}, 1fr)`;
+      if (media.size > 4) {
+        const cols = colCount(media.size);
+        const rows = rowCount(media.size);
+        style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+        style.gridTemplateRows = `repeat(${rows}, 1fr)`;
 
-      style.aspectRatio = `${3 * cols} / ${2 * rows}`;
+        style.aspectRatio = `${3 * cols} / ${2 * rows}`;
+      } else {
+        style.aspectRatio = '3 / 2';
+      }
     }
 
     const size     = media.size;
