@@ -104,23 +104,13 @@ class Item extends PureComponent {
 
     const cols = colCount(size);
     const remaining = (-size % cols + cols) % cols;
+    const largeCount = Math.floor(remaining / 3); // width=2, height=2
+    const mediumCount = remaining % 3; // height=2
 
-    if (remaining === 3 && index === 0 || size === 1) {
+    if (size === 1 || index < largeCount) {
       width = 100;
       height = 100;
-    } else if (remaining === 2 && index < 2) {
-      if (cols >= 4) {
-        width = 100;
-      } else {
-        height = 100;
-      }
-    } else if (remaining === 1 && index === 0) {
-      if (size === 3) {
-        height = 100;
-      } else {
-        width  = 100;
-      }
-    } else if (size === 2) {
+    } else if (size === 2 || index < largeCount + mediumCount) {
       height = 100;
     }
 
