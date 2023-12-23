@@ -314,16 +314,12 @@ class MediaGallery extends PureComponent {
     if (this.isFullSizeEligible()) {
       style.aspectRatio = `${this.props.media.getIn([0, 'meta', 'small', 'aspect'])}`;
     } else {
-      if (media.size > 4) {
-        const cols = colCount(media.size);
-        const rows = rowCount(media.size);
-        style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
-        style.gridTemplateRows = `repeat(${rows}, 1fr)`;
+      const cols = colCount(media.size);
+      const rows = rowCount(media.size);
+      style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+      style.gridTemplateRows = `repeat(${rows}, 1fr)`;
 
-        style.aspectRatio = `${3 * cols} / ${2 * rows}`;
-      } else {
-        style.aspectRatio = '3 / 2';
-      }
+      style.aspectRatio = '3 / 2';
     }
 
     const size     = media.size;
