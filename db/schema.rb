@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_06_07_094856) do
+ActiveRecord::Schema[7.1].define(version: 2024_06_29_162608) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -1504,4 +1504,53 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_07_094856) do
   SQL
   add_index "global_follow_recommendations", ["account_id"], name: "index_global_follow_recommendations_on_account_id", unique: true
 
+  create_view "media_metrics", materialized: true, sql_definition: <<-SQL
+      SELECT t0.category,
+      (t0.file_size)::integer AS file_size,
+      t0.local
+     FROM ( SELECT 'media_attachments'::text AS category,
+              sum((COALESCE(media_attachments.file_file_size, (0)::bigint) + COALESCE(media_attachments.thumbnail_file_size, (0)::bigint))) AS file_size,
+              (accounts.domain IS NULL) AS local
+             FROM (media_attachments
+               LEFT JOIN accounts ON ((media_attachments.account_id = accounts.id)))
+            GROUP BY (accounts.domain IS NULL)
+          UNION ALL
+           SELECT 'custom_emojis'::text AS category,
+              sum(custom_emojis.image_file_size) AS file_size,
+              (custom_emojis.domain IS NULL) AS local
+             FROM custom_emojis
+            GROUP BY (custom_emojis.domain IS NULL)
+          UNION ALL
+           SELECT 'avatars'::text AS category,
+              sum(accounts.avatar_file_size) AS file_size,
+              (accounts.domain IS NULL) AS local
+             FROM accounts
+            GROUP BY (accounts.domain IS NULL)
+          UNION ALL
+           SELECT 'headers'::text AS category,
+              sum(accounts.header_file_size) AS file_size,
+              (accounts.domain IS NULL) AS local
+             FROM accounts
+            GROUP BY (accounts.domain IS NULL)
+          UNION ALL
+           SELECT 'preview_cards'::text AS category,
+              sum(preview_cards.image_file_size) AS file_size,
+              true AS local
+             FROM preview_cards
+          UNION ALL
+           SELECT 'backups'::text AS category,
+              sum(backups.dump_file_size) AS file_size,
+              true AS local
+             FROM backups
+          UNION ALL
+           SELECT 'imports'::text AS category,
+              sum(imports.data_file_size) AS file_size,
+              true AS local
+             FROM imports
+          UNION ALL
+           SELECT 'settings'::text AS category,
+              sum(site_uploads.file_file_size) AS file_size,
+              true AS local
+             FROM site_uploads) t0;
+  SQL
 end
