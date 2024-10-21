@@ -38,7 +38,7 @@ class SiteUpload < ApplicationRecord
 
     thumbnail: {
       '@1x': {
-        format: 'png',
+        format: 'webp',
         geometry: '1200x630#',
         file_geometry_parser: FastGeometryParser,
         blurhash: {
@@ -48,7 +48,7 @@ class SiteUpload < ApplicationRecord
       },
 
       '@2x': {
-        format: 'png',
+        format: 'webp',
         geometry: '2400x1260#',
         file_geometry_parser: FastGeometryParser,
       }.freeze,
