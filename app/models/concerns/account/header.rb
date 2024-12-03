@@ -3,16 +3,15 @@
 module Account::Header
   extend ActiveSupport::Concern
 
-  IMAGE_MIME_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'].freeze
-  LIMIT = 10.megabytes
-
+  HEADER_IMAGE_MIME_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'].freeze
+  HEADER_LIMIT = Rails.configuration.x.use_vips ? 8.megabytes : 2.megabytes
   HEADER_DIMENSIONS = [1500, 500].freeze
   HEADER_GEOMETRY = [HEADER_DIMENSIONS.first, HEADER_DIMENSIONS.last].join('x')
-  MAX_PIXELS = HEADER_DIMENSIONS.first * HEADER_DIMENSIONS.last
+  HEADER_MAX_PIXELS = HEADER_DIMENSIONS.first * HEADER_DIMENSIONS.last
 
   class_methods do
     def header_styles(file)
-      styles = { original: { pixels: MAX_PIXELS, file_geometry_parser: FastGeometryParser } }
+      styles = { original: { pixels: HEADER_MAX_PIXELS, file_geometry_parser: FastGeometryParser } }
       styles[:original][:format] = 'webp' if file.content_type != 'image/gif'
       styles[:static] = { format: 'webp', convert_options: '-coalesce', file_geometry_parser: FastGeometryParser } if file.content_type == 'image/gif'
       styles
@@ -23,10 +22,10 @@ module Account::Header
 
   included do
     # Header upload
-    has_attached_file :header, styles: ->(f) { header_styles(f) }, convert_options: { all: '+profile "!icc,*" +set date:modify +set date:create +set date:timestamp' }, processors: [:lazy_thumbnail, :type_corrector]
-    validates_attachment_content_type :header, content_type: IMAGE_MIME_TYPES
-    validates_attachment_size :header, less_than: LIMIT
-    remotable_attachment :header, LIMIT, suppress_errors: false
+    has_attached_file :header, styles: ->(f) { header_styles(f) }, convert_options: { all: '+profile "!icc,*" +set date:modify +set date:create +set date:timestamp' }, processors: [:lazy_thumbnail]
+    validates_attachment_content_type :header, content_type: HEADER_IMAGE_MIME_TYPES
+    validates_attachment_size :header, less_than: HEADER_LIMIT
+    remotable_attachment :header, HEADER_LIMIT, suppress_errors: false
   end
 
   def header_original_url
