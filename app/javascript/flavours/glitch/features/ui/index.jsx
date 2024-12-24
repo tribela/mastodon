@@ -135,7 +135,6 @@ const keyMap = {
   goToRequests: 'g r',
   toggleHidden: 'x',
   bookmark: 'd',
-  toggleCollapse: 'shift+x',
   toggleSensitive: 'h',
   openMedia: 'e',
   hiddenHappy: 'right down up right right down right right up up down down left right left right',

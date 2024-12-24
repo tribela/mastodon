@@ -1349,6 +1349,11 @@ body > [data-popper-placement] {
   }
 }
 
+.status__content.status__content--collapsed .status__content__text {
+  max-height: 20px * 15; // 15 lines is roughly above 500 characters
+  overflow: hidden;
+}
+
 .status__content__read-more-button,
 .status__content__translate-button {
   display: flex;
@@ -1553,63 +1558,6 @@ body > [data-popper-placement] {
   }
 }
 
-.status__wrapper.collapsed {
-  .status {
-    background-position: center;
-    background-size: cover;
-    user-select: none;
-    min-height: 0;
-  }
-
-  &.has-background::before {
-    display: block;
-    position: absolute;
-    inset-inline-start: 0;
-    inset-inline-end: 0;
-    top: 0;
-    bottom: 0;
-    background-image: linear-gradient(
-      to bottom,
-      rgba($base-shadow-color, 0.75),
-      rgba($base-shadow-color, 0.65) 24px,
-      rgba($base-shadow-color, 0.8)
-    );
-    pointer-events: none;
-    content: '';
-  }
-
-  .display-name:hover .display-name__html {
-    text-decoration: none;
-  }
-
-  .status__content {
-    height: 20px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    padding-top: 0;
-    mask-image: linear-gradient(rgb(0 0 0 / 100%), transparent);
-
-    a:hover {
-      text-decoration: none;
-    }
-  }
-
-  .notification__message {
-    margin-bottom: 0;
-    white-space: nowrap;
-  }
-}
-
-.notification__message-collapse-button {
-  text-align: end;
-  flex-grow: 2;
-
-  .status__collapse-button .icon {
-    width: 24px;
-    height: 24px;
-  }
-}
-
 .status__relative-time {
   display: block;
   font-size: 14px;
@@ -1675,73 +1623,6 @@ body > [data-popper-placement] {
   & > .icon {
     width: 16px;
     height: 16px;
-  }
-}
-
-.status__collapse-button {
-  // compensate for large padding built into the icon
-  margin: -4px;
-}
-
-.status__collapse-button.active > .icon {
-  transform: rotate(-180deg);
-}
-
-.no-reduce-motion .status__collapse-button {
-  &.activate {
-    & > .icon {
-      animation: spring-flip-in 1s linear;
-    }
-  }
-
-  &.deactivate {
-    & > .icon {
-      animation: spring-flip-out 1s linear;
-    }
-  }
-}
-
-@keyframes spring-flip-in {
-  0% {
-    transform: rotate(0deg);
-  }
-
-  30% {
-    transform: rotate(-242.4deg);
-  }
-
-  60% {
-    transform: rotate(-158.35deg);
-  }
-
-  90% {
-    transform: rotate(-187.5deg);
-  }
-
-  100% {
-    transform: rotate(-180deg);
-  }
-}
-
-@keyframes spring-flip-out {
-  0% {
-    transform: rotate(-180deg);
-  }
-
-  30% {
-    transform: rotate(62.4deg);
-  }
-
-  60% {
-    transform: rotate(-21.635deg);
-  }
-
-  90% {
-    transform: rotate(7.5deg);
-  }
-
-  100% {
-    transform: rotate(0deg);
   }
 }
 
