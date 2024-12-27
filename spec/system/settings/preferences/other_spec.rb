@@ -15,10 +15,11 @@ RSpec.describe 'Settings preferences other page' do
 
     check language_field(:es)
     check language_field(:fr)
+    check language_field(:und)
     check mark_sensitive_field
 
     expect { save_changes }
-      .to change { user.reload.chosen_languages }.to(%w(es fr))
+      .to change { user.reload.chosen_languages }.to(%w(und es fr))
       .and(change { user.reload.settings.default_sensitive }.to(true))
     expect(page)
       .to have_title(I18n.t('settings.preferences'))
@@ -33,6 +34,10 @@ RSpec.describe 'Settings preferences other page' do
   end
 
   def language_field(key)
-    LanguagesHelper::SUPPORTED_LOCALES[key].last
+    if key == :und
+      I18n.t('generic.none')
+    else
+      LanguagesHelper::SUPPORTED_LOCALES[key].last
+    end
   end
 end

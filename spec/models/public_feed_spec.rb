@@ -233,14 +233,16 @@ RSpec.describe PublicFeed do
 
       context 'with language preferences' do
         it 'excludes statuses in languages not allowed by the account user' do
-          account.user.update(chosen_languages: [:en, :es])
+          account.user.update(chosen_languages: [:en, :es, :und])
           en_status = Fabricate(:status, language: 'en')
           es_status = Fabricate(:status, language: 'es')
           fr_status = Fabricate(:status, language: 'fr')
+          und_status = Fabricate(:status, language: nil)
 
           expect(subject).to include(en_status.id)
           expect(subject).to include(es_status.id)
           expect(subject).to_not include(fr_status.id)
+          expect(subject).to include(und_status.id)
         end
 
         it 'includes all languages when user does not have a setting' do
@@ -248,9 +250,11 @@ RSpec.describe PublicFeed do
 
           en_status = Fabricate(:status, language: 'en')
           es_status = Fabricate(:status, language: 'es')
+          und_status = Fabricate(:status, language: nil)
 
           expect(subject).to include(en_status.id)
           expect(subject).to include(es_status.id)
+          expect(subject).to include(und_status.id)
         end
 
         it 'includes all languages when account does not have a user' do
@@ -258,9 +262,11 @@ RSpec.describe PublicFeed do
 
           en_status = Fabricate(:status, language: 'en')
           es_status = Fabricate(:status, language: 'es')
+          und_status = Fabricate(:status, language: nil)
 
           expect(subject).to include(en_status.id)
           expect(subject).to include(es_status.id)
+          expect(subject).to include(und_status.id)
         end
       end
     end

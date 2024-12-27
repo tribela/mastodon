@@ -61,7 +61,7 @@ RSpec.describe User do
     end
 
     describe 'chosen_languages' do
-      it { is_expected.to normalize(:chosen_languages).from(['en', 'fr', '']).to(%w(en fr)) }
+      it { is_expected.to normalize(:chosen_languages).from(['en', 'fr', '', 'und']).to(%w(en fr und)) }
       it { is_expected.to normalize(:chosen_languages).from(['']).to(nil) }
     end
   end
