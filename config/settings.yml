@@ -61,6 +61,7 @@ defaults: &defaults
   korean_captcha_answer: '팔월십오일'
   backups_retention_period: 7
   captcha_enabled: false
+  allow_referer_origin: false
 
 development:
   <<: *defaults
