@@ -5,7 +5,7 @@ on:
   push:
     branches:
       - 'main'
-      - 'stable-*'
+      - 'beta'
     paths:
       - 'Gemfile*'
       - '.ruby-version'

@@ -4,11 +4,11 @@ on:
   push:
     branches:
       - 'main'
-      - 'stable-*'
+      - 'beta'
   pull_request:
     branches:
       - 'main'
-      - 'stable-*'
+      - 'beta'
 
 env:
   RAILS_ENV: test
