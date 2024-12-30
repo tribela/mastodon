@@ -2,8 +2,8 @@ name: Build brandless container release images
 on:
   push:
     branches:
-      - 'qdon-glitch'
-      - 'qdon-glitch-beta'
+      - 'main'
+      - 'beta'
 
 permissions:
   contents: read
@@ -22,8 +22,8 @@ jobs:
         qdon/glitch
       cache: false
       tags: |
-        type=raw,value=brandless,enable={{is_default_branch}}
-        type=raw,value=brandless-beta,enable=${{ github.ref == format('refs/heads/{0}', 'qdon-glitch-beta') }}
+        type=raw,value=brandless,enable={{ is_default_branch }}
+        type=raw,value=brandless-beta,enable=${{ github.ref == format('refs/heads/{0}', 'beta') }}
     secrets: inherit
 
   build-image-streaming:
@@ -42,6 +42,6 @@ jobs:
       flavor: |
         latest=${{ startsWith(github.ref, 'refs/tags/v4.3.') }}
       tags: |
-        type=raw,value=brandless,enable={{is_default_branch}}
-        type=raw,value=brandless-beta,enable=${{ github.ref == format('refs/heads/{0}', 'qdon-glitch-beta') }}
+        type=raw,value=brandless,enable={{ is_default_branch }}
+        type=raw,value=brandless-beta,enable=${{ github.ref == format('refs/heads/{0}', 'beta') }}
     secrets: inherit
