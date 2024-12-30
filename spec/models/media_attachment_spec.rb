@@ -221,7 +221,7 @@ RSpec.describe MediaAttachment, :attachment_processing do
     let(:expected_media_duration) { 0.235102 }
 
     # The libvips and ImageMagick implementations produce different results
-    let(:expected_background_color) { Rails.configuration.x.use_vips ? '#268cd9' : '#3088d3' }
+    let(:expected_background_color) { Rails.configuration.x.use_vips ? '#268cd9' : '#3188d4' }
 
     it 'sets correct file metadata' do
       expect(media)
