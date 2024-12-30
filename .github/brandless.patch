@@ -11,36 +11,6 @@ index dfca274059..ea17e76929 100644
    end
 
    def avatar_static_url
-diff --git a/app/serializers/activitypub/actor_serializer.rb b/app/serializers/activitypub/actor_serializer.rb
-index d0dcbf48e8..069f0269a7 100644
---- a/app/serializers/activitypub/actor_serializer.rb
-+++ b/app/serializers/activitypub/actor_serializer.rb
-@@ -39,7 +39,7 @@ class ActivityPub::ActorSerializer < ActivityPub::Serializer
-   has_one :endpoints, serializer: EndpointsSerializer
-
-   # Use default avatar if not exists
--  has_one :icon,  serializer: ActivityPub::AvatarSerializer
-+  has_one :icon,  serializer: ActivityPub::ImageSerializer, if: :avatar_exists?
-   has_one :image, serializer: ActivityPub::ImageSerializer, if: :header_exists?
-
-   delegate :suspended?, :instance_actor?, to: :object
-diff --git a/app/serializers/activitypub/avatar_serializer.rb b/app/serializers/activitypub/avatar_serializer.rb
-deleted file mode 100644
-index e009dd3cfc..0000000000
---- a/app/serializers/activitypub/avatar_serializer.rb
-+++ /dev/null
-@@ -1,11 +0,0 @@
--# frozen_string_literal: true
--
--class ActivityPub::AvatarSerializer < ActivityPub::ImageSerializer
--  def url
--    if object.file?
--      full_asset_url(object.url(:original))
--    else
--      full_asset_url('/avatars/original/missing_qdon.png')
--    end
--  end
--end
 diff --git a/app/serializers/manifest_serializer.rb b/app/serializers/manifest_serializer.rb
 index 767535f442..1c1f7d0ad5 100644
 --- a/app/serializers/manifest_serializer.rb
