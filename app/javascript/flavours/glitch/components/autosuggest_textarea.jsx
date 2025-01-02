@@ -189,6 +189,7 @@ const AutosuggestTextarea = forwardRef(({
       <DebounceInput
         element={Textarea}
         inputRef={textareaRef}
+        debounceTimeout={20}
         className='autosuggest-textarea__textarea'
         disabled={disabled}
         placeholder={placeholder}
