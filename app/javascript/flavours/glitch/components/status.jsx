@@ -9,9 +9,8 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 
 import { HotKeys } from 'react-hotkeys';
 
+import { ContentWarning } from 'flavours/glitch/components/content_warning';
 import PictureInPicturePlaceholder from 'flavours/glitch/components/picture_in_picture_placeholder';
-import PollContainer from 'flavours/glitch/containers/poll_container';
-import NotificationOverlayContainer from 'flavours/glitch/features/notifications/containers/overlay_container';
 import { autoUnfoldCW } from 'flavours/glitch/utils/content_warning';
 import { withOptionalRouter, WithOptionalRouterPropTypes } from 'flavours/glitch/utils/react_router';
 
@@ -28,6 +27,7 @@ import { Avatar } from './avatar';
 import { AvatarOverlay } from './avatar_overlay';
 import { DisplayName } from './display_name';
 import { getHashtagBarForStatus } from './hashtag_bar';
+import { MentionsPlaceholder } from './mentions_placeholder';
 import { Permalink } from './permalink';
 import StatusActionBar from './status_action_bar';
 import StatusContent from './status_content';
@@ -134,7 +134,7 @@ class Status extends ImmutablePureComponent {
     showMedia: defaultMediaVisibility(this.props.status, this.props.settings) && !(this.context?.hideMediaByDefault),
     revealBehindCW: undefined,
     showCard: false,
-    forceFilter: undefined,
+    showDespiteFilter: undefined,
   };
 
   // Avoid checking props that are functions (and whose equality will always
@@ -158,7 +158,7 @@ class Status extends ImmutablePureComponent {
   updateOnStates = [
     'isExpanded',
     'showMedia',
-    'forceFilter',
+    'showDespiteFilter',
   ];
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -242,7 +242,7 @@ class Status extends ImmutablePureComponent {
     if (this.props.status?.get('id') !== prevProps.status?.get('id')) {
       this.setState({
         showMedia: defaultMediaVisibility(this.props.status, this.props.settings) && !(this.context?.hideMediaByDefault),
-        forceFilter: undefined,
+        showDespiteFilter: undefined,
       });
     }
   }
@@ -272,7 +272,12 @@ class Status extends ImmutablePureComponent {
 
   handleClick = e => {
     e.preventDefault();
-    this.handleHotkeyOpen(e);
+
+    if (e?.button === 0 && !(e?.ctrlKey || e?.metaKey)) {
+      this._openStatus();
+    } else if (e?.button === 1 || (e?.button === 0 && (e?.ctrlKey || e?.metaKey))) {
+      this._openStatus(true);
+    }
   };
 
   handleMouseUp = e => {
@@ -349,7 +354,11 @@ class Status extends ImmutablePureComponent {
     this.props.onMention(this.props.status.get('account'));
   };
 
-  handleHotkeyOpen = (e) => {
+  handleHotkeyOpen = () => {
+    this._openStatus();
+  };
+
+  _openStatus = (newTab = false) => {
     if (this.props.onClick) {
       this.props.onClick();
       return;
@@ -364,10 +373,10 @@ class Status extends ImmutablePureComponent {
 
     const path = `/@${status.getIn(['account', 'acct'])}/${status.get('id')}`;
 
-    if (e?.button === 0 && !(e?.ctrlKey || e?.metaKey)) {
-      history.push(path);
-    } else if (e?.button === 1 || (e?.button === 0 && (e?.ctrlKey || e?.metaKey))) {
+    if (newTab) {
       window.open(path, '_blank', 'noopener');
+    } else {
+      history.push(path);
     }
   };
 
@@ -399,12 +408,12 @@ class Status extends ImmutablePureComponent {
   };
 
   handleUnfilterClick = e => {
-    this.setState({ forceFilter: false });
+    this.setState({ showDespiteFilter: false });
     e.preventDefault();
   };
 
   handleFilterClick = () => {
-    this.setState({ forceFilter: true });
+    this.setState({ showDespiteFilter: true });
   };
 
   handleRef = c => {
@@ -448,27 +457,16 @@ class Status extends ImmutablePureComponent {
     } = this.props;
     let attachments = null;
 
-    //  Depending on user settings, some media are considered as parts of the
-    //  contents (affected by CW) while other will be displayed outside of the
-    //  CW.
-    let contentMedia = [];
-    let contentMediaIcons = [];
-    let extraMedia = [];
-    let extraMediaIcons = [];
-    let media = contentMedia;
-    let mediaIcons = contentMediaIcons;
+    let media = [];
+    let mediaIcons = [];
     let statusAvatar;
-
-    if (settings.getIn(['content_warnings', 'media_outside'])) {
-      media = extraMedia;
-      mediaIcons = extraMediaIcons;
-    }
 
     if (status === null) {
       return null;
     }
 
     const isExpanded = settings.getIn(['content_warnings', 'shared_state']) ? !status.get('hidden') : this.state.isExpanded;
+    const expanded = isExpanded || status.get('spoiler_text').length === 0;
 
     const handlers = {
       reply: this.handleHotkeyReply,
@@ -483,6 +481,7 @@ class Status extends ImmutablePureComponent {
       bookmark: this.handleHotkeyBookmark,
       toggleSensitive: this.handleHotkeyToggleSensitive,
       openMedia: this.handleHotkeyOpenMedia,
+      onTranslate: this.handleTranslate,
     };
 
     let prepend, rebloggedByText;
@@ -498,13 +497,13 @@ class Status extends ImmutablePureComponent {
           <div ref={this.handleRef} className='status focusable' tabIndex={unfocusable ? null : 0}>
             <span>{status.getIn(['account', 'display_name']) || status.getIn(['account', 'username'])}</span>
             {status.get('spoiler_text').length > 0 && (<span>{status.get('spoiler_text')}</span>)}
-            {isExpanded && <span>{status.get('content')}</span>}
+            {expanded && <span>{status.get('content')}</span>}
           </div>
         </HotKeys>
       );
     }
 
-    if (this.state.forceFilter === undefined ? matchedFilters : this.state.forceFilter) {
+    if (this.state.showDespiteFilter === undefined ? matchedFilters : this.state.showDespiteFilter) {
       const minHandlers = this.props.muted ? {} : {
         moveUp: this.handleHotkeyMoveUp,
         moveDown: this.handleHotkeyMoveDown,
@@ -552,7 +551,7 @@ class Status extends ImmutablePureComponent {
                 sensitive={status.get('sensitive')}
                 letterbox={settings.getIn(['media', 'letterbox'])}
                 fullwidth={!rootId && settings.getIn(['media', 'fullwidth'])}
-                hidden={!isExpanded}
+                hidden={!expanded}
                 onOpenMedia={this.handleOpenMedia}
                 cacheWidth={this.props.cacheMediaWidth}
                 defaultWidth={this.props.cachedMediaWidth}
@@ -609,7 +608,7 @@ class Status extends ImmutablePureComponent {
               sensitive={status.get('sensitive')}
               letterbox={settings.getIn(['media', 'letterbox'])}
               fullwidth={!rootId && settings.getIn(['media', 'fullwidth'])}
-              preventPlayback={!isExpanded}
+              preventPlayback={!expanded}
               onOpenVideo={this.handleOpenVideo}
               deployPictureInPicture={pictureInPicture.get('available') ? this.handleDeployPictureInPicture : undefined}
               visible={this.state.showMedia}
@@ -631,9 +630,7 @@ class Status extends ImmutablePureComponent {
     }
 
     if (status.get('poll')) {
-      const language = status.getIn(['translation', 'language']) || status.get('language');
-      contentMedia.push(<PollContainer pollId={status.get('poll')} status={status} lang={language} />);
-      contentMediaIcons.push('tasks');
+      mediaIcons.push('tasks');
     }
 
     //  Here we prepare extra data-* attributes for CSS selectors.
@@ -672,7 +669,6 @@ class Status extends ImmutablePureComponent {
     }
 
     const {statusContentProps, hashtagBar} = getHashtagBarForStatus(status);
-    contentMedia.push(hashtagBar);
 
     return (
       <HotKeys handlers={handlers} tabIndex={unfocusable ? null : -1}>
@@ -704,26 +700,35 @@ class Status extends ImmutablePureComponent {
                 </Permalink>
                 <StatusIcons
                   status={status}
-                  mediaIcons={contentMediaIcons.concat(extraMediaIcons)}
+                  mediaIcons={mediaIcons}
                   settings={settings.get('status_icons')}
                 />
               </header>
             )}
-            <StatusContent
-              status={status}
-              onClick={this.handleClick}
-              onTranslate={this.handleTranslate}
-              collapsible
-              media={contentMedia}
-              extraMedia={extraMedia}
-              mediaIcons={contentMediaIcons}
-              expanded={isExpanded}
-              onExpandedToggle={this.handleExpandedToggle}
-              onCollapsedToggle={this.handleCollapsedToggle}
-              tagLinks={settings.get('tag_misleading_links')}
-              rewriteMentions={settings.get('rewrite_mentions')}
-              {...statusContentProps}
-            />
+
+            {status.get('spoiler_text').length > 0 && <ContentWarning text={status.getIn(['translation', 'spoilerHtml']) || status.get('spoilerHtml')} expanded={expanded} onClick={this.handleExpandedToggle} icons={mediaIcons} />}
+
+            {expanded && (
+              <>
+                <StatusContent
+                  status={status}
+                  onClick={this.handleClick}
+                  onTranslate={this.handleTranslate}
+                  collapsible
+                  media={media}
+                  onCollapsedToggle={this.handleCollapsedToggle}
+                  tagLinks={settings.get('tag_misleading_links')}
+                  rewriteMentions={settings.get('rewrite_mentions')}
+                  {...statusContentProps}
+                />
+
+                {media}
+                {hashtagBar}
+              </>
+            )}
+
+            {/* This is a glitch-soc addition to have a placeholder */}
+            {!expanded && <MentionsPlaceholder status={status} />}
 
             <StatusActionBar
               status={status}
@@ -732,12 +737,6 @@ class Status extends ImmutablePureComponent {
               onFilter={matchedFilters ? this.handleFilterClick : null}
               {...other}
             />
-
-            {notification && (
-              <NotificationOverlayContainer
-                notification={notification}
-              />
-            )}
           </div>
         </div>
       </HotKeys>

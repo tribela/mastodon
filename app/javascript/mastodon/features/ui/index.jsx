@@ -14,7 +14,7 @@ import { HotKeys } from 'react-hotkeys';
 import { showAlert } from 'mastodon/actions/alerts';
 import { focusApp, unfocusApp, changeLayout } from 'mastodon/actions/app';
 import { synchronouslySubmitMarkers, submitMarkers, fetchMarkers } from 'mastodon/actions/markers';
-import { initializeNotifications } from 'mastodon/actions/notifications_migration';
+import { fetchNotifications } from 'mastodon/actions/notification_groups';
 import { INTRODUCTION_VERSION } from 'mastodon/actions/onboarding';
 import { HoverCardController } from 'mastodon/components/hover_card_controller';
 import { PictureInPicture } from 'mastodon/features/picture_in_picture';
@@ -128,6 +128,7 @@ const keyMap = {
   toggleHidden: 'x',
   toggleSensitive: 'h',
   openMedia: 'e',
+  onTranslate: 't',
   hiddenHappy: 'right down up right right down right right up up down down left right left right',
 };
 
@@ -421,7 +422,7 @@ class UI extends PureComponent {
     if (signedIn) {
       this.props.dispatch(fetchMarkers());
       this.props.dispatch(expandHomeTimeline());
-      this.props.dispatch(initializeNotifications());
+      this.props.dispatch(fetchNotifications());
       this.props.dispatch(fetchServerTranslationLanguages());
 
       setTimeout(() => this.props.dispatch(fetchServer()), 3000);
