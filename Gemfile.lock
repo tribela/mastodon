@@ -1,9 +1,9 @@
 GIT
-  remote: https://github.com/ClearlyClaire/webpush.git
-  revision: f14a4d52e201128b1b00245d11b6de80d6cfdcd9
-  ref: f14a4d52e201128b1b00245d11b6de80d6cfdcd9
+  remote: https://github.com/mastodon/webpush.git
+  revision: 9631ac63045cfabddacc69fc06e919b4c13eb913
+  ref: 9631ac63045cfabddacc69fc06e919b4c13eb913
   specs:
-    webpush (0.3.8)
+    webpush (1.1.0)
       hkdf (~> 0.2)
       jwt (~> 2.0)
 
@@ -555,7 +555,7 @@ GEM
       opentelemetry-api (~> 1.0)
     orm_adapter (0.5.0)
     ostruct (0.6.1)
-    ox (2.14.19)
+    ox (2.14.20)
       bigdecimal (>= 3.0)
     parallel (1.26.3)
     parser (3.3.6.0)
@@ -691,7 +691,7 @@ GEM
     rspec-expectations (3.13.3)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.13.0)
-    rspec-github (2.4.0)
+    rspec-github (3.0.0)
       rspec-core (~> 3.0)
     rspec-mocks (3.13.2)
       diff-lcs (>= 1.2.0, < 2.0)
@@ -1004,7 +1004,7 @@ DEPENDENCIES
   redis (~> 4.5)
   redis-namespace (~> 1.10)
   rqrcode (~> 2.2)
-  rspec-github (~> 2.4)
+  rspec-github (~> 3.0)
   rspec-rails (~> 7.0)
   rspec-sidekiq (~> 5.0)
   rubocop
