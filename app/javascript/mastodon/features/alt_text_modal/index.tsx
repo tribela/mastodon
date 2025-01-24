@@ -380,7 +380,7 @@ export const AltTextModal = forwardRef<ModalRef, Props & Partial<RestoreProps>>(
 
       fetchTesseract()
         .then(async ({ createWorker }) => {
-          const worker = await createWorker('eng', 1, {
+          const worker = await createWorker('eng+kor', 1, {
             workerPath: tesseractWorkerPath as string,
             corePath: tesseractCorePath as string,
             langPath: `${assetHost}/ocr/lang-data`,
