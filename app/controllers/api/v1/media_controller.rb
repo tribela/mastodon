@@ -3,8 +3,8 @@
 class Api::V1::MediaController < Api::BaseController
   before_action -> { doorkeeper_authorize! :write, :'write:media' }
   before_action :require_user!
-  before_action :set_media_attachment, except: [:create]
-  before_action :check_processing, except: [:create]
+  before_action :set_media_attachment, except: [:create, :destroy]
+  before_action :check_processing, except: [:create, :destroy]
 
   DEPRECATED_MIME_TYPES = MediaAttachment::VIDEO_MIME_TYPES + MediaAttachment::VIDEO_CONVERTIBLE_MIME_TYPES + ['image/gif']
 
@@ -30,6 +30,15 @@ class Api::V1::MediaController < Api::BaseController
   def update
     @media_attachment.update!(updateable_media_attachment_params)
     render json: @media_attachment, serializer: REST::MediaAttachmentSerializer, status: status_code_for_media_attachment
+  end
+
+  def destroy
+    @media_attachment = current_account.media_attachments.find(params[:id])
+
+    return render json: in_usage_error, status: 422 unless @media_attachment.status_id.nil?
+
+    @media_attachment.destroy
+    render_empty
   end
 
   private
@@ -63,6 +72,10 @@ class Api::V1::MediaController < Api::BaseController
   end
 
   def deprecated_error
-    { error: 'This endpoint has been deprecated for larger media. Please use the new media endpoint.' }
+    { error: 'This endpoint has been deprecated for larger media. Please use the new media endpoint' }
+  end
+
+  def in_usage_error
+    { error: 'Media attachment is currently used by a status' }
   end
 end
