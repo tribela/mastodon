@@ -11,8 +11,10 @@ $win95-tooltip-yellow: #ffffcc;
 $win95-blue: blue;
 $win95-cyan: #008080;
 
-$ui-base-lighter-color: $win95-dark-grey;
-$ui-highlight-color: $win95-window-header;
+@use 'mastodon/variables' as * with (
+  $ui-base-lighter-color: $win95-dark-grey,
+  $ui-highlight-color: $win95-window-header
+);
 
 @mixin win95-border-outset() {
   border-left: 2px solid #efefef;
