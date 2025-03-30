@@ -1,5 +1,6 @@
-@import 'fonts/qdon';
+@use 'fonts/qdon';
 
-@import 'qdon/variables';
-@import 'application';
-@import 'qdon/diff';
+@use 'qdon/variables';
+@use 'qdon/css_variables';
+@use 'application';
+@use 'qdon/diff';

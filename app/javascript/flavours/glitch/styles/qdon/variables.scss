@@ -1,14 +1,7 @@
-@use '../mastodon/functions' as *;
+@use '../functions' as *;
+@use 'styles/qdon/variables' as *;
 
-$skyblue: hsl(212deg, 100%, 80%);
-$dark-blue: hsl(212deg, 72%, 63%);
-$pink: hsl(304deg, 100%, 80%);
-$grey: #282c37;
-$dark-pink: darken($pink, 10%);
-
-$mention-color: $skyblue;
-
-@use '../mastodon/variables' with (
+@use '../variables' with (
   $ui-base-color: $grey,
   $ui-primary-color: $skyblue,
   $ui-secondary-color: $pink,

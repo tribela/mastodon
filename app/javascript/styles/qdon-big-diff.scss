@@ -95,4 +95,34 @@ body {
       font-size: 14px;
     }
   }
+
+  .sidebar ul a {
+    font-size: 16px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  .sidebar ul ul a {
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  .icon {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+.simple_form {
+  .btn {
+    font-size: 16px;
+  }
+
+  select {
+    font-size: 16px;
+  }
+
+  .input.with_label .label_input > label {
+    font-size: 16px;
+  }
 }

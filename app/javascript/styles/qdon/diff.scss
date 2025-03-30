@@ -1,15 +1,12 @@
+@use '../mastodon/variables' as *;
+@use 'variables' as qdon;
+
 // Colourise mention
 a.status-link {
-  color: $qdon-mention-color;
-}
-
-// Fix menu color on single column;
-.column-link--transparent {
-  color: rgba($primary-text-color, 0.9);
+  color: qdon.$mention-color;
 }
 
 html {
-  // scrollbar-color: $ui-secondary-color rgba($ui-base-color, 0.1);
   scrollbar-width: thin;
 }
 

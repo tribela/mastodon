@@ -1,6 +1,6 @@
-@import 'styles/fonts/qdon';
+@use 'styles/fonts/qdon';
 
-@import 'styles/qdon-light/variables';
-@import 'index';
-@import 'mastodon-light/diff';
-@import 'styles/qdon-light/diff';
+@use 'qdon-light/variables';
+@use 'qdon-light/css_variables';
+@use 'application';
+@use 'qdon-light/diff';

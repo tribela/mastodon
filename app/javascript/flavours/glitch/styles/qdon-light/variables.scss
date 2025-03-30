@@ -1,18 +1,11 @@
 @use 'sass:color';
-
-@use '../mastodon/functions' as * with (
+@use '../functions' as * with (
   $darken-multiplier: 1,
   $lighten-multiplier: -1
 );
+@use 'styles/qdon-light/variables' as *;
 
-$skyblue: hsl(212deg, 100%, 65%);
-$dark-blue: hsl(212deg, 100%, 50%);
-$pink: hsl(304deg, 100%, 80%);
-$grey: #282c37 !default;
-$dark-pink: darken($pink, 10%) !default;
-
-$mention-color: $skyblue !default;
-
+// From mastodon-light/variables
 $black: #000000; // Black
 $white: #ffffff; // White
 $blurple-500: #6364ff; // Brand purple
@@ -22,8 +15,9 @@ $grey-100: hsl(240deg, 51%, 90%); // Topaz
 $classic-base-color: hsl(240deg, 16%, 19%);
 $classic-secondary-color: hsl(255deg, 25%, 88%);
 $classic-highlight-color: $blurple-500;
+$mention-color: $skyblue;
 
-@use '../mastodon/variables' with (
+@use '../variables' with (
   $ui-primary-color: $skyblue,
   $ui-secondary-color: $pink,
   // $primary-text-color: #000,

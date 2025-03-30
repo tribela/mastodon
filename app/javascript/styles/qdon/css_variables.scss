@@ -1,0 +1,10 @@
+@use 'sass:color';
+@use '../mastodon/variables' as *;
+@use 'variables' as *;
+@use '../mastodon/functions' as *;
+
+body {
+  --rich-text-container-color: #181818;
+  --rich-text-text-color: #efefef;
+  --rich-text-decorations-color: hsla(212deg, 90%, 80%, 100%);
+}

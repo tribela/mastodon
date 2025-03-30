@@ -1,2 +1,21 @@
-@import '../mastodon-light/diff';
-@import '../qdon/diff';
+@use '../mastodon-light/diff';
+@use '../mastodon/variables' as *;
+@use 'variables' as qdon;
+
+// Colourise mention
+a.status-link {
+  color: qdon.$mention-color;
+}
+
+html {
+  scrollbar-width: thin;
+}
+
+.status__content__text,
+.e-content,
+.edit-indicator__content,
+.reply-indicator__content {
+  pre:has(> code) {
+    border: 1px solid $ui-base-color;
+  }
+}
