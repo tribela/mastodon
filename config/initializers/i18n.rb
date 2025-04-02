@@ -109,4 +109,10 @@ Rails.application.configure do
       :en
     end
   end
+
+  config.x.override_locale = begin
+    custom_override_locale = ENV['OVERRIDE_LOCALE']&.to_sym
+
+    custom_override_locale if Rails.configuration.i18n.available_locales.include?(custom_override_locale)
+  end
 end

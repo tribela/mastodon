@@ -43,7 +43,7 @@ class InstancePresenter < ActiveModelSerializers::Model
   end
 
   def languages
-    [ENV.fetch('OVERRIDE_LOCALE') { I18n.default_locale }]
+    [Rails.configuration.x.override_locale || I18n.default_locale]
   end
 
   def rules

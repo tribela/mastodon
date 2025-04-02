@@ -45,9 +45,11 @@ class FetchLinkCardService < BaseService
   def html
     return @html if defined?(@html)
 
+    locale = Rails.configuration.x.override_locale || I18n.default_locale
+
     headers = {
       'Accept' => 'text/html',
-      'Accept-Language' => "#{I18n.default_locale}, *;q=0.5",
+      'Accept-Language' => "#{locale}, *;q=0.5",
       'User-Agent' => "#{Mastodon::Version.user_agent} Bot",
     }
 
