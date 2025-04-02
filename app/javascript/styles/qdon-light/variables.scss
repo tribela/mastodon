@@ -9,9 +9,9 @@ $skyblue: hsl(212deg, 100%, 65%);
 $dark-blue: hsl(212deg, 100%, 50%);
 $pink: hsl(304deg, 100%, 80%);
 $grey: #282c37 !default;
-$dark-pink: darken($pink, 10%) !default;
+$dark-pink: color.adjust($pink, $lightness: -35%, $space: hsl) !default;
 
-$mention-color: $skyblue !default;
+$mention-color: $dark-pink !default;
 
 $black: #000000; // Black
 $white: #ffffff; // White

@@ -15,7 +15,6 @@ $grey-100: hsl(240deg, 51%, 90%); // Topaz
 $classic-base-color: hsl(240deg, 16%, 19%);
 $classic-secondary-color: hsl(255deg, 25%, 88%);
 $classic-highlight-color: $blurple-500;
-$mention-color: $skyblue;
 
 @use '../variables' with (
   $ui-primary-color: $skyblue,
