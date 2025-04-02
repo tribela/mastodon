@@ -1,4 +1,2 @@
-@import 'application';
-@import 'birdsite/single';
-@import 'birdsite/multi';
-@import 'birdsite/diff';
+@use 'application';
+@use 'birdsite/birdsite';
