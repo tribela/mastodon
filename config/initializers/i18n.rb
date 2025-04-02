@@ -115,4 +115,6 @@ Rails.application.configure do
 
     custom_override_locale if Rails.configuration.i18n.available_locales.include?(custom_override_locale)
   end
+
+  config.x.respect_user_locale = ENV['RESPECT_USER_LOCALE'] == 'true'
 end
