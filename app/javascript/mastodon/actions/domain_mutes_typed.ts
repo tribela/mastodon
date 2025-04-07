@@ -12,3 +12,9 @@ export const unmuteDomainSuccess = createAction<{
   domain: string;
   accounts: Account[];
 }>('domain_mutes/unmute/SUCCESS');
+
+export const excludeDomainHomeTimelineSuccess = createAction<{
+  domain: string;
+  excludeHomeTineline: boolean;
+  accounts: Account[];
+}>('domain_mutes/exclude_domain_home_timeline/SUCCESS');
