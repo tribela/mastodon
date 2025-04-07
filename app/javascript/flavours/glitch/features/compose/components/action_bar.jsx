@@ -47,7 +47,7 @@ export const ActionBar = () => {
       null,
       { text: intl.formatMessage(messages.mutes), to: '/mutes' },
       { text: intl.formatMessage(messages.blocks), to: '/blocks' },
-      { text: intl.formatMessage(messages.domain_blocks), to: '/domain_mutes' },
+      { text: intl.formatMessage(messages.domain_mutes), to: '/domain_mutes' },
       { text: intl.formatMessage(messages.domain_blocks), to: '/domain_blocks' },
       { text: intl.formatMessage(messages.filters), href: '/filters' },
       null,
