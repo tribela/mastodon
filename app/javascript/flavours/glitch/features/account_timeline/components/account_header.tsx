@@ -779,6 +779,17 @@ export const AccountHeader: React.FC<{
     );
   }
 
+  if (me !== account.id && relationship?.domain_muting) {
+    info.push(
+      <span key='domain_muted' className='relationship-tag'>
+        <FormattedMessage
+          id='account.domain_muted'
+          defaultMessage='Domain muted'
+        />
+      </span>,
+    );
+  }
+
   if (relationship?.requested || relationship?.following) {
     bellBtn = (
       <IconButton
