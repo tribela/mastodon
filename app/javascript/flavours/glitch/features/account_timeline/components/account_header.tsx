@@ -40,11 +40,11 @@ import {
 } from 'flavours/glitch/components/badge';
 import { Button } from 'flavours/glitch/components/button';
 import { CopyIconButton } from 'flavours/glitch/components/copy_icon_button';
+import { Dropdown } from 'flavours/glitch/components/dropdown_menu';
+import { FollowButton } from 'flavours/glitch/components/follow_button';
 import { FormattedDateWrapper } from 'flavours/glitch/components/formatted_date';
 import { Icon } from 'flavours/glitch/components/icon';
 import { IconButton } from 'flavours/glitch/components/icon_button';
-import { LoadingIndicator } from 'flavours/glitch/components/loading_indicator';
-import DropdownMenuContainer from 'flavours/glitch/containers/dropdown_menu_container';
 import { DomainPill } from 'flavours/glitch/features/account/components/domain_pill';
 import AccountNoteContainer from 'flavours/glitch/features/account/containers/account_note_container';
 import FollowRequestNoteContainer from 'flavours/glitch/features/account/containers/follow_request_note_container';
@@ -56,8 +56,7 @@ import {
   domain as localDomain,
 } from 'flavours/glitch/initial_state';
 import type { Account } from 'flavours/glitch/models/account';
-import type { DropdownMenu } from 'flavours/glitch/models/dropdown_menu';
-import type { Relationship } from 'flavours/glitch/models/relationship';
+import type { MenuItem } from 'flavours/glitch/models/dropdown_menu';
 import {
   PERMISSION_MANAGE_USERS,
   PERMISSION_MANAGE_FEDERATION,
@@ -199,20 +198,6 @@ const titleFromAccount = (account: Account) => {
   return `${prefix} (@${acct})`;
 };
 
-const messageForFollowButton = (relationship?: Relationship) => {
-  if (!relationship) return messages.follow;
-
-  if (relationship.get('requested')) {
-    return messages.cancel_follow_request;
-  } else if (relationship.get('following')) {
-    return messages.unfollow;
-  } else if (relationship.get('followed_by')) {
-    return messages.followBack;
-  } else {
-    return messages.follow;
-  }
-};
-
 const dateFormatOptions: Intl.DateTimeFormatOptions = {
   month: 'short',
   day: 'numeric',
@@ -234,20 +219,6 @@ export const AccountHeader: React.FC<{
   );
   const hidden = useAppSelector((state) => getAccountHidden(state, accountId));
   const handleLinkClick = useLinks();
-
-  const handleFollow = useCallback(() => {
-    if (!account) {
-      return;
-    }
-
-    if (relationship?.following || relationship?.requested) {
-      dispatch(
-        openModal({ modalType: 'CONFIRM_UNFOLLOW', modalProps: { account } }),
-      );
-    } else {
-      dispatch(followAccount(account.id));
-    }
-  }, [dispatch, account, relationship]);
 
   const handleBlock = useCallback(() => {
     if (!account) {
@@ -407,23 +378,6 @@ export const AccountHeader: React.FC<{
     );
   }, [dispatch, account]);
 
-  const handleInteractionModal = useCallback(() => {
-    if (!account) {
-      return;
-    }
-
-    dispatch(
-      openModal({
-        modalType: 'INTERACTION',
-        modalProps: {
-          type: 'follow',
-          accountId: account.id,
-          url: account.uri,
-        },
-      }),
-    );
-  }, [dispatch, account]);
-
   const handleOpenAvatar = useCallback(
     (e: React.MouseEvent) => {
       if (e.button !== 0 || e.ctrlKey || e.metaKey) {
@@ -458,10 +412,6 @@ export const AccountHeader: React.FC<{
       url: account.url,
     });
   }, [account]);
-
-  const handleEditProfile = useCallback(() => {
-    window.open('/settings/profile', '_blank');
-  }, []);
 
   const handleMouseEnter = useCallback(
     ({ currentTarget }: React.MouseEvent) => {
@@ -498,7 +448,7 @@ export const AccountHeader: React.FC<{
   const remoteDomain = isRemote ? account?.acct.split('@')[1] : null;
 
   const menu = useMemo(() => {
-    const arr: DropdownMenu = [];
+    const arr: MenuItem[] = [];
 
     if (!account) {
       return arr;
@@ -741,9 +691,12 @@ export const AccountHeader: React.FC<{
     return null;
   }
 
-  let actionBtn, bellBtn, lockedIcon, shareBtn;
+  let actionBtn: React.ReactNode,
+    bellBtn: React.ReactNode,
+    lockedIcon: React.ReactNode,
+    shareBtn: React.ReactNode;
 
-  const info = [];
+  const info: React.ReactNode[] = [];
 
   if (me !== account.id && relationship?.followed_by) {
     info.push(
@@ -831,43 +784,17 @@ export const AccountHeader: React.FC<{
     );
   }
 
-  if (me !== account.id) {
-    if (signedIn && !relationship) {
-      // Wait until the relationship is loaded
-      actionBtn = (
-        <Button disabled>
-          <LoadingIndicator />
-        </Button>
-      );
-    } else if (!relationship?.blocking) {
-      actionBtn = (
-        <Button
-          disabled={relationship?.blocked_by}
-          className={classNames({
-            'button--destructive':
-              relationship?.following || relationship?.requested,
-          })}
-          text={intl.formatMessage(messageForFollowButton(relationship))}
-          onClick={signedIn ? handleFollow : handleInteractionModal}
-        />
-      );
-    } else {
-      actionBtn = (
-        <Button
-          text={intl.formatMessage(messages.unblock, {
-            name: account.username,
-          })}
-          onClick={handleBlock}
-        />
-      );
-    }
-  } else {
+  if (relationship?.blocking) {
     actionBtn = (
       <Button
-        text={intl.formatMessage(messages.edit_profile)}
-        onClick={handleEditProfile}
+        text={intl.formatMessage(messages.unblock, {
+          name: account.username,
+        })}
+        onClick={handleBlock}
       />
     );
+  } else {
+    actionBtn = <FollowButton accountId={accountId} />;
   }
 
   if (account.moved && !relationship?.following) {
@@ -960,13 +887,11 @@ export const AccountHeader: React.FC<{
             <div className='account__header__tabs__buttons'>
               {!hidden && bellBtn}
               {!hidden && shareBtn}
-              <DropdownMenuContainer
+              <Dropdown
                 disabled={menu.length === 0}
                 items={menu}
                 icon='ellipsis-v'
                 iconComponent={MoreHorizIcon}
-                size={24}
-                direction='right'
               />
               {!hidden && actionBtn}
             </div>

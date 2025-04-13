@@ -14,7 +14,7 @@ import { Link } from 'react-router-dom';
 import { AnimatedNumber } from 'flavours/glitch/components/animated_number';
 import AttachmentList from 'flavours/glitch/components/attachment_list';
 import { ContentWarning } from 'flavours/glitch/components/content_warning';
-import EditedTimestamp from 'flavours/glitch/components/edited_timestamp';
+import { EditedTimestamp } from 'flavours/glitch/components/edited_timestamp';
 import { FilterWarning } from 'flavours/glitch/components/filter_warning';
 import { FormattedDateWrapper } from 'flavours/glitch/components/formatted_date';
 import type { StatusLike } from 'flavours/glitch/components/hashtag_bar';

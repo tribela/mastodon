@@ -2,6 +2,7 @@
   "about.fork_disclaimer": "Glitch-soc is free open source software forked from Mastodon.",
   "account.disclaimer_full": "Information below may reflect the user's profile incompletely.",
   "account.domain_muted": "Domain muted",
+  "account.featured_tags.title": "{name}'s featured hashtags",
   "account.follows": "Follows",
   "account.follows_you": "Follows you",
   "account.suspended_disclaimer_full": "This user has been suspended by a moderator.",
