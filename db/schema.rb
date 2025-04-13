@@ -1500,9 +1500,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_10_144908) do
   add_index "global_follow_recommendations", ["account_id"], name: "index_global_follow_recommendations_on_account_id", unique: true
 
   create_view "media_metrics", materialized: true, sql_definition: <<-SQL
-      SELECT t0.category,
-      (t0.file_size)::bigint AS file_size,
-      t0.local
+      SELECT category,
+      (file_size)::bigint AS file_size,
+      local
      FROM ( SELECT 'media_attachments'::text AS category,
               sum((COALESCE(media_attachments.file_file_size, 0) + COALESCE(media_attachments.thumbnail_file_size, 0))) AS file_size,
               (accounts.domain IS NULL) AS local
@@ -1538,16 +1538,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_10_144908) do
               true AS local
              FROM backups
           UNION ALL
-           SELECT 'imports'::text AS category,
-              sum(imports.data_file_size) AS file_size,
-              true AS local
-             FROM imports
-          UNION ALL
            SELECT 'settings'::text AS category,
               sum(site_uploads.file_file_size) AS file_size,
               true AS local
              FROM site_uploads) t0;
   SQL
-  add_index "media_metrics", ["category", "local"], name: "index_media_metrics_on_category_and_local", unique: true
-
 end
