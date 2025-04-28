@@ -17,5 +17,6 @@ html {
 .reply-indicator__content {
   pre:has(> code) {
     border: 1px solid $ui-base-color;
+    word-break: break-all;
   }
 }
