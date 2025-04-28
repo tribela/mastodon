@@ -4,4 +4,5 @@
 @use 'qdon-light/css_variables';
 @use 'application';
 @use 'mastodon-light/diff' as light;
-@use 'qdon-light/diff';
+@use 'qdon/diff';
+@use 'qdon-light/var_diff';
