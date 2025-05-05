@@ -119,7 +119,6 @@ const messages = defineMessages({
     id: 'account.disable_notifications',
     defaultMessage: 'Stop notifying me when @{name} posts',
   },
-  pins: { id: 'navigation_bar.pins', defaultMessage: 'Pinned posts' },
   preferences: {
     id: 'navigation_bar.preferences',
     defaultMessage: 'Preferences',
@@ -489,7 +488,6 @@ export const AccountHeader: React.FC<{
         text: intl.formatMessage(messages.preferences),
         href: '/settings/preferences',
       });
-      arr.push({ text: intl.formatMessage(messages.pins), to: '/pinned' });
       arr.push(null);
       arr.push({
         text: intl.formatMessage(messages.follow_requests),
