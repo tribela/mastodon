@@ -106,6 +106,8 @@ class CustomEmoji < ApplicationRecord
     return if image.blank? || !/image.*/.match?(image.content_type) || image.queued_for_write[:original].blank?
 
     width, height = FastImage.size(image.queued_for_write[:original].path)
+    return unless width.present? && height.present?
+
     ratio = width.to_f / height
 
     errors.add(:image, :invalid_image_ratio) if ratio >= 2 || ratio <= 0.5
