@@ -8,6 +8,7 @@
   - [pull]
   - [low_delivery]
   - [scheduler]
+  - [fasp]
 
 :scheduler:
   :listened_queues_only: true
