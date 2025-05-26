@@ -181,7 +181,7 @@ class Account < ApplicationRecord
            prefix: true,
            allow_nil: true
 
-  delegate :chosen_languages, to: :user, prefix: false, allow_nil: true
+  # delegate :chosen_languages, to: :user, prefix: false, allow_nil: true
 
   update_index('accounts', :self)
 
