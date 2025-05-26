@@ -1,5 +1,5 @@
 @use '../functions' as *;
-@use 'styles/qdon/variables' as *;
+@use '@/styles/qdon/variables' as *;
 
 @use '../variables' with (
   $ui-base-color: $grey,
