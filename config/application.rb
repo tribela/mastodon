@@ -24,7 +24,6 @@ Bundler.require(*Rails.groups)
 
 require_relative '../lib/exceptions'
 require_relative '../lib/sanitize_ext/sanitize_config'
-require_relative '../lib/redis/namespace_extensions'
 require_relative '../lib/paperclip/url_generator_extensions'
 require_relative '../lib/paperclip/attachment_extensions'
 
@@ -46,8 +45,6 @@ require_relative '../lib/chewy/settings_extensions'
 require_relative '../lib/chewy/index_extensions'
 require_relative '../lib/chewy/strategy/mastodon'
 require_relative '../lib/chewy/strategy/bypass_with_warning'
-require_relative '../lib/webpacker/manifest_extensions'
-require_relative '../lib/webpacker/helper_extensions'
 require_relative '../lib/rails/engine_extensions'
 require_relative '../lib/action_dispatch/remote_ip_extensions'
 require_relative '../lib/stoplight/redis_data_store_extensions'
@@ -55,6 +52,7 @@ require_relative '../lib/active_record/database_tasks_extensions'
 require_relative '../lib/active_record/batches'
 require_relative '../lib/simple_navigation/item_extensions'
 require_relative '../lib/prometheus'
+require_relative '../lib/vite_ruby/sri_extensions'
 
 Bundler.require(:pam_authentication) if ENV['PAM_ENABLED'] == 'true'
 
@@ -97,7 +95,7 @@ module Mastodon
       require 'mastodon/redis_configuration'
       ::REDIS_CONFIGURATION = Mastodon::RedisConfiguration.new
 
-      config.x.use_vips = ENV['MASTODON_USE_LIBVIPS'] == 'true'
+      config.x.use_vips = ENV['MASTODON_USE_LIBVIPS'] != 'false'
 
       if config.x.use_vips
         require_relative '../lib/paperclip/vips_lazy_thumbnail'

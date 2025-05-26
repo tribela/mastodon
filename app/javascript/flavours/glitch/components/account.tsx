@@ -10,9 +10,12 @@ import {
   unblockAccount,
   muteAccount,
   unmuteAccount,
+  followAccountSuccess,
 } from 'flavours/glitch/actions/accounts';
+import { showAlertForError } from 'flavours/glitch/actions/alerts';
 import { openModal } from 'flavours/glitch/actions/modal';
 import { initMuteModal } from 'flavours/glitch/actions/mutes';
+import { apiFollowAccount } from 'flavours/glitch/api/accounts';
 import { Avatar } from 'flavours/glitch/components/avatar';
 import { Button } from 'flavours/glitch/components/button';
 import { FollowersCounter } from 'flavours/glitch/components/counters';
@@ -23,6 +26,8 @@ import { RelativeTimestamp } from 'flavours/glitch/components/relative_timestamp
 import { ShortNumber } from 'flavours/glitch/components/short_number';
 import { Skeleton } from 'flavours/glitch/components/skeleton';
 import { VerifiedBadge } from 'flavours/glitch/components/verified_badge';
+import { useIdentity } from 'flavours/glitch/identity_context';
+import { me } from 'flavours/glitch/initial_state';
 import type { MenuItem } from 'flavours/glitch/models/dropdown_menu';
 import { useAppSelector, useAppDispatch } from 'flavours/glitch/store';
 
@@ -67,10 +72,12 @@ export const Account: React.FC<{
   withBio?: boolean;
 }> = ({ id, size = 46, hidden, minimal, defaultAction, withBio }) => {
   const intl = useIntl();
+  const { signedIn } = useIdentity();
   const account = useAppSelector((state) => state.accounts.get(id));
   const relationship = useAppSelector((state) => state.relationships.get(id));
   const dispatch = useAppDispatch();
   const accountUrl = account?.url;
+  const isRemote = account?.acct !== account?.username;
 
   const handleBlock = useCallback(() => {
     if (relationship?.blocking) {
@@ -113,37 +120,74 @@ export const Account: React.FC<{
         },
       ];
     } else if (defaultAction !== 'block') {
-      const handleAddToLists = () => {
-        dispatch(
-          openModal({
-            modalType: 'LIST_ADDER',
-            modalProps: {
-              accountId: id,
-            },
-          }),
-        );
-      };
+      arr = [];
 
-      arr = [
-        {
+      if (isRemote && accountUrl) {
+        arr.push({
+          text: intl.formatMessage(messages.openOriginalPage),
+          href: accountUrl,
+        });
+      }
+
+      if (signedIn) {
+        const handleAddToLists = () => {
+          const openAddToListModal = () => {
+            dispatch(
+              openModal({
+                modalType: 'LIST_ADDER',
+                modalProps: {
+                  accountId: id,
+                },
+              }),
+            );
+          };
+          if (relationship?.following || relationship?.requested || id === me) {
+            openAddToListModal();
+          } else {
+            dispatch(
+              openModal({
+                modalType: 'CONFIRM_FOLLOW_TO_LIST',
+                modalProps: {
+                  accountId: id,
+                  onConfirm: () => {
+                    apiFollowAccount(id)
+                      .then((relationship) => {
+                        dispatch(
+                          followAccountSuccess({
+                            relationship,
+                            alreadyFollowing: false,
+                          }),
+                        );
+                        openAddToListModal();
+                      })
+                      .catch((err: unknown) => {
+                        dispatch(showAlertForError(err));
+                      });
+                  },
+                },
+              }),
+            );
+          }
+        };
+
+        arr.push({
           text: intl.formatMessage(messages.addToLists),
           action: handleAddToLists,
-        },
-      ];
-
-      if (accountUrl) {
-        arr.unshift(
-          {
-            text: intl.formatMessage(messages.openOriginalPage),
-            href: accountUrl,
-          },
-          null,
-        );
+        });
       }
     }
 
     return arr;
-  }, [dispatch, intl, id, accountUrl, relationship, defaultAction]);
+  }, [
+    dispatch,
+    intl,
+    id,
+    accountUrl,
+    relationship,
+    defaultAction,
+    isRemote,
+    signedIn,
+  ]);
 
   if (hidden) {
     return (

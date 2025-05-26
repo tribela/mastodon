@@ -149,6 +149,7 @@ class MediaAttachment < ApplicationRecord
         output: {
           'loglevel' => 'fatal',
           'map_metadata' => '-1',
+          'movflags' => 'faststart', # Move metadata to start of file so playback can begin before download finishes
           'c:v' => 'copy',
           'c:a' => 'copy',
         }.freeze,

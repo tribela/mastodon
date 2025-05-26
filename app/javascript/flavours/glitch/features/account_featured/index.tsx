@@ -14,7 +14,7 @@ import { Account } from 'flavours/glitch/components/account';
 import { ColumnBackButton } from 'flavours/glitch/components/column_back_button';
 import { LoadingIndicator } from 'flavours/glitch/components/loading_indicator';
 import { RemoteHint } from 'flavours/glitch/components/remote_hint';
-import StatusContainer from 'flavours/glitch/containers/status_container';
+import { StatusQuoteManager } from 'flavours/glitch/components/status_quoted';
 import { AccountHeader } from 'flavours/glitch/features/account_timeline/components/account_header';
 import BundleColumnError from 'flavours/glitch/features/ui/components/bundle_column_error';
 import Column from 'flavours/glitch/features/ui/components/column';
@@ -142,9 +142,8 @@ const AccountFeatured: React.FC<{ multiColumn: boolean }> = ({
               />
             </h4>
             {featuredStatusIds.map((statusId) => (
-              <StatusContainer
+              <StatusQuoteManager
                 key={`f-${statusId}`}
-                // @ts-expect-error inferred props are wrong
                 id={statusId}
                 contextType='account'
               />
