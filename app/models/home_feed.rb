@@ -11,6 +11,14 @@ class HomeFeed < Feed
     redis.exists?("account:#{@account.id}:regeneration")
   end
 
+  def regeneration_in_progress!
+    redis.set("account:#{@account.id}:regeneration", true, nx: true, ex: 1.day.seconds)
+  end
+
+  def regeneration_finished!
+    redis.del("account:#{@account.id}:regeneration")
+  end
+
   def get(limit, max_id = nil, since_id = nil, min_id = nil)
     limit    = limit.to_i
     max_id   = max_id.to_i if max_id.present?
