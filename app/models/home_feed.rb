@@ -1,9 +1,8 @@
 # frozen_string_literal: true
 
 class HomeFeed < Feed
-  def initialize(account, force: false)
+  def initialize(account)
     @account = account
-    @force = force
     super(:home, account.id)
   end
 
@@ -50,7 +49,7 @@ class HomeFeed < Feed
 
   def from_database(limit, max_id, since_id, min_id)
     # return if redis feed is not full
-    return [] if !@force && FeedManager.instance.timeline_size(@type, @id) * 2 < FeedManager::MAX_ITEMS
+    return [] if FeedManager.instance.timeline_size(@type, @id) * 2 < FeedManager::MAX_ITEMS
 
     tag_followings = TagFollow.where(account: @account).select(:tag_id)
     scope = Status.where(account: @account.following)

@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe HomeFeed do
-  subject { described_class.new(account, force: true) }
+  subject { described_class.new(account) }
 
   let(:account) { Fabricate(:account) }
   let(:followed) { Fabricate(:account) }
@@ -28,6 +28,7 @@ RSpec.describe HomeFeed do
 
     context 'when feed is generated' do
       before do
+        stub_const 'FeedManager::MAX_ITEMS', 7
         FeedManager.instance.populate_home(account)
       end
 
@@ -50,6 +51,7 @@ RSpec.describe HomeFeed do
 
     context 'when feed is only partial', :partial do
       before do
+        stub_const 'FeedManager::MAX_ITEMS', 5
         FeedManager.instance.populate_home(account)
       end
 
@@ -74,6 +76,7 @@ RSpec.describe HomeFeed do
 
     context 'when feed is being generated' do
       before do
+        stub_const 'FeedManager::MAX_ITEMS', 0
         redis.set("account:#{account.id}:regeneration", true)
       end
 
