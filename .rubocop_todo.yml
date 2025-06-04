@@ -27,10 +27,6 @@ Metrics/CyclomaticComplexity:
 Metrics/PerceivedComplexity:
   Max: 27
 
-Rails/OutputSafety:
-  Exclude:
-    - 'config/initializers/simple_form.rb'
-
 # This cop supports safe autocorrection (--autocorrect).
 # Configuration parameters: AllowedVars.
 Style/FetchEnvVar:
@@ -38,15 +34,6 @@ Style/FetchEnvVar:
     - 'config/initializers/2_limited_federation_mode.rb'
     - 'config/initializers/paperclip.rb'
     - 'lib/tasks/repo.rake'
-
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle, MaxUnannotatedPlaceholdersAllowed, Mode, AllowedMethods, AllowedPatterns.
-# SupportedStyles: annotated, template, unannotated
-# AllowedMethods: redirect
-Style/FormatStringToken:
-  Exclude:
-    - 'config/initializers/devise.rb'
-    - 'lib/paperclip/color_extractor.rb'
 
 # This cop supports safe autocorrection (--autocorrect).
 # Configuration parameters: MinBodyLength, AllowConsecutiveConditionals.
