@@ -9,6 +9,7 @@ class Admin::SystemCheck::SidekiqProcessCheck < Admin::SystemCheck::BaseCheck
     scheduler
     ingress
     low_delivery
+    fasp
   ).freeze
 
   def skip?

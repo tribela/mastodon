@@ -11,6 +11,8 @@ import {
   muteAccount,
   unmuteAccount,
   followAccountSuccess,
+  unpinAccount,
+  pinAccount,
 } from 'flavours/glitch/actions/accounts';
 import { showAlertForError } from 'flavours/glitch/actions/alerts';
 import { openModal } from 'flavours/glitch/actions/modal';
@@ -63,14 +65,23 @@ const messages = defineMessages({
   },
 });
 
-export const Account: React.FC<{
+interface AccountProps {
   size?: number;
   id: string;
   hidden?: boolean;
   minimal?: boolean;
   defaultAction?: 'block' | 'mute';
   withBio?: boolean;
-}> = ({ id, size = 46, hidden, minimal, defaultAction, withBio }) => {
+}
+
+export const Account: React.FC<AccountProps> = ({
+  id,
+  size = 46,
+  hidden,
+  minimal,
+  defaultAction,
+  withBio,
+}) => {
   const intl = useIntl();
   const { signedIn } = useIdentity();
   const account = useAppSelector((state) => state.accounts.get(id));
@@ -120,8 +131,6 @@ export const Account: React.FC<{
         },
       ];
     } else if (defaultAction !== 'block') {
-      arr = [];
-
       if (isRemote && accountUrl) {
         arr.push({
           text: intl.formatMessage(messages.openOriginalPage),
@@ -174,6 +183,25 @@ export const Account: React.FC<{
           text: intl.formatMessage(messages.addToLists),
           action: handleAddToLists,
         });
+
+        if (id !== me && (relationship?.following || relationship?.requested)) {
+          const handleEndorseToggle = () => {
+            if (relationship.endorsed) {
+              dispatch(unpinAccount(id));
+            } else {
+              dispatch(pinAccount(id));
+            }
+          };
+          arr.push({
+            text: intl.formatMessage(
+              // Defined in features/account_timeline/components/account_header.tsx
+              relationship.endorsed
+                ? { id: 'account.unendorse' }
+                : { id: 'account.endorse' },
+            ),
+            action: handleEndorseToggle,
+          });
+        }
       }
     }
 
