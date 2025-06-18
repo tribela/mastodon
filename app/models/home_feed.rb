@@ -6,18 +6,6 @@ class HomeFeed < Feed
     super(:home, account.id)
   end
 
-  def regenerating?
-    redis.exists?("account:#{@account.id}:regeneration")
-  end
-
-  def regeneration_in_progress!
-    redis.set("account:#{@account.id}:regeneration", true, nx: true, ex: 1.day.seconds)
-  end
-
-  def regeneration_finished!
-    redis.del("account:#{@account.id}:regeneration")
-  end
-
   def get(limit, max_id = nil, since_id = nil, min_id = nil)
     limit    = limit.to_i
     max_id   = max_id.to_i if max_id.present?
@@ -43,6 +31,28 @@ class HomeFeed < Feed
       max_id = statuses.last.id unless statuses.empty?
       statuses + from_database(remaining_limit, max_id, since_id, min_id)
     end
+  end
+
+  def async_refresh
+    @async_refresh ||= AsyncRefresh.new(redis_regeneration_key)
+  end
+
+  def regenerating?
+    async_refresh.running?
+  rescue Redis::CommandError
+    retry if upgrade_redis_key!
+  end
+
+  def regeneration_in_progress!
+    @async_refresh = AsyncRefresh.create(redis_regeneration_key)
+  rescue Redis::CommandError
+    upgrade_redis_key!
+  end
+
+  def regeneration_finished!
+    async_refresh.finish!
+  rescue Redis::CommandError
+    retry if upgrade_redis_key!
   end
 
   protected
@@ -73,5 +83,17 @@ class HomeFeed < Feed
 
   def fetch_min_redis_id
     redis.zrangebyscore(key, '(0', '(+inf', limit: [0, 1]).first&.to_i
+  end
+
+  def redis_regeneration_key
+    @redis_regeneration_key = "account:#{@account.id}:regeneration"
+  end
+
+  def upgrade_redis_key!
+    if redis.type(redis_regeneration_key) == 'string'
+      redis.del(redis_regeneration_key)
+      regeneration_in_progress!
+      true
+    end
   end
 end

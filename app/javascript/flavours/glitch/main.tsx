@@ -1,8 +1,10 @@
 import { createRoot } from 'react-dom/client';
 
+import { Globals } from '@react-spring/web';
+
 import { setupBrowserNotifications } from 'flavours/glitch/actions/notifications';
 import Mastodon from 'flavours/glitch/containers/mastodon';
-import { me } from 'flavours/glitch/initial_state';
+import { me, reduceMotion } from 'flavours/glitch/initial_state';
 import * as perf from 'flavours/glitch/performance';
 import ready from 'flavours/glitch/ready';
 import { store } from 'flavours/glitch/store';
@@ -20,6 +22,12 @@ function main() {
     const props = JSON.parse(
       mountNode.getAttribute('data-props') ?? '{}',
     ) as Record<string, unknown>;
+
+    if (reduceMotion) {
+      Globals.assign({
+        skipAnimation: true,
+      });
+    }
 
     const root = createRoot(mountNode);
     root.render(<Mastodon {...props} />);

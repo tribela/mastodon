@@ -13,7 +13,7 @@ import StarIcon from '@/material-icons/400-24px/star-fill.svg?react';
 import VisibilityOffIcon from '@/material-icons/400-24px/visibility_off.svg?react';
 import VolumeOffIcon from '@/material-icons/400-24px/volume_off.svg?react';
 import Column from 'flavours/glitch/features/ui/components/column';
-import ColumnLink from 'flavours/glitch/features/ui/components/column_link';
+import { ColumnLink } from 'flavours/glitch/features/ui/components/column_link';
 import ColumnSubheading from 'flavours/glitch/features/ui/components/column_subheading';
 import { identityContextPropShape, withIdentity } from 'flavours/glitch/identity_context';
 

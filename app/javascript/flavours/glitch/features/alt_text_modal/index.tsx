@@ -27,7 +27,7 @@ import { Audio } from 'flavours/glitch/features/audio';
 import { CharacterCounter } from 'flavours/glitch/features/compose/components/character_counter';
 import { Tesseract as fetchTesseract } from 'flavours/glitch/features/ui/util/async-components';
 import { Video, getPointerPosition } from 'flavours/glitch/features/video';
-import { me, reduceMotion } from 'flavours/glitch/initial_state';
+import { me } from 'flavours/glitch/initial_state';
 import type { MediaAttachment } from 'flavours/glitch/models/media_attachment';
 import { useAppSelector, useAppDispatch } from 'flavours/glitch/store';
 import { assetHost } from 'flavours/glitch/utils/config';
@@ -110,7 +110,7 @@ const Preview: React.FC<{
       left: `${x * 100}%`,
       top: `${y * 100}%`,
     },
-    immediate: reduceMotion || draggingRef.current,
+    immediate: draggingRef.current,
   });
   const media = useAppSelector((state) =>
     (

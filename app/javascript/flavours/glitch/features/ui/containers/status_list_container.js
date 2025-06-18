@@ -51,7 +51,7 @@ const makeGetStatusIds = (pending = false) => createSelector([
     }
 
     const searchIndex = statusForId.get('reblog') ? statuses.getIn([statusForId.get('reblog'), 'search_index']) : statusForId.get('search_index');
-    if (regex && !regex.test(searchIndex)) {
+    if (regex && regex.test(searchIndex)) {
       return false;
     }
 
