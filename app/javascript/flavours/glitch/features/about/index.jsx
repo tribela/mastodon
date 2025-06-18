@@ -14,6 +14,8 @@ import Column from 'flavours/glitch/components/column';
 import { ServerHeroImage } from 'flavours/glitch/components/server_hero_image';
 import { Skeleton } from 'flavours/glitch/components/skeleton';
 import { LinkFooter} from 'flavours/glitch/features/ui/components/link_footer';
+import { showAlert } from 'flavours/glitch/actions/alerts';
+import { changeLocalSetting } from 'flavours/glitch/actions/local_settings';
 
 import { Section } from './components/section';
 import { RulesSection } from './components/rules';
@@ -72,6 +74,23 @@ class About extends PureComponent {
     const { dispatch } = this.props;
     dispatch(fetchDomainBlocks());
   };
+
+  handleUnlockTouch = (() => {
+    let aboutTouchTimestamps = [];
+    const { dispatch } = this.props;
+
+    const handler = () => {
+      const timestamp = +new Date();
+      aboutTouchTimestamps.push(timestamp);
+      aboutTouchTimestamps = aboutTouchTimestamps.slice(-10);
+      if (aboutTouchTimestamps.length === 10 && timestamp - aboutTouchTimestamps[0] <= 5000) {
+        dispatch(changeLocalSetting(['unlock_hidden_feature'], true));
+        dispatch(showAlert({title: 'Qdon', message: 'Unlocked hidden feature!'}));
+        aboutTouchTimestamps = [];
+      }
+    }
+    return handler;
+  })();
 
   render () {
     const { multiColumn, intl, server, extendedDescription, domainBlocks, locale } = this.props;
@@ -158,7 +177,7 @@ class About extends PureComponent {
 
           <LinkFooter />
 
-          <div className='about__footer'>
+          <div className='about__footer' onTouchStart={this.handleUnlockTouch}>
             <p><FormattedMessage id='about.fork_disclaimer' defaultMessage='Glitch-soc is free open source software forked from Mastodon.' /></p>
             <p><FormattedMessage id='about.disclaimer' defaultMessage='Mastodon is free, open-source software, and a trademark of Mastodon gGmbH.' /></p>
           </div>
