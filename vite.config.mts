@@ -48,6 +48,8 @@ export const config: UserConfigFnPromise = async ({ mode, command }) => {
         if (relativePath.startsWith('fonts/')) {
           return false;
         }
+
+        return undefined;
       },
       commonjsOptions: { transformMixedEsModules: true },
       chunkSizeWarningLimit: 1 * 1024 * 1024, // 1MB
