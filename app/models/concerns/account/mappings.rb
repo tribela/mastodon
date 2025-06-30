@@ -82,6 +82,13 @@ module Account::Mappings
       )
     end
 
+    def domain_muting_map_by_domain(target_domains, account_id)
+      build_mapping(
+        AccountDomainMute.where(account_id: account_id, domain: target_domains),
+        :domain
+      )
+    end
+
     private
 
     def build_mapping(query, field)
@@ -103,6 +110,7 @@ module Account::Mappings
       blocking: Account.blocking_map(account_ids, id),
       muting: Account.muting_map(account_ids, id),
       domain_blocking_by_domain: Account.domain_blocking_map_by_domain(domains, id),
+      domain_muting_by_domain: Account.domain_muting_map_by_domain(domains, id),
     })
   end
 end
