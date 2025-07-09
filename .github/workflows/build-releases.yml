@@ -20,7 +20,7 @@ jobs:
         ghcr.io/${{ github.repository_owner }}/mastodon
         qdon/glitch
       # Do not use cache when building releases, so apt update is always ran and the release always contain the latest packages
-      cache: false
+      cache: ${{ github.ref == 'refs/heads/beta' }}
       # Only tag with latest when ran against the latest stable branch
       # This needs to be updated after each minor version release
       flavor: |
@@ -38,7 +38,7 @@ jobs:
         ghcr.io/${{ github.repository_owner }}/mastodon-streaming
         qdon/glitch-streaming
       # Do not use cache when building releases, so apt update is always ran and the release always contain the latest packages
-      cache: false
+      cache: ${{ github.ref == 'refs/heads/beta' }}
       # Only tag with latest when ran against the latest stable branch
       # This needs to be updated after each minor version release
       flavor: |
