@@ -99,5 +99,5 @@ app/javascript/flavours/glitch/styles/reset.scss
 # Ignore win95 theme
 app/javascript/styles/win95.scss
 
-# Ignore Birdsite theme
-app/javascript/styles/birdsite/*.scss
+# Ignore Tangerine theme
+app/javascript/styles/tangerine/*.scss
