@@ -28,6 +28,8 @@ class CustomEmoji < ApplicationRecord
   LIMIT       = [LOCAL_LIMIT, (ENV['MAX_REMOTE_EMOJI_SIZE'] || 256.kilobytes).to_i].max
   MINIMUM_SHORTCODE_SIZE = 2
 
+  MAX_EMOJI_RATIO = ENV['MAX_EMOJI_RATIO']&.to_f
+
   SHORTCODE_RE_FRAGMENT = '[a-zA-Z0-9_]{2,}'
 
   SCAN_RE = /(?<=[^[:alnum:]:]|\n|^)
@@ -49,7 +51,7 @@ class CustomEmoji < ApplicationRecord
   validates_attachment_size :image, less_than: LIMIT, unless: :local?
   validates_attachment_size :image, less_than: LOCAL_LIMIT, if: :local?
   validates :shortcode, uniqueness: { scope: :domain }, format: { with: SHORTCODE_ONLY_RE }, length: { minimum: MINIMUM_SHORTCODE_SIZE }
-  validate :check_image_ratio
+  validate :check_image_ratio if MAX_EMOJI_RATIO.present?
 
   scope :local, -> { where(domain: nil) }
   scope :remote, -> { where.not(domain: nil) }
@@ -104,12 +106,13 @@ class CustomEmoji < ApplicationRecord
 
   def check_image_ratio
     return if image.blank? || !/image.*/.match?(image.content_type) || image.queued_for_write[:original].blank?
+    return if MAX_EMOJI_RATIO.nil? || MAX_EMOJI_RATIO < 1
 
     width, height = FastImage.size(image.queued_for_write[:original].path)
     return unless width.present? && height.present?
 
     ratio = width.to_f / height
 
-    errors.add(:image, :invalid_image_ratio) if ratio >= 2 || ratio <= 0.5
+    errors.add(:image, :invalid_image_ratio) if ratio > MAX_EMOJI_RATIO || ratio < (1.0 / MAX_EMOJI_RATIO)
   end
 end
