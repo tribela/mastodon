@@ -10,7 +10,6 @@ import { connect } from 'react-redux';
 
 import Favico from 'favico.js';
 import { debounce } from 'lodash';
-import { HotKeys } from 'react-hotkeys';
 
 import { showAlert } from 'flavours/glitch/actions/alerts';
 import { focusApp, unfocusApp, changeLayout } from 'flavours/glitch/actions/app';
@@ -19,6 +18,7 @@ import { synchronouslySubmitMarkers, submitMarkers, fetchMarkers } from 'flavour
 import { fetchNotifications } from 'flavours/glitch/actions/notification_groups';
 import { INTRODUCTION_VERSION } from 'flavours/glitch/actions/onboarding';
 import { AlertsController } from 'flavours/glitch/components/alerts_controller';
+import { Hotkeys } from 'flavours/glitch/components/hotkeys';
 import { HoverCardController } from 'flavours/glitch/components/hover_card_controller';
 import { Permalink } from 'flavours/glitch/components/permalink';
 import { PictureInPicture } from 'flavours/glitch/features/picture_in_picture';
@@ -108,43 +108,6 @@ const mapStateToProps = state => ({
   newAccount: !state.getIn(['accounts', me, 'note']) && !state.getIn(['accounts', me, 'bot']) && state.getIn(['accounts', me, 'following_count'], 0) === 0 && state.getIn(['accounts', me, 'statuses_count'], 0) === 0,
   username: state.getIn(['accounts', me, 'username']),
 });
-
-const keyMap = {
-  help: '?',
-  new: 'n',
-  search: ['s', '/'],
-  forceNew: 'option+n',
-  toggleComposeSpoilers: 'option+x',
-  focusColumn: ['1', '2', '3', '4', '5', '6', '7', '8', '9'],
-  reply: 'r',
-  favourite: 'f',
-  boost: 'b',
-  mention: 'm',
-  open: ['enter', 'o'],
-  openProfile: 'p',
-  moveDown: ['down', 'j'],
-  moveUp: ['up', 'k'],
-  back: 'backspace',
-  goToHome: 'g h',
-  goToNotifications: 'g n',
-  goToLocal: 'g l',
-  goToFederated: 'g t',
-  goToDirect: 'g d',
-  goToStart: 'g s',
-  goToFavourites: 'g f',
-  goToPinned: 'g p',
-  goToProfile: 'g u',
-  goToBlocked: 'g b',
-  goToMuted: 'g m',
-  goToRequests: 'g r',
-  toggleHidden: 'x',
-  bookmark: 'd',
-  toggleSensitive: 'h',
-  openMedia: 'e',
-  onTranslate: 't',
-  hiddenHappy: 'right down up right right down right right up up down down left right left right',
-  konamiCommand: 'up up down down left right left right b a enter',
-};
 
 class SwitchingColumnsArea extends PureComponent {
   static propTypes = {
@@ -479,10 +442,6 @@ class UI extends PureComponent {
       setTimeout(() => this.props.dispatch(fetchServer()), 3000);
     }
 
-    this.hotkeys.__mousetrap__.stopCallback = (e, element) => {
-      return ['TEXTAREA', 'SELECT', 'INPUT'].includes(element.tagName);
-    };
-
     if (typeof document.hidden !== 'undefined') { // Opera 12.10 and Firefox 18 and later support
       this.visibilityHiddenProp = 'hidden';
       this.visibilityChange = 'visibilitychange';
@@ -592,10 +551,6 @@ class UI extends PureComponent {
     }
   };
 
-  setHotkeysRef = c => {
-    this.hotkeys = c;
-  };
-
   handleHotkeyToggleHelp = () => {
     if (this.props.location.pathname === '/keyboard-shortcuts') {
       this.props.history.goBack();
@@ -684,11 +639,11 @@ class UI extends PureComponent {
       goToMuted: this.handleHotkeyGoToMuted,
       goToRequests: this.handleHotkeyGoToRequests,
       hiddenHappy: this.handleHiddenCommand,
-      konamiCommand: this.handleKonamiCommand,
+      cheat: this.handleKonamiCommand
     };
 
     return (
-      <HotKeys keyMap={keyMap} handlers={handlers} ref={this.setHotkeysRef} attach={window} focused>
+      <Hotkeys global handlers={handlers}>
         <div className={className} ref={this.setRef}>
           {moved && (<div className='flash-message alert'>
             <FormattedMessage
@@ -715,7 +670,7 @@ class UI extends PureComponent {
           <ModalContainer />
           <UploadArea active={draggingOver} onClose={this.closeUploadModal} />
         </div>
-      </HotKeys>
+      </Hotkeys>
     );
   }
 
