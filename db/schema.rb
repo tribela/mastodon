@@ -1250,6 +1250,17 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_21_055219) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "username_blocks", force: :cascade do |t|
+    t.string "username", null: false
+    t.string "normalized_username", null: false
+    t.boolean "exact", default: false, null: false
+    t.boolean "allow_with_approval", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index "lower((username)::text)", name: "index_username_blocks_on_username_lower_btree", unique: true
+    t.index ["normalized_username"], name: "index_username_blocks_on_normalized_username"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.datetime "created_at", precision: nil, null: false
