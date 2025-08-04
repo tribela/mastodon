@@ -4,7 +4,7 @@
   font-weight: 100;
   font-display: swap;
   src:
-    local('Noto Sans CJK KR'),
+    local('Noto Sans CJK KR Thin'),
     url('@/fonts/noto-sans-kr/NotoSansKR-Thin.woff2?no-inline') format('woff2');
 }
 @font-face {
@@ -13,7 +13,7 @@
   font-weight: 300;
   font-display: swap;
   src:
-    local('Noto Sans CJK KR'),
+    local('Noto Sans CJK KR Light'),
     url('@/fonts/noto-sans-kr/NotoSansKR-Light.woff2?no-inline') format('woff2');
 }
 @font-face {
@@ -32,7 +32,7 @@
   font-weight: 500;
   font-display: swap;
   src:
-    local('Noto Sans CJK KR'),
+    local('Noto Sans CJK KR Medium'),
     url('@/fonts/noto-sans-kr/NotoSansKR-Medium.woff2?no-inline')
       format('woff2');
 }
@@ -42,7 +42,7 @@
   font-weight: 700;
   font-display: swap;
   src:
-    local('Noto Sans CJK KR'),
+    local('Noto Sans CJK KR Bold'),
     url('@/fonts/noto-sans-kr/NotoSansKR-Bold.woff2?no-inline') format('woff2');
 }
 @font-face {
