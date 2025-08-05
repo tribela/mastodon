@@ -22,7 +22,7 @@ class StatusPolicy < ApplicationPolicy
 
   # This is about requesting a quote post, not validating it
   def quote?
-    record.quote_policy_for_account(current_account, preloaded_relations: @preloaded_relations) != :denied
+    show? && record.quote_policy_for_account(current_account, preloaded_relations: @preloaded_relations) != :denied
   end
 
   def reblog?
@@ -34,6 +34,10 @@ class StatusPolicy < ApplicationPolicy
   end
 
   def destroy?
+    owned?
+  end
+
+  def list_quotes?
     owned?
   end
 
