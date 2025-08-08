@@ -289,6 +289,12 @@ class Status extends ImmutablePureComponent {
     }
   };
 
+  handleRevokeQuoteClick = (status) => {
+    const { dispatch } = this.props;
+
+    dispatch(openModal({ modalType: 'CONFIRM_REVOKE_QUOTE', modalProps: { statusId: status.get('id'), quotedStatusId: status.getIn(['quote', 'quoted_status']) }}));
+  };
+
   handleEditClick = (status) => {
     const { dispatch, askReplyConfirmation } = this.props;
 
@@ -668,6 +674,7 @@ class Status extends ImmutablePureComponent {
                   onReblog={this.handleReblogClick}
                   onBookmark={this.handleBookmarkClick}
                   onDelete={this.handleDeleteClick}
+                  onRevokeQuote={this.handleRevokeQuoteClick}
                   onEdit={this.handleEditClick}
                   onDirect={this.handleDirectClick}
                   onMention={this.handleMentionClick}
