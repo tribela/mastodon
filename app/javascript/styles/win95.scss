@@ -115,6 +115,12 @@ $win95-cyan: #008080;
   }
 }
 
+:root {
+  --nested-card-text: black;
+  --modal-background-color: white;
+  --dropdown-background-color: white;
+}
+
 /* Don't show outline around statuses if we're in
  * mouse or touch mode (rather than keyboard) */
 [data-whatinput="mouse"], [data-whatinput="touch"] {
@@ -141,6 +147,14 @@ $win95-cyan: #008080;
 .detailed-status__datetime span:after {
   font: normal normal normal 14px/1 FontAwesome;
   content: "\00a0\00a0\f08e";
+}
+
+.status__quote {
+  border: none;
+}
+
+.status-card.expanded .status-card__image {
+  border-radius: 0;
 }
 
 /* Don't display the elephant mascot (we have our
@@ -188,6 +202,15 @@ $win95-cyan: #008080;
  * because they look strange on cybrespace themes. */
 .modal-layout__mastodon {
   display:none;
+}
+
+.safety-action-modal__header h1 {
+  color: black;
+}
+
+.safety-action-modal__top,
+.safety-action-modal__bottom {
+  border-radius: 0;
 }
 
 /* main win95 style */
@@ -630,6 +653,10 @@ body.admin {
   margin-bottom:8px;
 }
 
+.layout-single-column .status__wrapper .status {
+  padding-bottom: 40px;
+}
+
 .status.status-direct {
   background:$win95-bg;
   &:focus, &:active {
@@ -769,6 +796,29 @@ body.admin {
   padding-left:4px;
 }
 
+.language-dropdown__dropdown .emoji-mart-search input,
+.emoji-mart-search input {
+    background: white;
+}
+
+.language-dropdown__dropdown__results__item {
+    color: black;
+}
+
+.emoji-mart-bar:first-child {
+  background: $win95-window-header;
+}
+
+.emoji-mart-anchor {
+  color: white;
+}
+
+.dropdown-button {
+  background: $win95-bg;
+  @include win95-border-outset();
+  color: black;
+}
+
 .icon-button {
   background:$win95-bg;
   @include win95-border-outset();
@@ -905,6 +955,22 @@ body.admin {
   font-weight:bold;
 }
 
+.notification-ungrouped .status__action-bar {
+  position: inherit;
+  text-align: left;
+  margin-inline-start: 0;
+  width: 100%;
+}
+
+.notification-group__main__status {
+  border-radius: 0;
+}
+
+.notification-group__main__header__label,
+.notification-group__main__header__label bdi,
+.notification-group__embedded-status__account bdi {
+  color: black;
+}
 
 .drawer__header {
   background: $win95-bg;
@@ -1057,6 +1123,10 @@ body.admin {
   background-color:$win95-bg;
   border: 2px outset $win95-bg;
   border-top-width:0px;
+}
+
+.ui__navigation-bar {
+  background: inherit;
 }
 
 .navigation-bar {
@@ -1945,8 +2015,7 @@ body.admin {
     margin: unset;
 }
 
-.modal-root__overlay,
-.account__header > div {
+.modal-root__overlay {
   background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAACXBIWXMAAC4jAAAuIwF4pT92AAAAFnpUWHRUaXRsZQAACJnLzU9JzElKBwALgwLXaCRlPwAAABd6VFh0QXV0aG9yAAAImUvOKMrPS8wBAAuaAugOwWPyAAAAEUlEQVQImWNgYGD4z4AE/gMADwMB/414xEUAAAAASUVORK5CYII=');
 }
 
@@ -2711,10 +2780,11 @@ body {
 
 .layout-single-column .compose-panel {
   background: $win95-bg;
+  @include win95-border-outset();
 }
 
 .layout-single-column .status__wrapper .status {
-  padding-bottom: 50px;
+  padding-bottom: 120px;
 }
 
 ::-webkit-scrollbar {
