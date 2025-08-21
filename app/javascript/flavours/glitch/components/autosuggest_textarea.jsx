@@ -54,6 +54,7 @@ const AutosuggestTextarea = forwardRef(({
   onFocus,
   autoFocus = true,
   lang,
+  className,
 }, textareaRef) => {
 
   const [suggestionsHidden, setSuggestionsHidden] = useState(true);
@@ -193,7 +194,7 @@ const AutosuggestTextarea = forwardRef(({
   };
 
   return (
-    <div className='autosuggest-textarea'>
+    <div className={classNames('autosuggest-textarea', className)}>
       <DebounceInput
         element={Textarea}
         inputRef={textareaRef}

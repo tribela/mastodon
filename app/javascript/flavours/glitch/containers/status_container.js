@@ -35,6 +35,8 @@ import Status from 'flavours/glitch/components/status';
 import { deleteModal } from 'flavours/glitch/initial_state';
 import { makeGetStatus, makeGetPictureInPicture } from 'flavours/glitch/selectors';
 
+import { quoteComposeCancel } from '../actions/compose_typed';
+
 const makeMapStateToProps = () => {
   const getStatus = makeGetStatus();
   const getPictureInPicture = makeGetPictureInPicture();
@@ -119,8 +121,18 @@ const mapDispatchToProps = (dispatch, { contextType }) => ({
     }
   },
 
+  onQuoteCancel() {
+    if (contextType === 'compose') {
+      dispatch(quoteComposeCancel());
+    }
+  },
+
   onRevokeQuote (status) {
     dispatch(openModal({ modalType: 'CONFIRM_REVOKE_QUOTE', modalProps: { statusId: status.get('id'), quotedStatusId: status.getIn(['quote', 'quoted_status']) }}));
+  },
+
+  onQuotePolicyChange(status) {
+    dispatch(openModal({ modalType: 'COMPOSE_PRIVACY', modalProps: { statusId: status.get('id') } }));
   },
 
   onEdit (status) {

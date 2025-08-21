@@ -1,12 +1,13 @@
 import PropTypes from 'prop-types';
 
-import { injectIntl, FormattedMessage } from 'react-intl';
+import { injectIntl, defineMessages, FormattedMessage } from 'react-intl';
 
 import classNames from 'classnames';
 
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 
+import CancelFillIcon from '@/material-icons/400-24px/cancel-fill.svg?react';
 import { Hotkeys } from 'flavours/glitch/components/hotkeys';
 import { ContentWarning } from 'flavours/glitch/components/content_warning';
 import { PictureInPicturePlaceholder } from 'flavours/glitch/components/picture_in_picture_placeholder';
@@ -32,6 +33,8 @@ import StatusActionBar from './status_action_bar';
 import StatusContent from './status_content';
 import StatusIcons from './status_icons';
 import StatusPrepend from './status_prepend';
+import { IconButton } from './icon_button';
+
 const domParser = new DOMParser();
 
 export const textForScreenReader = (intl, status, rebloggedByText = false, expanded = false) => {
@@ -70,6 +73,10 @@ export const defaultMediaVisibility = (status, settings) => {
 
   return !status.get('matched_media_filters') && (displayMedia !== 'hide_all' && !status.get('sensitive') || displayMedia === 'show_all');
 };
+
+const messages = defineMessages({
+  quote_cancel: { id: 'status.quote.cancel', defaultMessage: 'Cancel quote' },
+});
 
 class Status extends ImmutablePureComponent {
 
@@ -126,6 +133,7 @@ class Status extends ImmutablePureComponent {
       inUse: PropTypes.bool,
       available: PropTypes.bool,
     }),
+    contextType: PropTypes.string,
     ...WithOptionalRouterPropTypes,
   };
 
@@ -330,6 +338,10 @@ class Status extends ImmutablePureComponent {
 
     deployPictureInPicture(status, type, mediaProps);
   };
+
+  handleQuoteCancel = () => {
+    this.props.onQuoteCancel?.();
+  }
 
   handleHotkeyReply = e => {
     e.preventDefault();
@@ -713,11 +725,23 @@ class Status extends ImmutablePureComponent {
 
                   <DisplayName account={status.get('account')} />
                 </Permalink>
-                <StatusIcons
-                  status={status}
-                  mediaIcons={mediaIcons}
-                  settings={settings.get('status_icons')}
-                />
+
+
+                {this.props.contextType === 'compose' && isQuotedPost ? (
+                  <IconButton
+                    onClick={this.handleQuoteCancel}
+                    className='status__quote-cancel'
+                    title={intl.formatMessage(messages.quote_cancel)}
+                    icon="cancel-fill"
+                    iconComponent={CancelFillIcon}
+                  />
+                ) : (
+                  <StatusIcons
+                    status={status}
+                    mediaIcons={mediaIcons}
+                    settings={settings.get('status_icons')}
+                  />
+                )}
               </header>
             )}
 
