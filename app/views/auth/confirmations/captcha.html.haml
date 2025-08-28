@@ -15,8 +15,6 @@
 
     = render_captcha
 
-    %p.lead= t('auth.captcha_confirmation.help_html', email: mail_to(Setting.site_contact_email, nil))
-
   - if korean_captcha_enabled?
     %h1.title= t('auth.korean_captcha_confirmation.title')
     %p.lead= t('auth.korean_captcha_confirmation.hint_html')
@@ -24,6 +22,8 @@
     .field-group.korean-captcha
       %pre.question= Setting.korean_captcha_question
       %input.answer{ required: 'true', name: 'korean_captcha_answer' }
+
+  %p.lead= t('auth.captcha_confirmation.help_html', email: mail_to(Setting.site_contact_email, nil))
 
   .actions
     = form.button t('challenge.confirm'),
