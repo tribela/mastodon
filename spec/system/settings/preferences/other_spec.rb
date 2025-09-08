@@ -16,21 +16,15 @@ RSpec.describe 'Settings preferences other page' do
     check language_field(:es)
     check language_field(:fr)
     check language_field(:und)
-    check mark_sensitive_field
 
     expect { save_changes }
       .to change { user.reload.chosen_languages }.to(%w(und es fr))
-      .and(change { user.reload.settings.default_sensitive }.to(true))
     expect(page)
       .to have_title(I18n.t('settings.preferences'))
   end
 
   def save_changes
     within('form') { click_on submit_button }
-  end
-
-  def mark_sensitive_field
-    form_label('defaults.setting_default_sensitive')
   end
 
   def language_field(key)
