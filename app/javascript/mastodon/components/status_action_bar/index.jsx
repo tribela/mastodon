@@ -126,7 +126,7 @@ class StatusActionBar extends ImmutablePureComponent {
     if (signedIn) {
       this.props.onReply(this.props.status);
     } else {
-      this.props.onInteractionModal('reply', this.props.status);
+      this.props.onInteractionModal(this.props.status);
     }
   };
 
@@ -144,7 +144,7 @@ class StatusActionBar extends ImmutablePureComponent {
     if (signedIn) {
       this.props.onFavourite(this.props.status);
     } else {
-      this.props.onInteractionModal('favourite', this.props.status);
+      this.props.onInteractionModal(this.props.status);
     }
   };
 
