@@ -1,7 +1,7 @@
 {
   "name": "@mastodon/mastodon",
   "license": "AGPL-3.0-or-later",
-  "packageManager": "yarn@4.9.4",
+  "packageManager": "yarn@4.10.3",
   "engines": {
     "node": ">=20"
   },
@@ -31,7 +31,8 @@
     "typecheck": "tsc --noEmit",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "chromatic": "npx chromatic -d storybook-static"
+    "chromatic": "npx chromatic -d storybook-static",
+    "msw:updateWorker": "msw init"
   },
   "repository": {
     "type": "git",
@@ -192,7 +193,7 @@
     "stylelint": "^16.19.1",
     "stylelint-config-prettier-scss": "^1.0.0",
     "stylelint-config-standard-scss": "^15.0.1",
-    "typescript": "~5.7.3",
+    "typescript": "~5.9.0",
     "typescript-eslint": "^8.29.1",
     "vitest": "^3.2.4"
   },
