@@ -17,7 +17,7 @@ import VisibilityOffIcon from '@/material-icons/400-24px/visibility_off.svg?reac
 import { Hotkeys }  from 'flavours/glitch/components/hotkeys';
 import { Icon }  from 'flavours/glitch/components/icon';
 import { LoadingIndicator } from 'flavours/glitch/components/loading_indicator';
-import ScrollContainer from 'flavours/glitch/containers/scroll_container';
+import { ScrollContainer } from 'flavours/glitch/containers/scroll_container';
 import BundleColumnError from 'flavours/glitch/features/ui/components/bundle_column_error';
 import { identityContextPropShape, withIdentity } from 'flavours/glitch/identity_context';
 import { autoUnfoldCW } from 'flavours/glitch/utils/content_warning';
@@ -551,9 +551,9 @@ class Status extends ImmutablePureComponent {
     this.setState({ fullscreen: isFullscreen() });
   };
 
-  shouldUpdateScroll = (prevRouterProps, { location }) => {
+  shouldUpdateScroll = (prevLocation, location) => {
     // Do not change scroll when opening a modal
-    if (location.state?.mastodonModalKey !== prevRouterProps?.location?.state?.mastodonModalKey) {
+    if (location.state?.mastodonModalKey !== prevLocation?.state?.mastodonModalKey) {
       return false;
     }
 
@@ -634,7 +634,7 @@ class Status extends ImmutablePureComponent {
           )}
         />
 
-        <ScrollContainer scrollKey='thread' shouldUpdateScroll={this.shouldUpdateScroll}>
+        <ScrollContainer scrollKey='thread' shouldUpdateScroll={this.shouldUpdateScroll} childRef={this.setContainerRef}>
           <div className={classNames('scrollable item-list', { fullscreen })} ref={this.setContainerRef}>
             {ancestors}
 
