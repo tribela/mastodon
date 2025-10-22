@@ -247,6 +247,10 @@ class ActionBar extends PureComponent {
       menu.push({ text: intl.formatMessage(messages.share), action: this.handleShare });
     }
 
+    if (publicStatus && (signedIn || !isRemote)) {
+      menu.push({ text: intl.formatMessage(messages.embed), action: this.handleEmbed });
+    }
+
     if (quickBoosting && signedIn) {
       const quoteItem = quoteItemState(statusQuoteState);
       menu.push(null);
@@ -258,11 +262,6 @@ class ActionBar extends PureComponent {
         disabled: quoteItem.disabled,
         action: this.handleQuoteClick,
       });
-      menu.push(null);
-    }
-
-    if (publicStatus && (signedIn || !isRemote)) {
-      menu.push({ text: intl.formatMessage(messages.embed), action: this.handleEmbed });
     }
 
     if (signedIn) {
