@@ -4096,6 +4096,7 @@ a.account__display-name {
   background: lighten($ui-highlight-color, 5%);
 }
 
+.follow_requests-unlocked_explanation,
 .switch-to-advanced {
   color: $light-text-color;
   background-color: $ui-base-color;
@@ -4106,7 +4107,7 @@ a.account__display-name {
   font-size: 13px;
   line-height: 18px;
 
-  .switch-to-advanced__toggle {
+  a {
     color: $ui-button-tertiary-color;
     font-weight: bold;
   }
@@ -5355,8 +5356,7 @@ a.status-card {
   }
 }
 
-.empty-column-indicator,
-.follow_requests-unlocked_explanation {
+.empty-column-indicator {
   color: $dark-text-color;
   text-align: center;
   padding: 20px;
@@ -5395,10 +5395,8 @@ a.status-card {
 }
 
 .follow_requests-unlocked_explanation {
-  background: var(--surface-background-color);
-  border-bottom: 1px solid var(--background-border-color);
-  contain: initial;
-  flex-grow: 0;
+  margin: 16px;
+  margin-bottom: 0;
 }
 
 .error-column {
