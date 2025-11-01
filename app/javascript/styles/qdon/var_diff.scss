@@ -1,6 +1,6 @@
 @use 'variables' as qdon;
 
 // Colourise mention
-a.status-link {
+a.u-url {
   color: qdon.$mention-color;
 }
