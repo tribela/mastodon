@@ -26,8 +26,6 @@ const Mutes: React.FC<{ multiColumn: boolean }> = ({ multiColumn }) => {
   const columnRef = useRef<ColumnRef>(null);
 
   useEffect(() => {
-    setLoading(true);
-
     void apiGetDomainmutes()
       .then(({ domains, links }) => {
         const next = links.refs.find((link) => link.rel === 'next');
