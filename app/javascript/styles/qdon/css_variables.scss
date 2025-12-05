@@ -1,10 +1,39 @@
-@use 'sass:color';
-@use '../mastodon/variables' as *;
-@use 'variables' as *;
-@use '../mastodon/functions' as *;
+@use '../mastodon/css_variables';
+@use '../mastodon/theme_utils' as utils;
 
-body {
-  --rich-text-container-color: #181818;
+:root {
+  // Qdon brand colors
+  --color-skyblue: hsl(212deg, 100%, 80%);
+  --color-dark-blue: hsl(212deg, 72%, 63%);
+  --color-pink: hsl(304deg, 100%, 80%);
+  --color-dark-pink: hsl(304deg, 100%, 70%);
+  --color-qdon-grey: #282c37;
+
+  /* TEXT TOKENS */
+
+  // Override brand text colors with qdon brand colors
+  --color-text-brand: var(--color-skyblue);
+  --color-text-brand-on-inverted: var(--color-dark-blue);
+
+  /* BACKGROUND TOKENS */
+
+  // Override brand background colors with qdon brand colors
+  --color-bg-brand-base: var(--color-dark-blue);
+  --color-bg-secondary-base: hsl(212deg, 100%, 90%);
+
+  /* BORDER TOKENS */
+
+  // Override border color with qdon brand color
+  --color-border-primary: #{utils.css-alpha(hsl(212deg, 100%, 90%), 18%)};
+  --color-border-on-bg-secondary: #{utils.css-alpha(
+      hsl(212deg, 100%, 90%),
+      calc(18% / 1.5)
+    )};
+
+  /* LEGACY TOKENS */
+
+  // Qdon-specific rich text colors
+  --rich-text-container-color: #282828;
   --rich-text-text-color: #efefef;
   --rich-text-decorations-color: hsla(212deg, 90%, 80%, 100%);
 }

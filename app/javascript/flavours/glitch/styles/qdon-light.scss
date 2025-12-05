@@ -1,6 +1,13 @@
 @use '@/styles/fonts/qdon';
 
-@use 'qdon-light/variables';
-@use 'qdon-light/css_variables';
-@use 'application';
-@use 'qdon-light/diff';
+@use '@/styles/qdon-light/css_variables';
+@use 'mastodon/variables' with (
+  $emojis-requiring-inversion: 'chains'
+);
+@use 'common';
+@use '@/styles/qdon/diff';
+@use '@/styles/qdon-light/var_diff';
+
+html {
+  color-scheme: light;
+}

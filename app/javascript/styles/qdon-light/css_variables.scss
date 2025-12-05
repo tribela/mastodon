@@ -1,21 +1,39 @@
-@use 'sass:color';
-@use '../mastodon/variables' as *;
-@use 'variables' as *;
-@use '../mastodon/functions' as *;
+@use '../mastodon-light/css_variables';
+@use '../mastodon/theme_utils' as utils;
 
-body {
+:root {
+  // Qdon brand colors (light theme uses slightly different shades)
+  --color-skyblue: hsl(212deg, 100%, 65%);
+  --color-dark-blue: hsl(212deg, 100%, 50%);
+  --color-pink: hsl(304deg, 100%, 80%);
+  --color-dark-pink: hsl(304deg, 100%, 45%);
+  --color-qdon-grey: #282c37;
+
+  /* TEXT TOKENS */
+
+  // Override brand text colors with qdon brand colors (use dark-blue and dark-pink for light theme)
+  --color-text-brand: var(--color-dark-blue);
+  --color-text-brand-on-inverted: var(--color-dark-blue);
+
+  /* BACKGROUND TOKENS */
+
+  // Override brand background colors with qdon brand colors
+  --color-bg-brand-base: var(--color-dark-blue);
+  --color-bg-secondary-base: var(--color-grey-600);
+
+  /* BORDER TOKENS */
+
+  // Override border color with qdon brand color
+  --color-border-primary: color-mix(
+    in oklab,
+    var(--color-bg-primary),
+    var(--color-grey-950) 15%
+  );
+
+  /* LEGACY TOKENS */
+
+  // Qdon-light-specific rich text colors
   --rich-text-container-color: #efefef;
   --rich-text-text-color: #181818;
   --rich-text-decorations-color: hsla(212deg, 100%, 65%, 100%);
-  --dropdown-border-color: hsl(240deg, 25%, 88%);
-  --dropdown-background-color: #fff;
-  --modal-border-color: hsl(240deg, 25%, 88%);
-  --modal-background-color: var(--background-color-tint);
-  --background-border-color: hsl(240deg, 25%, 88%);
-  --background-color: #fff;
-  --background-color-tint: rgba(255, 255, 255, 80%);
-  --background-filter: blur(10px);
-  --on-surface-color: #{color.adjust($ui-base-color, $alpha: -0.65)};
-  --input-placeholder-color: #{color.adjust($dark-text-color, $alpha: -0.5)};
-  --input-background-color: #{darken($ui-base-color, 10%)};
 }

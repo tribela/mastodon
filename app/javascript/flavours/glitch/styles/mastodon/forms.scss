@@ -1142,24 +1142,37 @@ code {
 .simple_form .korean-captcha {
   .hint {
     font-size: 1.2em;
-    color: $highlight-text-color;
+    color: var(--color-text-primary);
   }
 
   .question {
-    color: $primary-text-color;
+    box-sizing: border-box;
+    font-size: 1.2em;
+    color: var(--color-text-primary);
+    background: var(--color-bg-primary);
+    border: 2px solid var(--color-border-primary);
+    border-radius: 4px;
+    padding: 12px;
     margin-top: 4px;
     margin-bottom: 15px;
+    display: block;
+    width: 100%;
+    overflow-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: pre-line;
+    line-height: 1.5;
   }
 
   .answer {
     box-sizing: border-box;
-    color: $primary-text-color;
-    background: darken($ui-base-color, 10%);
+    color: var(--color-text-primary);
+    background: var(--color-bg-secondary);
     font-size: 16px;
     width: 100%;
     padding: 10px;
-    border: 1px solid $dark-text-color;
+    border: 1px solid var(--color-border-primary);
     border-radius: 4px;
+    margin-bottom: 15px;
   }
 }
 

@@ -1,7 +1,9 @@
 @use 'fonts/qdon';
 
-@use 'qdon/variables';
 @use 'qdon/css_variables';
-@use 'application';
+@use 'common';
 @use 'qdon/diff';
-@use 'qdon/var_diff';
+
+html {
+  color-scheme: dark;
+}

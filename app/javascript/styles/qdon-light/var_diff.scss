@@ -1,7 +1,8 @@
-@use '../mastodon-light/diff';
-@use 'variables' as qdon;
+// Colourise mention and hashtag with qdon brand colors (use dark-pink and dark-blue for light theme)
+a.mention {
+  color: var(--color-dark-pink);
+}
 
-// Colourise mention
-a.u-url {
-  color: qdon.$mention-color;
+a.hashtag {
+  color: var(--color-dark-blue);
 }
