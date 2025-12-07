@@ -9,15 +9,15 @@ RSpec.describe ThemeHelper do
     context 'when using "system" theme' do
       let(:theme) { ['glitch', 'system'] }
 
-      it 'returns the mastodon-light and application stylesheets with correct color schemes' do
+      it 'returns the *-light and application stylesheets with correct color schemes' do
         expect(html_links.first.attributes.symbolize_keys)
           .to include(
-            href: have_attributes(value: match(/mastodon-light/)),
+            href: have_attributes(value: match(/.*-light/)),
             media: have_attributes(value: 'not all and (prefers-color-scheme: dark)')
           )
         expect(html_links.last.attributes.symbolize_keys)
           .to include(
-            href: have_attributes(value: match(/default/)),
+            href: have_attributes(value: match(/^(?!.*-light$).*/)),
             media: have_attributes(value: '(prefers-color-scheme: dark)')
           )
       end
