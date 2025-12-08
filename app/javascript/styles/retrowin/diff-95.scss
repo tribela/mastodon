@@ -77,6 +77,10 @@ select,
   }
 }
 
+.columns-area--mobile {
+  padding: 0;
+}
+
 // Top navigation header (drawer header with icons)
 .drawer__header {
   a,
@@ -170,7 +174,7 @@ select,
 
   // Desktop: add margin
   @media screen and (width > 759px) {
-    margin: 8px 4px;
+    margin: 0;
   }
 }
 
@@ -189,7 +193,7 @@ select,
     var(--color-win95-button-shadow);
   margin: 4px;
   padding: 8px;
-  padding-bottom: 40px;
+  padding-bottom: 48px;
   margin-bottom: 8px;
   position: relative;
 }
@@ -629,6 +633,12 @@ a.hashtag {
       inset -2px -2px 0 var(--color-win95-button-shadow),
       inset 2px 2px 0 var(--color-win95-button-face);
   }
+}
+
+// Full width media (glitch)
+.media-gallery.full-width {
+  margin-left: -9px;
+  margin-right: -9px;
 }
 
 // Toast notification bar
