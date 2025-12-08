@@ -1,0 +1,8 @@
+// Qdon brand color palette
+@mixin palette {
+  --color-skyblue: hsl(212deg 100% 80%);
+  --color-dark-blue: hsl(212deg 72% 63%);
+  --color-pink: hsl(304deg 100% 80%);
+  --color-dark-pink: hsl(304deg 100% 70%);
+  --color-qdon-grey: #282c37;
+}

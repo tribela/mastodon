@@ -1,0 +1,32 @@
+// Qdon light theme token overrides
+@mixin tokens {
+  // Light theme uses slightly different brand color shades
+  --color-skyblue: hsl(212deg 100% 65%);
+  --color-dark-blue: hsl(212deg 100% 50%);
+  --color-pink: hsl(304deg 100% 80%);
+  --color-dark-pink: hsl(304deg 100% 45%);
+
+  /* TEXT TOKENS */
+
+  --color-text-brand: var(--color-dark-blue);
+  --color-text-brand-on-inverted: var(--color-dark-blue);
+
+  /* BACKGROUND TOKENS */
+
+  --color-bg-brand-base: var(--color-dark-blue);
+  --color-bg-secondary-base: var(--color-grey-600);
+
+  /* BORDER TOKENS */
+
+  --color-border-primary: color-mix(
+    in oklab,
+    var(--color-bg-primary),
+    var(--color-grey-950) 15%
+  );
+
+  /* LEGACY TOKENS */
+
+  --rich-text-container-color: #efefef;
+  --rich-text-text-color: #181818;
+  --rich-text-decorations-color: hsl(212deg 100% 65% / 100%);
+}

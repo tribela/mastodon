@@ -1,0 +1,28 @@
+@use '../../mastodon/theme/utils' as utils;
+
+// Qdon dark theme token overrides
+@mixin tokens {
+  /* TEXT TOKENS */
+
+  --color-text-brand: var(--color-skyblue);
+  --color-text-brand-on-inverted: var(--color-dark-blue);
+
+  /* BACKGROUND TOKENS */
+
+  --color-bg-brand-base: var(--color-dark-blue);
+  --color-bg-secondary-base: hsl(212deg 100% 90%);
+
+  /* BORDER TOKENS */
+
+  --color-border-primary: #{utils.css-alpha(hsl(212deg 100% 90%), 18%)};
+  --color-border-on-bg-secondary: #{utils.css-alpha(
+      hsl(212deg 100% 90%),
+      calc(18% / 1.5)
+    )};
+
+  /* LEGACY TOKENS */
+
+  --rich-text-container-color: #282828;
+  --rich-text-text-color: #efefef;
+  --rich-text-decorations-color: hsl(212deg 90% 80% / 100%);
+}

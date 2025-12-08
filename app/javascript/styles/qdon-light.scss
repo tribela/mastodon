@@ -1,8 +1,8 @@
 @use 'fonts/qdon';
 
 @use 'common';
-@use 'qdon-light/css_variables';
-@use 'qdon-light/var_diff';
+@use 'qdon/theme';
+@use 'qdon/diff-light';
 
 html {
   color-scheme: light;
