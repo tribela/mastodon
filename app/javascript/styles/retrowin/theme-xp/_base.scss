@@ -1,0 +1,33 @@
+// Windows XP Luna color palette
+@mixin palette {
+  // XP Luna Blue theme colors
+  --color-xp-blue: #0a246a;
+  --color-xp-light-blue: #245edb;
+  --color-xp-title-blue: #0054e3;
+  --color-xp-title-gradient-start: #0058ee;
+  --color-xp-title-gradient-end: #3a93ff;
+  --color-xp-taskbar: #235cd4;
+  --color-xp-desktop: #3a6ea5;
+  --color-xp-start-green: #2f9c2f;
+  --color-xp-start-green-dark: #1d7c1d;
+
+  // Window colors (using more neutral gray instead of beige)
+  --color-xp-window-bg: #d4d0c8;
+  --color-xp-window-white: #fff;
+  --color-xp-button-face: #d4d0c8;
+  --color-xp-button-highlight: #fff;
+  --color-xp-button-shadow: #aca899;
+  --color-xp-button-dark-shadow: #716f64;
+
+  // Text colors
+  --color-xp-text: #000;
+  --color-xp-text-white: #fff;
+  --color-xp-text-gray: #808080;
+
+  // Accent colors
+  --color-xp-link: #06c;
+  --color-xp-link-hover: #04a;
+  --color-xp-orange: #f60;
+  --color-xp-red: #c42b1c;
+  --color-xp-green: #2f9c2f;
+}

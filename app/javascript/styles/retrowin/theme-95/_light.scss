@@ -1,0 +1,32 @@
+// Masto95 light theme - Classic Windows 95 look
+@mixin tokens {
+  /* TEXT TOKENS */
+
+  --color-text-primary: var(--color-win95-black);
+  --color-text-secondary: var(--color-win95-dark-gray);
+  --color-text-tertiary: var(--color-win95-gray);
+  --color-text-brand: var(--color-win95-navy);
+  --color-text-brand-on-inverted: var(--color-win95-white);
+  --color-text-on-brand-base: var(--color-win95-white);
+
+  /* BACKGROUND TOKENS */
+
+  --color-bg-ambient: var(--color-win95-teal);
+  --color-bg-primary: var(--color-win95-silver);
+  --color-bg-secondary: var(--color-win95-button-face);
+  --color-bg-tertiary: var(--color-win95-gray);
+  --color-bg-brand-base: var(--color-win95-navy);
+  --color-bg-inverted: var(--color-win95-navy);
+  --color-bg-elevated: var(--color-win95-window);
+  --color-bg-overlay: var(--color-win95-silver);
+
+  /* BORDER TOKENS */
+
+  --color-border-primary: var(--color-win95-button-shadow);
+
+  /* LEGACY TOKENS */
+
+  --rich-text-container-color: var(--color-win95-window);
+  --rich-text-text-color: var(--color-win95-window-text);
+  --rich-text-decorations-color: var(--color-win95-navy);
+}

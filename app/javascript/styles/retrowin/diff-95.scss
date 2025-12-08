@@ -1,0 +1,405 @@
+// Masto95 - Windows 95 style UI (Light mode only)
+
+html {
+  scrollbar-width: auto;
+}
+
+// Windows 95 classic 3D button style
+.button {
+  background: var(--color-win95-button-face) !important;
+  color: var(--color-win95-black) !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow:
+    inset -1px -1px 0 var(--color-win95-button-dark-shadow),
+    inset 1px 1px 0 var(--color-win95-button-highlight),
+    inset -2px -2px 0 var(--color-win95-button-shadow),
+    inset 2px 2px 0 var(--color-win95-button-face);
+  padding: 4px 12px;
+
+  &:hover {
+    background: var(--color-win95-silver) !important;
+  }
+
+  &:active {
+    box-shadow:
+      inset 1px 1px 0 var(--color-win95-button-dark-shadow),
+      inset -1px -1px 0 var(--color-win95-button-highlight),
+      inset 2px 2px 0 var(--color-win95-button-shadow);
+  }
+}
+
+// Windows 95 style input fields (sunken)
+input[type='text'],
+input[type='email'],
+input[type='password'],
+input[type='search'],
+input[type='url'],
+input[type='number'],
+textarea,
+select,
+.autosuggest-textarea__textarea {
+  background: var(--color-win95-window) !important;
+  color: var(--color-win95-window-text) !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow:
+    inset 1px 1px 0 var(--color-win95-button-shadow),
+    inset -1px -1px 0 var(--color-win95-button-highlight),
+    inset 2px 2px 0 var(--color-win95-button-dark-shadow);
+}
+
+// Classic Win95 title bar gradient
+.column-header,
+.drawer__header {
+  background: linear-gradient(
+    90deg,
+    var(--color-win95-active-title) 0%,
+    var(--color-win95-teal) 100%
+  ) !important;
+  color: var(--color-win95-active-title-text) !important;
+  border-radius: 0 !important;
+  font-weight: bold;
+}
+
+.column-header__title {
+  color: var(--color-win95-active-title-text) !important;
+}
+
+// Back button and column header buttons
+.column-header__back-button,
+.column-header__button,
+.column-back-button {
+  color: var(--color-win95-white) !important;
+
+  &:hover {
+    color: var(--color-win95-yellow) !important;
+  }
+
+  .icon {
+    color: inherit !important;
+  }
+}
+
+// Top navigation header (drawer header with icons)
+.drawer__header {
+  a,
+  button {
+    color: var(--color-win95-white) !important;
+
+    &:hover {
+      color: var(--color-win95-yellow) !important;
+      background: transparent !important;
+    }
+  }
+
+  .icon {
+    color: var(--color-win95-white) !important;
+  }
+
+  // Windows 95 Start Button - first button in header
+  > a:first-child,
+  > button:first-child {
+    background: #c0c0c0 !important;
+    color: #000 !important;
+    border-radius: 0 !important;
+    border: none !important;
+    padding: 4px 12px !important;
+    margin: 4px !important;
+    font-weight: bold !important;
+    font-size: 13px !important;
+    box-shadow:
+      inset -1px -1px 0 #000,
+      inset 1px 1px 0 #fff,
+      inset -2px -2px 0 #808080,
+      inset 2px 2px 0 #dfdfdf !important;
+
+    // Add "Start" text
+    &::after {
+      content: 'Start';
+      color: #000 !important;
+    }
+
+    .icon {
+      display: none !important;
+    }
+
+    &:hover {
+      background: #d4d4d4 !important;
+      color: #000 !important;
+    }
+
+    &:active {
+      box-shadow:
+        inset 1px 1px 0 #000,
+        inset -1px -1px 0 #fff,
+        inset 2px 2px 0 #808080 !important;
+    }
+  }
+}
+
+// Navigation panel icons
+.navigation-panel {
+  background: var(--color-win95-silver) !important;
+
+  a,
+  button {
+    color: var(--color-win95-black) !important;
+
+    &:hover {
+      background: var(--color-win95-navy) !important;
+      color: var(--color-win95-white) !important;
+    }
+  }
+
+  hr {
+    border-color: var(--color-win95-button-shadow) !important;
+  }
+}
+
+// Remove all rounded corners for authentic 95 look
+* {
+  border-radius: 0 !important;
+}
+
+// Columns area spacing
+.columns-area {
+  padding: 4px;
+}
+
+// Add 3D borders to main containers
+.column,
+.drawer {
+  background: var(--color-win95-silver);
+  margin: 8px 4px;
+  box-shadow:
+    inset -1px -1px 0 var(--color-win95-button-dark-shadow),
+    inset 1px 1px 0 var(--color-win95-button-highlight),
+    inset -2px -2px 0 var(--color-win95-button-shadow),
+    inset 2px 2px 0 var(--color-win95-button-face);
+}
+
+// Status cards with Win95 look - sunken style
+.status {
+  border: none;
+  border-bottom: 1px solid var(--color-win95-button-shadow);
+  box-shadow:
+    inset 1px 0 0 var(--color-win95-button-shadow),
+    inset -1px 0 0 var(--color-win95-button-highlight);
+}
+
+// Column content area - sunken
+.scrollable {
+  box-shadow:
+    inset 1px 1px 0 var(--color-win95-button-shadow),
+    inset -1px -1px 0 var(--color-win95-button-highlight),
+    inset 2px 2px 0 var(--color-win95-button-dark-shadow);
+}
+
+// Links - Win95 blue
+a:not(.button) {
+  color: var(--color-win95-navy);
+
+  &:hover {
+    color: var(--color-win95-blue);
+  }
+}
+
+// Mention and hashtag colors (light mode)
+a.mention {
+  color: var(--color-win95-teal) !important;
+}
+
+a.hashtag {
+  color: #008000 !important;
+}
+
+// Tab bars and navigation - fix contrast
+.account__section-headline,
+.notification__filter-bar,
+.detailed-status__action-bar {
+  background: var(--color-win95-silver) !important;
+  border-bottom: 1px solid var(--color-win95-button-shadow);
+  box-shadow: inset 0 -1px 0 var(--color-win95-button-highlight);
+
+  a,
+  button {
+    color: var(--color-win95-black) !important;
+
+    &:hover,
+    &.active {
+      color: var(--color-win95-navy) !important;
+      background: var(--color-win95-white) !important;
+    }
+  }
+}
+
+// Fix dark backgrounds
+.account__header,
+.account__header__bar {
+  background: var(--color-win95-silver) !important;
+}
+
+.account__header__tabs__name {
+  h1,
+  small {
+    color: var(--color-win95-black) !important;
+  }
+}
+
+.account__header__bio {
+  color: var(--color-win95-black) !important;
+}
+
+// Badge styling
+.account-role {
+  background: var(--color-win95-white) !important;
+  color: var(--color-win95-navy) !important;
+  border: 1px solid var(--color-win95-button-shadow) !important;
+}
+
+// Account details (joined date, etc.)
+.account__header__fields {
+  background: var(--color-win95-white) !important;
+  box-shadow:
+    inset 1px 1px 0 var(--color-win95-button-shadow),
+    inset -1px -1px 0 var(--color-win95-button-highlight),
+    inset 2px 2px 0 var(--color-win95-button-dark-shadow);
+
+  dt {
+    color: var(--color-win95-black) !important;
+    background: var(--color-win95-silver) !important;
+    border-bottom: 1px solid var(--color-win95-button-shadow) !important;
+  }
+
+  dd {
+    color: var(--color-win95-black) !important;
+    background: var(--color-win95-white) !important;
+    border-bottom: 1px solid var(--color-win95-button-shadow) !important;
+  }
+}
+
+// Extra info sections
+.account__header__extra__links {
+  color: var(--color-win95-black) !important;
+
+  a {
+    color: var(--color-win95-black) !important;
+
+    strong {
+      color: var(--color-win95-black) !important;
+    }
+  }
+}
+
+// Compose area
+.compose-form {
+  .compose-form__buttons-wrapper {
+    background: var(--color-win95-button-face);
+  }
+}
+
+// Action buttons - Windows 95 style
+.status__action-bar,
+.detailed-status__action-bar,
+.account__header__tabs__buttons,
+.account__header__bar {
+  button,
+  .icon-button {
+    background: var(--color-win95-button-face);
+    border-radius: 0;
+    padding: 4px 8px;
+    color: var(--color-win95-black);
+    box-shadow:
+      inset -1px -1px 0 var(--color-win95-button-dark-shadow),
+      inset 1px 1px 0 var(--color-win95-button-highlight),
+      inset -2px -2px 0 var(--color-win95-button-shadow),
+      inset 2px 2px 0 var(--color-win95-button-face);
+
+    &:hover {
+      background: var(--color-win95-silver);
+    }
+
+    &:active,
+    &.active {
+      box-shadow:
+        inset 1px 1px 0 var(--color-win95-button-dark-shadow),
+        inset -1px -1px 0 var(--color-win95-button-highlight),
+        inset 2px 2px 0 var(--color-win95-button-shadow);
+    }
+
+    .icon {
+      color: var(--color-win95-black);
+    }
+  }
+}
+
+// Compose form buttons - smaller padding to prevent overflow
+.compose-form__buttons-wrapper {
+  padding: 4px;
+}
+
+.compose-form__buttons {
+  flex-wrap: wrap;
+  gap: 2px;
+
+  button,
+  .icon-button,
+  .compose-form__upload-button-icon,
+  .text-icon-button {
+    background: var(--color-win95-button-face);
+    border-radius: 0;
+    padding: 2px 4px;
+    color: var(--color-win95-black);
+    box-shadow:
+      inset -1px -1px 0 var(--color-win95-button-dark-shadow),
+      inset 1px 1px 0 var(--color-win95-button-highlight),
+      inset -2px -2px 0 var(--color-win95-button-shadow),
+      inset 2px 2px 0 var(--color-win95-button-face);
+
+    &:hover {
+      background: var(--color-win95-silver);
+    }
+
+    &:active,
+    &.active {
+      box-shadow:
+        inset 1px 1px 0 var(--color-win95-button-dark-shadow),
+        inset -1px -1px 0 var(--color-win95-button-highlight),
+        inset 2px 2px 0 var(--color-win95-button-shadow);
+    }
+
+    .icon {
+      color: var(--color-win95-black);
+    }
+  }
+
+  .character-counter {
+    background: var(--color-win95-button-face);
+    padding: 2px 6px;
+    box-shadow:
+      inset 1px 1px 0 var(--color-win95-button-shadow),
+      inset -1px -1px 0 var(--color-win95-button-highlight),
+      inset 2px 2px 0 var(--color-win95-button-dark-shadow);
+  }
+}
+
+// Scrollbar styling (for webkit browsers)
+::-webkit-scrollbar {
+  width: 16px;
+  height: 16px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-win95-silver);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-win95-button-face);
+  border: 1px outset var(--color-win95-button-highlight);
+}
+
+::-webkit-scrollbar-button {
+  background: var(--color-win95-button-face);
+  border: 1px outset var(--color-win95-button-highlight);
+}

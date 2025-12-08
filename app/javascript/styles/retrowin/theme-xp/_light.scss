@@ -1,0 +1,32 @@
+// Windows XP Luna light theme tokens
+@mixin tokens {
+  /* TEXT TOKENS */
+
+  --color-text-primary: var(--color-xp-text);
+  --color-text-secondary: var(--color-xp-text-gray);
+  --color-text-tertiary: var(--color-xp-button-shadow);
+  --color-text-brand: var(--color-xp-light-blue);
+  --color-text-brand-on-inverted: var(--color-xp-text-white);
+  --color-text-on-brand-base: var(--color-xp-text-white);
+
+  /* BACKGROUND TOKENS */
+
+  --color-bg-ambient: var(--color-xp-desktop);
+  --color-bg-primary: var(--color-xp-window-bg);
+  --color-bg-secondary: var(--color-xp-button-face);
+  --color-bg-tertiary: var(--color-xp-button-shadow);
+  --color-bg-brand-base: var(--color-xp-light-blue);
+  --color-bg-inverted: var(--color-xp-blue);
+  --color-bg-elevated: var(--color-xp-window-white);
+  --color-bg-overlay: var(--color-xp-window-bg);
+
+  /* BORDER TOKENS */
+
+  --color-border-primary: var(--color-xp-button-shadow);
+
+  /* LEGACY TOKENS */
+
+  --rich-text-container-color: var(--color-xp-window-white);
+  --rich-text-text-color: var(--color-xp-text);
+  --rich-text-decorations-color: var(--color-xp-light-blue);
+}

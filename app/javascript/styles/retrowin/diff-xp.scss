@@ -1,0 +1,546 @@
+// MastoXP - Windows XP Luna style UI
+
+html {
+  scrollbar-width: auto;
+}
+
+// Windows 10 "Activate Windows" watermark (desktop only)
+@media screen and (width >= 1175px) {
+  body::after {
+    content: '정품 인증\A설정으로 이동하여 정품 인증하세요.';
+    white-space: pre;
+    position: fixed;
+    bottom: 16px;
+    right: 16px;
+    font-family: 'Segoe UI Light', 'Segoe UI', sans-serif;
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 50%);
+    text-align: right;
+    pointer-events: none;
+    z-index: 99999;
+  }
+}
+
+// XP Luna style buttons (rounded, neutral gray)
+.button {
+  background: linear-gradient(
+    180deg,
+    #fff 0%,
+    #e8e8e8 2%,
+    #d4d4d4 98%,
+    #c0c0c0 100%
+  );
+  color: var(--color-xp-text);
+  border: 1px solid #808080;
+  padding: 4px 14px;
+  box-shadow:
+    inset 0 1px 0 #fff,
+    0 1px 1px rgba(0, 0, 0, 10%);
+
+  &:hover {
+    background: linear-gradient(
+      180deg,
+      #fff 0%,
+      #f0f0f0 2%,
+      #e0e0e0 98%,
+      #d0d0d0 100%
+    );
+    border-color: #6e90c7;
+  }
+
+  &:active {
+    background: linear-gradient(180deg, #c0c0c0 0%, #d4d4d4 100%);
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 20%);
+  }
+
+  // Primary/branded buttons - XP blue style
+  &.button--primary,
+  &.button--block {
+    background: linear-gradient(
+      180deg,
+      #fff 0%,
+      #d6e6f9 2%,
+      #a5c7f1 50%,
+      #7eb4ea 98%,
+      #5a9de0 100%
+    );
+    color: var(--color-xp-text);
+    border: 1px solid #3c7fb1;
+
+    &:hover {
+      background: linear-gradient(
+        180deg,
+        #fff 0%,
+        #e0eefb 2%,
+        #b8d4f5 50%,
+        #95c5ef 98%,
+        #72b1e7 100%
+      );
+    }
+
+    &:active {
+      background: linear-gradient(180deg, #7eb4ea 0%, #a5c7f1 100%);
+    }
+  }
+}
+
+// XP style input fields
+input[type='text'],
+input[type='email'],
+input[type='password'],
+input[type='search'],
+input[type='url'],
+input[type='number'],
+textarea,
+select,
+.autosuggest-textarea__textarea,
+.compose-form .autosuggest-textarea__textarea,
+.compose-form__autosuggest-wrapper,
+.compose-form textarea {
+  background: #fff;
+  color: var(--color-xp-text);
+  border: 1px solid var(--color-xp-button-shadow);
+  border-radius: 2px;
+  box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 10%);
+}
+
+// XP Luna title bar (blue gradient with rounded top)
+.column-header {
+  background: linear-gradient(
+    180deg,
+    var(--color-xp-title-gradient-end) 0%,
+    var(--color-xp-title-gradient-start) 10%,
+    var(--color-xp-title-blue) 90%,
+    var(--color-xp-blue) 100%
+  );
+  color: var(--color-xp-text-white);
+  border: none;
+  border-radius: 2px 2px 0 0;
+  margin: 0;
+  font-weight: bold;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 30%);
+}
+
+// XP Taskbar style header
+.drawer__header {
+  background: linear-gradient(
+    180deg,
+    #3168d5 0%,
+    #4289ef 3%,
+    #2862d3 5%,
+    #1c5bce 90%,
+    #1941a0 100%
+  );
+  color: var(--color-xp-text-white);
+  border-radius: 0;
+  font-weight: bold;
+}
+
+.column-header__title {
+  color: var(--color-xp-text-white);
+}
+
+// Back button and column header buttons
+.column-header__back-button,
+.column-header__button,
+.column-back-button {
+  color: var(--color-xp-text-white);
+
+  &:hover {
+    color: var(--color-xp-orange);
+  }
+
+  .icon {
+    color: inherit;
+  }
+}
+
+// Top navigation header icons
+.drawer__header {
+  a,
+  button {
+    color: var(--color-xp-text-white);
+
+    &:hover {
+      color: var(--color-xp-orange);
+      background: transparent;
+    }
+  }
+
+  .icon {
+    color: var(--color-xp-text-white);
+  }
+
+  // XP Start Button - green with gradient
+  > a:first-child,
+  > button:first-child {
+    background: linear-gradient(
+      180deg,
+      #5ebe5e 0%,
+      #3c9a3c 8%,
+      #338d33 40%,
+      #2d7f2d 88%,
+      #267226 92%,
+      #236b23 100%
+    );
+    color: var(--color-xp-text-white);
+    border-radius: 0 0 6px 6px;
+    padding: 6px 16px;
+    margin: 4px;
+    margin-top: 0;
+    font-weight: bold;
+    font-size: 16px;
+    font-style: italic;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 60%);
+    border: none;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 40%),
+      inset 0 -1px 0 rgba(0, 0, 0, 20%);
+    display: flex;
+    align-items: center;
+
+    &::after {
+      content: 'start';
+      color: var(--color-xp-text-white);
+      letter-spacing: 0.5px;
+    }
+
+    .icon {
+      display: none;
+    }
+
+    &:hover {
+      background: linear-gradient(
+        180deg,
+        #6fc46f 0%,
+        #4ba84b 8%,
+        #409940 40%,
+        #388d38 88%,
+        #318231 92%,
+        #2d782d 100%
+      );
+      color: var(--color-xp-text-white);
+    }
+
+    &:active {
+      background: linear-gradient(
+        180deg,
+        #338d33 0%,
+        #2d7f2d 50%,
+        #267226 100%
+      );
+    }
+  }
+}
+
+// Navigation panel
+.navigation-panel {
+  background: var(--color-xp-window-bg);
+
+  a,
+  a:not(.button),
+  button {
+    color: #000 !important;
+    border-radius: 3px;
+
+    &:hover {
+      background: var(--color-xp-light-blue);
+      color: #fff !important;
+
+      .icon {
+        color: #fff !important;
+      }
+    }
+
+    .icon {
+      color: #000 !important;
+    }
+  }
+
+  hr {
+    border-color: var(--color-xp-button-shadow);
+  }
+}
+
+// Select option styling
+select option {
+  background: var(--color-xp-window-white);
+  color: var(--color-xp-text);
+}
+
+// Settings page styling
+.simple_form {
+  label,
+  .hint,
+  p,
+  span {
+    color: var(--color-xp-text);
+  }
+
+  select {
+    background: var(--color-xp-window-white);
+    color: var(--color-xp-text);
+  }
+}
+
+// Columns area spacing
+.columns-area {
+  padding: 4px;
+}
+
+// Specific overrides for XP look
+.column {
+  background: var(--color-xp-window-bg);
+  border-radius: 0;
+  overflow: hidden;
+  border: none;
+  margin: 8px 4px;
+  padding: 0;
+  padding-inline: 0;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 15%);
+
+  > .scrollable {
+    border: 3px solid var(--color-xp-title-blue);
+    border-top: none;
+    border-radius: 0;
+  }
+
+  &:last-child {
+    padding-inline-end: 0;
+  }
+}
+
+.drawer {
+  background: var(--color-xp-window-bg);
+  border-radius: 0;
+  border: none;
+  margin: 8px 4px;
+  padding: 0;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 15%);
+
+  &:first-child {
+    padding-inline-start: 0;
+  }
+}
+
+.drawer__header {
+  border: none;
+  border-radius: 0;
+  margin: 0;
+  margin-bottom: 0;
+}
+
+.drawer__pager {
+  border: 3px solid var(--color-xp-title-blue);
+  border-top: none;
+  border-radius: 0;
+}
+
+.drawer__inner {
+  border: none;
+}
+
+// Drawer search box - continuous border
+.drawer > .search {
+  border-left: 3px solid var(--color-xp-title-blue);
+  border-right: 3px solid var(--color-xp-title-blue);
+  margin: 0;
+  padding: 8px;
+
+  .search__icon-wrapper {
+    top: 50%;
+    transform: translateY(-50%);
+    margin-inline-start: 10px;
+  }
+
+  .search__input {
+    padding-inline-start: 36px;
+  }
+}
+
+.column-header {
+  border: none;
+  border-radius: 0;
+  margin: 0;
+}
+
+// Single column layout
+.columns-area__panels {
+  &__pane {
+    &__inner {
+      background: var(--color-xp-window-bg);
+      border: 3px solid var(--color-xp-title-blue);
+      border-radius: 5px;
+      margin: 8px;
+      padding: 8px;
+      box-shadow: 2px 2px 4px rgba(0, 0, 0, 15%);
+      overflow: hidden;
+    }
+  }
+
+  &__main {
+    border: none;
+    margin: 8px;
+    overflow: hidden;
+
+    .column {
+      background: var(--color-xp-window-bg);
+      border: none;
+      margin: 0;
+      padding: 0;
+      box-shadow: none;
+      border-radius: 0;
+
+      > .scrollable {
+        border: none;
+      }
+    }
+
+    .column-header {
+      border: none;
+      border-radius: 0;
+    }
+  }
+}
+
+.status,
+.detailed-status,
+.account,
+.notification {
+  border-radius: 0;
+}
+
+// Status cards
+.status {
+  border-bottom: 1px solid #c0c0c0;
+}
+
+// Column content area
+.scrollable {
+  border-top: 1px solid #808080;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 10%);
+}
+
+// Links
+a:not(.button) {
+  color: var(--color-xp-link);
+
+  &:hover {
+    color: var(--color-xp-link-hover);
+  }
+}
+
+// Mention and hashtag colors
+a.mention {
+  color: var(--color-xp-light-blue);
+}
+
+a.hashtag {
+  color: #008000;
+}
+
+// Tab bars and navigation - fix contrast
+.account__section-headline,
+.notification__filter-bar,
+.detailed-status__action-bar {
+  background: #d4d0c8;
+  border-bottom: 1px solid #808080;
+  border-left: 3px solid var(--color-xp-title-blue);
+  border-right: 3px solid var(--color-xp-title-blue);
+
+  a,
+  button {
+    color: #000;
+
+    &:hover,
+    &.active {
+      color: #000080;
+      background: #e8e8e8;
+    }
+  }
+}
+
+// Fix dark backgrounds
+.account__header,
+.account__header__bar {
+  background: #d4d0c8;
+}
+
+.account__header__tabs__name {
+  h1,
+  small {
+    color: #000;
+  }
+}
+
+.account__header__bio {
+  color: #000;
+}
+
+// Badge styling
+.account-role {
+  background: #e8e8e8;
+  color: #000080;
+  border: 1px solid #808080;
+}
+
+// Account details (joined date, etc.)
+.account__header__fields {
+  background: #fff;
+  border: 1px solid #808080;
+
+  dt {
+    color: #000;
+    background: #d4d0c8;
+    border-bottom: 1px solid #808080;
+  }
+
+  dd {
+    color: #000;
+    background: #fff;
+    border-bottom: 1px solid #c0c0c0;
+  }
+}
+
+// Extra info sections
+.account__header__extra__links {
+  color: #000;
+
+  a {
+    color: #000;
+
+    strong {
+      color: #000;
+    }
+  }
+}
+
+// Compose area
+.compose-form {
+  .compose-form__buttons-wrapper {
+    background: var(--color-xp-button-face);
+  }
+}
+
+// XP style scrollbars
+::-webkit-scrollbar {
+  width: 17px;
+  height: 17px;
+}
+
+::-webkit-scrollbar-track {
+  background: linear-gradient(90deg, #d4d0c8 0%, #e0ddd5 50%, #d4d0c8 100%);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(90deg, #fff 0%, #d4d0c8 50%, #a0a0a0 100%);
+  border: 1px solid #808080;
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-button {
+  background: #d4d0c8;
+  border: 1px solid #808080;
+}

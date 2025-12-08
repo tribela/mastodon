@@ -1,0 +1,18 @@
+@use 'base';
+@use 'light';
+@use '../../mastodon/theme/light' as mastodon-light;
+@use '../../mastodon/theme/utils' as utils;
+
+// Apply Retro XP color palette globally
+html {
+  @include base.palette;
+}
+
+// Retro XP always uses light theme (XP Luna look)
+html[data-user-theme='retroxp'] {
+  color-scheme: light;
+
+  @include mastodon-light.tokens;
+  @include utils.invert-on-light;
+  @include light.tokens;
+}

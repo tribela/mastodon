@@ -1,0 +1,29 @@
+// Windows 95 color palette - Classic look
+@mixin palette {
+  // Classic Win95 system colors
+  --color-win95-teal: #008080;
+  --color-win95-navy: #000080;
+  --color-win95-silver: #c0c0c0;
+  --color-win95-gray: #808080;
+  --color-win95-dark-gray: #404040;
+  --color-win95-white: #fff;
+  --color-win95-black: #000;
+  --color-win95-button-face: #c0c0c0;
+  --color-win95-button-highlight: #fff;
+  --color-win95-button-shadow: #808080;
+  --color-win95-button-dark-shadow: #000;
+  --color-win95-window: #fff;
+  --color-win95-window-text: #000;
+  --color-win95-active-title: #000080;
+  --color-win95-active-title-text: #fff;
+  --color-win95-inactive-title: #808080;
+  --color-win95-inactive-title-text: #c0c0c0;
+
+  // Accent colors
+  --color-win95-yellow: #ff0;
+  --color-win95-green: #008000;
+  --color-win95-red: #f00;
+  --color-win95-blue: #00f;
+  --color-win95-cyan: #0ff;
+  --color-win95-magenta: #f0f;
+}
