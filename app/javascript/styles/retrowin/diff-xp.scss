@@ -6,7 +6,7 @@ html {
 
 // Windows 10 "Activate Windows" watermark (desktop only)
 @media screen and (width >= 1175px) {
-  body::after {
+  body::before {
     content: '정품 인증\A설정으로 이동하여 정품 인증하세요.';
     white-space: pre;
     position: fixed;
@@ -19,7 +19,6 @@ html {
     color: rgba(255, 255, 255, 50%);
     text-align: right;
     pointer-events: none;
-    z-index: 99999;
   }
 }
 
