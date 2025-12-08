@@ -242,20 +242,20 @@ select,
   a,
   a:not(.button),
   button {
-    color: #000 !important;
+    color: var(--color-xp-text) !important;
     border-radius: 3px;
 
     &:hover {
       background: var(--color-xp-light-blue);
-      color: #fff !important;
+      color: var(--color-xp-text-white) !important;
 
       .icon {
-        color: #fff !important;
+        color: var(--color-xp-text-white) !important;
       }
     }
 
     .icon {
-      color: #000 !important;
+      color: var(--color-xp-text) !important;
     }
   }
 
@@ -445,19 +445,19 @@ a.hashtag {
 .account__section-headline,
 .notification__filter-bar,
 .detailed-status__action-bar {
-  background: #d4d0c8;
-  border-bottom: 1px solid #808080;
+  background: var(--color-xp-button-face);
+  border-bottom: 1px solid var(--color-xp-button-shadow);
   border-left: 3px solid var(--color-xp-title-blue);
   border-right: 3px solid var(--color-xp-title-blue);
 
   a,
   button {
-    color: #000;
+    color: var(--color-xp-text);
 
     &:hover,
     &.active {
-      color: #000080;
-      background: #e8e8e8;
+      color: var(--color-xp-light-blue);
+      background: var(--color-xp-window-white);
     }
   }
 }
@@ -465,54 +465,54 @@ a.hashtag {
 // Fix dark backgrounds
 .account__header,
 .account__header__bar {
-  background: #d4d0c8;
+  background: var(--color-xp-button-face);
 }
 
 .account__header__tabs__name {
   h1,
   small {
-    color: #000;
+    color: var(--color-xp-text);
   }
 }
 
 .account__header__bio {
-  color: #000;
+  color: var(--color-xp-text);
 }
 
 // Badge styling
 .account-role {
-  background: #e8e8e8;
-  color: #000080;
-  border: 1px solid #808080;
+  background: var(--color-xp-window-white);
+  color: var(--color-xp-light-blue);
+  border: 1px solid var(--color-xp-button-shadow);
 }
 
 // Account details (joined date, etc.)
 .account__header__fields {
-  background: #fff;
-  border: 1px solid #808080;
+  background: var(--color-xp-window-white);
+  border: 1px solid var(--color-xp-button-shadow);
 
   dt {
-    color: #000;
-    background: #d4d0c8;
-    border-bottom: 1px solid #808080;
+    color: var(--color-xp-text);
+    background: var(--color-xp-button-face);
+    border-bottom: 1px solid var(--color-xp-button-shadow);
   }
 
   dd {
-    color: #000;
-    background: #fff;
-    border-bottom: 1px solid #c0c0c0;
+    color: var(--color-xp-text);
+    background: var(--color-xp-window-white);
+    border-bottom: 1px solid var(--color-xp-button-shadow);
   }
 }
 
 // Extra info sections
 .account__header__extra__links {
-  color: #000;
+  color: var(--color-xp-text);
 
   a {
-    color: #000;
+    color: var(--color-xp-text);
 
     strong {
-      color: #000;
+      color: var(--color-xp-text);
     }
   }
 }
@@ -543,4 +543,75 @@ a.hashtag {
 ::-webkit-scrollbar-button {
   background: #d4d0c8;
   border: 1px solid #808080;
+}
+
+// ===========================================
+// XP Black Edition (Dark Mode) Overrides
+// Dark chrome with light window content areas
+// ===========================================
+@media (prefers-color-scheme: dark) {
+  // Dark mode title bars - dark gray gradient
+  .column-header {
+    background: linear-gradient(
+      180deg,
+      #5a5a5a 0%,
+      #4a4a4a 10%,
+      #3a3a3a 50%,
+      #2c2c2c 90%,
+      #1a1a1a 100%
+    );
+  }
+
+  .drawer__header {
+    background: linear-gradient(180deg, #3a3a3a 0%, #2a2a2a 50%, #1e1e1e 100%);
+  }
+
+  // Dark taskbar/drawer borders
+  .drawer {
+    border: 3px solid #2c2c2c;
+  }
+
+  .drawer__pager {
+    border-color: #2c2c2c;
+  }
+
+  .drawer > .search {
+    border-left-color: #2c2c2c;
+    border-right-color: #2c2c2c;
+  }
+
+  // Column borders - dark gray
+  .column > .scrollable {
+    border-color: #2c2c2c;
+  }
+
+  .column-header {
+    border-color: #2c2c2c;
+  }
+
+  // Single column layout - dark borders
+  .columns-area__panels {
+    &__pane__inner {
+      border-color: #2c2c2c;
+    }
+  }
+
+  // Header buttons - white on dark title bar
+  .column-header__back-button,
+  .column-header__button,
+  .column-back-button {
+    color: #fff;
+
+    .icon {
+      color: #fff;
+    }
+
+    &:hover {
+      color: #ffa500;
+
+      .icon {
+        color: #ffa500;
+      }
+    }
+  }
 }

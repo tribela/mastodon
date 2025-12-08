@@ -1,6 +1,8 @@
 @use 'base';
 @use 'light';
+@use 'dark';
 @use '../../mastodon/theme/light' as mastodon-light;
+@use '../../mastodon/theme/dark' as mastodon-dark;
 @use '../../mastodon/theme/utils' as utils;
 
 // Apply Retro XP color palette globally
@@ -8,11 +10,21 @@ html {
   @include base.palette;
 }
 
-// Retro XP always uses light theme (XP Luna look)
+// Retro XP uses system theme preference
+// Light mode: XP Luna Blue
+// Dark mode: XP Black Edition
 html[data-user-theme='retroxp'] {
-  color-scheme: light;
+  color-scheme: light dark;
 
+  // Default: Light theme (XP Luna)
   @include mastodon-light.tokens;
   @include utils.invert-on-light;
   @include light.tokens;
+
+  // Dark mode: XP Black Edition
+  @media (prefers-color-scheme: dark) {
+    @include dark.palette-dark;
+    @include mastodon-dark.tokens;
+    @include dark.tokens-dark;
+  }
 }

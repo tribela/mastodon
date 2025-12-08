@@ -1,0 +1,66 @@
+// Windows XP Black Edition dark theme tokens
+// Reference: XP Black Edition has dark chrome but light window content
+@mixin palette-dark {
+  // XP Black Edition colors - dark chrome
+  --color-xp-blue: #1a1a1a;
+  --color-xp-light-blue: #3a6ea5;
+  --color-xp-title-blue: #2c2c2c;
+  --color-xp-title-gradient-start: #3a3a3a;
+  --color-xp-title-gradient-end: #4a4a4a;
+  --color-xp-taskbar: #1e1e1e;
+  --color-xp-desktop: #0c0c0c;
+  --color-xp-start-green: #2f9c2f;
+  --color-xp-start-green-dark: #1d7c1d;
+
+  // Window colors - light content area (like original XP)
+  --color-xp-window-bg: #ece9d8;
+  --color-xp-window-white: #fff;
+  --color-xp-button-face: #ece9d8;
+  --color-xp-button-highlight: #fff;
+  --color-xp-button-shadow: #aca899;
+  --color-xp-button-dark-shadow: #716f64;
+
+  // Text colors
+  --color-xp-text: #000;
+  --color-xp-text-white: #fff;
+  --color-xp-text-gray: #808080;
+
+  // Accent colors
+  --color-xp-link: #06c;
+  --color-xp-link-hover: #04a;
+  --color-xp-orange: #f60;
+  --color-xp-red: #c42b1c;
+  --color-xp-green: #2f9c2f;
+}
+
+@mixin tokens-dark {
+  /* TEXT TOKENS */
+
+  --color-text-primary: var(--color-xp-text);
+  --color-text-secondary: var(--color-xp-text-gray);
+  --color-text-tertiary: var(--color-xp-button-highlight);
+  --color-text-brand: var(--color-xp-light-blue);
+  --color-text-brand-on-inverted: var(--color-xp-text-white);
+  --color-text-on-brand-base: var(--color-xp-text-white);
+
+  /* BACKGROUND TOKENS */
+
+  --color-bg-ambient: var(--color-xp-desktop);
+  --color-bg-primary: var(--color-xp-window-bg);
+  --color-bg-secondary: var(--color-xp-button-face);
+  --color-bg-tertiary: var(--color-xp-button-shadow);
+  --color-bg-brand-base: var(--color-xp-light-blue);
+  --color-bg-inverted: var(--color-xp-blue);
+  --color-bg-elevated: var(--color-xp-window-white);
+  --color-bg-overlay: var(--color-xp-window-bg);
+
+  /* BORDER TOKENS */
+
+  --color-border-primary: var(--color-xp-button-shadow);
+
+  /* LEGACY TOKENS */
+
+  --rich-text-container-color: var(--color-xp-window-white);
+  --rich-text-text-color: var(--color-xp-text);
+  --rich-text-decorations-color: var(--color-xp-light-blue);
+}
