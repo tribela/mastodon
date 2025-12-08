@@ -193,7 +193,6 @@ select,
     var(--color-win95-button-shadow);
   margin: 4px;
   padding: 8px;
-  padding-bottom: 48px;
   margin-bottom: 8px;
   position: relative;
 }
@@ -202,7 +201,7 @@ select,
 .status__action-bar {
   box-sizing: border-box;
   position: absolute;
-  bottom: -1px;
+  bottom: -48px;
   left: -1px;
   background: var(--color-win95-silver);
   width: calc(100% + 2px);
@@ -213,6 +212,10 @@ select,
   display: flex;
   align-items: center;
   gap: 4px;
+}
+
+.status__wrapper {
+  padding-bottom: 48px;
 }
 
 .status__wrapper .status__action-bar {
@@ -633,12 +636,6 @@ a.hashtag {
       inset -2px -2px 0 var(--color-win95-button-shadow),
       inset 2px 2px 0 var(--color-win95-button-face);
   }
-}
-
-// Full width media (glitch)
-.media-gallery.full-width {
-  margin-left: -9px;
-  margin-right: -9px;
 }
 
 // Toast notification bar
