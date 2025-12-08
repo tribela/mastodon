@@ -13,7 +13,7 @@
   --color-xp-start-green-dark: #1d7c1d;
 
   // Window colors - light content area (like original XP)
-  --color-xp-window-bg: #ece9d8;
+  --color-xp-window-bg: #d4d0c8;
   --color-xp-window-white: #fff;
   --color-xp-button-face: #ece9d8;
   --color-xp-button-highlight: #fff;
@@ -31,6 +31,12 @@
   --color-xp-orange: #f60;
   --color-xp-red: #c42b1c;
   --color-xp-green: #2f9c2f;
+
+  // Toast notification (dark mode)
+  --color-xp-toast-bg: #3a3a3a;
+  --color-xp-toast-text: #fff;
+  --color-xp-toast-border: #555;
+  --color-xp-toast-action: #6cb3fa;
 }
 
 @mixin tokens-dark {
@@ -38,7 +44,7 @@
 
   --color-text-primary: var(--color-xp-text);
   --color-text-secondary: var(--color-xp-text-gray);
-  --color-text-tertiary: var(--color-xp-button-highlight);
+  --color-text-tertiary: var(--color-xp-button-shadow);
   --color-text-brand: var(--color-xp-light-blue);
   --color-text-brand-on-inverted: var(--color-xp-text-white);
   --color-text-on-brand-base: var(--color-xp-text-white);

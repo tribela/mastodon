@@ -1,9 +1,5 @@
 // Masto95 - Windows 95 style UI (Light mode only)
 
-html {
-  scrollbar-width: auto;
-}
-
 // Windows 95 classic 3D button style
 .button {
   background: var(--color-win95-button-face) !important;
@@ -162,38 +158,81 @@ select,
   border-radius: 0 !important;
 }
 
-// Columns area spacing
-.columns-area {
-  padding: 4px;
-}
-
 // Add 3D borders to main containers
 .column,
 .drawer {
   background: var(--color-win95-silver);
-  margin: 8px 4px;
   box-shadow:
     inset -1px -1px 0 var(--color-win95-button-dark-shadow),
     inset 1px 1px 0 var(--color-win95-button-highlight),
     inset -2px -2px 0 var(--color-win95-button-shadow),
     inset 2px 2px 0 var(--color-win95-button-face);
+
+  // Desktop: add margin
+  @media screen and (width > 759px) {
+    margin: 8px 4px;
+  }
 }
 
-// Status cards with Win95 look - sunken style
+// Status wrapper - grooved border
+.status__wrapper {
+  border: 2px groove var(--color-win95-silver);
+  margin: 4px;
+}
+
+// Status cards with Win95 look - white sunken box
 .status {
-  border: none;
-  border-bottom: 1px solid var(--color-win95-button-shadow);
-  box-shadow:
-    inset 1px 0 0 var(--color-win95-button-shadow),
-    inset -1px 0 0 var(--color-win95-button-highlight);
+  background: var(--color-win95-window);
+  border: 1px solid;
+  border-color: var(--color-win95-button-shadow)
+    var(--color-win95-button-highlight) var(--color-win95-button-highlight)
+    var(--color-win95-button-shadow);
+  margin: 4px;
+  padding: 8px;
+  padding-bottom: 40px;
+  margin-bottom: 8px;
+  position: relative;
 }
 
-// Column content area - sunken
+// Action bar - positioned at bottom of status
+.status__action-bar {
+  box-sizing: border-box;
+  position: absolute;
+  bottom: -1px;
+  left: -1px;
+  background: var(--color-win95-silver);
+  width: calc(100% + 2px);
+  padding: 4px 8px;
+  padding-left: 2px;
+  border-bottom: 2px groove var(--color-win95-silver);
+  border-top: 1px outset var(--color-win95-silver);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.status__wrapper .status__action-bar {
+  border-bottom-width: 0;
+}
+
+// Action bar button positioning
+.status__action-bar-button {
+  flex: 0 0 auto;
+}
+
+.status__action-bar-dropdown {
+  margin-left: auto;
+  margin-right: 8px;
+}
+
+// Column content area - sunken (using box-shadow to avoid layout issues)
 .scrollable {
+  padding: 3px;
   box-shadow:
-    inset 1px 1px 0 var(--color-win95-button-shadow),
-    inset -1px -1px 0 var(--color-win95-button-highlight),
-    inset 2px 2px 0 var(--color-win95-button-dark-shadow);
+    inset 2px 2px 0 var(--color-win95-button-shadow),
+    inset -2px -2px 0 var(--color-win95-button-highlight),
+    inset 3px 3px 0 var(--color-win95-button-dark-shadow),
+    inset -3px -3px 0 var(--color-win95-button-face);
 }
 
 // Links - Win95 blue
@@ -384,22 +423,274 @@ a.hashtag {
   }
 }
 
-// Scrollbar styling (for webkit browsers)
-::-webkit-scrollbar {
-  width: 16px;
-  height: 16px;
+// Windows 95 style context menu (dropdown menu)
+.dropdown-menu {
+  background: var(--color-win95-silver) !important;
+  backdrop-filter: none !important;
+  border: none !important;
+  padding: 2px !important;
+  box-shadow:
+    inset -1px -1px 0 var(--color-win95-button-dark-shadow),
+    inset 1px 1px 0 var(--color-win95-button-highlight),
+    inset -2px -2px 0 var(--color-win95-button-shadow),
+    inset 2px 2px 0 var(--color-win95-button-face) !important;
 }
 
-::-webkit-scrollbar-track {
+.dropdown-menu__separator {
+  border-bottom: 1px solid var(--color-win95-black) !important;
+  border-top: none !important;
+  margin: 4px 2px !important;
+  height: 0 !important;
+}
+
+.dropdown-menu__item {
+  font-weight: normal !important;
+
+  a,
+  button {
+    color: var(--color-win95-black) !important;
+    padding: 4px 24px !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+
+    &:focus,
+    &:hover,
+    &:active {
+      &:not(:disabled, [aria-disabled='true']) {
+        background: var(--color-win95-navy) !important;
+        color: var(--color-win95-white) !important;
+        outline: none !important;
+
+        .icon {
+          color: var(--color-win95-white) !important;
+        }
+      }
+    }
+
+    .icon {
+      color: var(--color-win95-black) !important;
+      width: 16px !important;
+      height: 16px !important;
+    }
+  }
+
+  &--dangerous {
+    a,
+    button {
+      color: var(--color-win95-black) !important;
+
+      &:focus,
+      &:hover,
+      &:active {
+        &:not(:disabled, [aria-disabled='true']) {
+          background: var(--color-win95-navy) !important;
+          color: var(--color-win95-white) !important;
+        }
+      }
+    }
+  }
+}
+
+// Notification styles - Windows 95
+.notification-group,
+.notification-ungrouped {
+  background: var(--color-win95-window) !important;
+  border: 1px solid;
+  border-color: var(--color-win95-button-shadow)
+    var(--color-win95-button-highlight) var(--color-win95-button-highlight)
+    var(--color-win95-button-shadow);
+  margin: 4px !important;
+
+  &__icon {
+    color: var(--color-win95-black) !important;
+
+    .icon {
+      color: var(--color-win95-black) !important;
+    }
+  }
+}
+
+.notification-group__main {
+  color: var(--color-win95-black) !important;
+
+  strong,
+  bdi {
+    color: var(--color-win95-black) !important;
+  }
+}
+
+.notification-ungrouped__header {
+  color: var(--color-win95-button-shadow) !important;
+
+  .icon {
+    color: var(--color-win95-button-shadow) !important;
+  }
+}
+
+.notification__message {
+  color: var(--color-win95-black) !important;
+}
+
+.notification__display-name {
+  color: var(--color-win95-navy) !important;
+}
+
+// Notification filter bar tabs
+.notification__filter-bar {
+  background: var(--color-win95-silver) !important;
+
+  button {
+    color: var(--color-win95-black) !important;
+    background: var(--color-win95-button-face) !important;
+    border: none !important;
+    box-shadow:
+      inset -1px -1px 0 var(--color-win95-button-dark-shadow),
+      inset 1px 1px 0 var(--color-win95-button-highlight),
+      inset -2px -2px 0 var(--color-win95-button-shadow),
+      inset 2px 2px 0 var(--color-win95-button-face) !important;
+
+    &:hover {
+      background: var(--color-win95-silver) !important;
+    }
+
+    &.active {
+      background: var(--color-win95-white) !important;
+      box-shadow:
+        inset 1px 1px 0 var(--color-win95-button-dark-shadow),
+        inset -1px -1px 0 var(--color-win95-button-highlight),
+        inset 2px 2px 0 var(--color-win95-button-shadow) !important;
+    }
+  }
+}
+
+// Modal dialog action bar buttons
+.confirmation-modal__action-bar,
+.report-modal__action-bar,
+.mute-modal__action-bar,
+.block-modal__action-bar {
   background: var(--color-win95-silver);
+
+  .button,
+  .link-button,
+  a,
+  button {
+    all: unset;
+    background: var(--color-win95-button-face);
+    color: var(--color-win95-black);
+    padding: 4px 12px;
+    min-height: 23px;
+    font-size: 13px;
+    font-weight: normal;
+    font-family: inherit;
+    line-height: 1.5;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-sizing: border-box;
+    vertical-align: middle;
+    box-shadow:
+      inset -1px -1px 0 var(--color-win95-button-dark-shadow),
+      inset 1px 1px 0 var(--color-win95-button-highlight),
+      inset -2px -2px 0 var(--color-win95-button-shadow),
+      inset 2px 2px 0 var(--color-win95-button-face);
+
+    &:hover {
+      background: var(--color-win95-silver);
+    }
+
+    &:active {
+      box-shadow:
+        inset 1px 1px 0 var(--color-win95-button-dark-shadow),
+        inset -1px -1px 0 var(--color-win95-button-highlight),
+        inset 2px 2px 0 var(--color-win95-button-shadow);
+    }
+
+    &:focus-visible {
+      outline: 1px dotted #000;
+      outline-offset: -4px;
+    }
+  }
 }
 
-::-webkit-scrollbar-thumb {
-  background: var(--color-win95-button-face);
-  border: 1px outset var(--color-win95-button-highlight);
+// Safety action modal link button
+.safety-action-modal {
+  &__actions .link-button {
+    padding: 4px 12px;
+    min-height: 23px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    box-shadow:
+      inset -1px -1px 0 var(--color-win95-button-dark-shadow),
+      inset 1px 1px 0 var(--color-win95-button-highlight),
+      inset -2px -2px 0 var(--color-win95-button-shadow),
+      inset 2px 2px 0 var(--color-win95-button-face);
+  }
 }
 
-::-webkit-scrollbar-button {
-  background: var(--color-win95-button-face);
-  border: 1px outset var(--color-win95-button-highlight);
+// Toast notification bar
+.notification-bar {
+  background: #ffc;
+  color: #000;
+  box-shadow:
+    inset -1px -1px 0 var(--color-win95-button-dark-shadow),
+    inset 1px 1px 0 var(--color-win95-button-highlight),
+    inset -2px -2px 0 var(--color-win95-button-shadow),
+    inset 2px 2px 0 var(--color-win95-button-face);
+
+  .notification-bar__action {
+    color: var(--color-win95-navy);
+  }
+}
+
+// Mobile bottom navigation bar - Win95 Taskbar style (teal)
+.ui__navigation-bar {
+  background: var(--color-win95-teal);
+  border-top: none;
+  backdrop-filter: none;
+  box-shadow:
+    inset 0 1px 0 var(--color-win95-button-highlight),
+    inset 0 -1px 0 var(--color-win95-button-dark-shadow);
+
+  &__items {
+    padding: 0 2px;
+  }
+
+  &__item {
+    color: #fff;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 60%);
+    padding: 6px 10px;
+    border-top: none;
+    gap: 4px;
+    font-weight: bold;
+    font-size: 11px;
+
+    .icon {
+      color: #fff;
+    }
+
+    &:hover {
+      background: rgba(255, 255, 255, 15%);
+    }
+
+    &.active {
+      background: var(--color-win95-navy);
+      color: #fff;
+      box-shadow:
+        inset 1px 1px 0 var(--color-win95-button-dark-shadow),
+        inset -1px -1px 0 var(--color-win95-button-highlight);
+
+      .icon {
+        color: #fff;
+      }
+    }
+
+    &:focus-visible {
+      outline: 1px dotted #fff;
+      outline-offset: -2px;
+    }
+  }
 }

@@ -23,7 +23,8 @@ html {
 }
 
 // XP Luna style buttons (rounded, neutral gray)
-.button {
+.button,
+.link-button {
   background: linear-gradient(
     180deg,
     #fff 0%,
@@ -46,7 +47,11 @@ html {
       #e0e0e0 98%,
       #d0d0d0 100%
     );
-    border-color: #6e90c7;
+  }
+
+  &:focus {
+    outline: 1px dotted #000;
+    outline-offset: -4px;
   }
 
   &:active {
@@ -376,6 +381,15 @@ select option {
       padding: 8px;
       box-shadow: 2px 2px 4px rgba(0, 0, 0, 15%);
       overflow: hidden;
+
+      // Mobile: reset for sliding navigation panel
+      @media screen and (width <= 759px) {
+        border: none;
+        border-radius: 0;
+        margin: 0;
+        padding: 0;
+        box-shadow: none;
+      }
     }
   }
 
@@ -408,12 +422,113 @@ select option {
 .detailed-status,
 .account,
 .notification {
+  background: #fff;
   border-radius: 0;
+  color: var(--color-xp-text);
+
+  // Ensure all text content is visible
+  .display-name,
+  .display-name__account,
+  .status__display-name,
+  .status__relative-time,
+  .status__content,
+  .status__content__text,
+  .notification__message,
+  .account__display-name,
+  p,
+  span {
+    color: var(--color-xp-text);
+  }
+
+  strong {
+    color: var(--color-xp-text);
+  }
 }
 
 // Status cards
 .status {
   border-bottom: 1px solid #c0c0c0;
+}
+
+// Notification message text
+.notification__message {
+  color: var(--color-xp-text);
+
+  span {
+    color: var(--color-xp-text);
+  }
+}
+
+// Display names
+.display-name {
+  color: var(--color-xp-text);
+
+  &__account {
+    color: var(--color-xp-text-gray);
+  }
+}
+
+// Icons in status/notification areas - force black even in dark theme
+.status,
+.detailed-status,
+.account,
+.notification {
+  .icon {
+    color: #000 !important;
+  }
+
+  .icon-button {
+    color: #808080 !important;
+
+    .icon {
+      color: inherit !important;
+    }
+
+    &:hover,
+    &.active {
+      color: #245edb !important;
+
+      .icon {
+        color: inherit !important;
+      }
+    }
+  }
+}
+
+// Notification icons
+.notification__message {
+  .icon {
+    color: #000 !important;
+  }
+}
+
+// Notification group icons
+.notification-group--relationships-severance-event,
+.notification-group--admin-report,
+.notification-group--admin-sign-up {
+  .notification-group__icon {
+    color: #000 !important;
+
+    .icon {
+      color: #000 !important;
+    }
+  }
+}
+
+// Status action bar icons
+.status__action-bar {
+  .icon-button {
+    color: #808080 !important;
+
+    .icon {
+      color: inherit !important;
+    }
+
+    &:hover,
+    &.active {
+      color: #245edb !important;
+    }
+  }
 }
 
 // Column content area
@@ -544,6 +659,119 @@ a.hashtag {
   border: 1px solid #808080;
 }
 
+// Modal dialogs - XP style window
+.modal-root__modal {
+  border-radius: 8px !important;
+  overflow: hidden;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 40%);
+  border: 3px solid #0054e3;
+}
+
+.confirmation-modal,
+.report-modal,
+.actions-modal,
+.mute-modal,
+.block-modal,
+.boost-modal,
+.embed-modal,
+.focal-point-modal {
+  background: #ece9d8;
+  color: #000;
+  border-radius: 0 !important;
+  border: none !important;
+  overflow: hidden;
+
+  // XP title bar
+  &::before {
+    content: '';
+    display: block;
+    height: 28px;
+    background: linear-gradient(
+      180deg,
+      #3a93ff 0%,
+      #0058ee 10%,
+      #0054e3 90%,
+      #0a246a 100%
+    );
+    margin: -20px -20px 16px;
+  }
+
+  h1,
+  p,
+  span,
+  strong {
+    color: #000 !important;
+  }
+}
+
+.confirmation-modal__content,
+.report-modal__content {
+  padding: 16px 20px;
+  color: #000;
+  background: #ece9d8;
+}
+
+.confirmation-modal__action-bar,
+.report-modal__action-bar,
+.mute-modal__action-bar,
+.block-modal__action-bar {
+  background: #ece9d8;
+  border-top: none;
+  padding: 12px 20px 20px;
+  justify-content: flex-end;
+  gap: 8px;
+
+  // Style for all buttons and links in action bar
+  .button,
+  .link-button,
+  a,
+  button {
+    all: unset;
+    background: linear-gradient(180deg, #fff 0%, #ece9d8 50%, #d4d0c8 100%);
+    color: #000;
+    border: 1px solid #808080;
+    border-radius: 3px;
+    box-shadow:
+      inset 1px 1px 0 #fff,
+      inset -1px -1px 0 #919b9c;
+    padding: 4px 20px;
+    min-width: 75px;
+    min-height: 23px;
+    font-size: 13px;
+    font-weight: normal;
+    font-family: inherit;
+    line-height: 1.5;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-sizing: border-box;
+    vertical-align: middle;
+
+    &:hover,
+    &:focus {
+      background: linear-gradient(180deg, #fff 0%, #f5f4f0 50%, #e8e4dc 100%);
+      outline: 1px dotted #000;
+      outline-offset: -4px;
+    }
+
+    &:active {
+      background: linear-gradient(180deg, #d4d0c8 0%, #ece9d8 100%) !important;
+      border: 1px solid #808080 !important;
+      border-radius: 3px !important;
+      box-shadow:
+        inset -1px -1px 0 #fff,
+        inset 1px 1px 0 #919b9c !important;
+    }
+
+    &:focus-visible {
+      outline: 1px dotted #000 !important;
+      outline-offset: -4px;
+    }
+  }
+}
+
 // ===========================================
 // XP Black Edition (Dark Mode) Overrides
 // Dark chrome with light window content areas
@@ -610,6 +838,107 @@ a.hashtag {
 
       .icon {
         color: #ffa500;
+      }
+    }
+  }
+
+  .safety-action-modal {
+    &__top,
+    &__bottom {
+      border-radius: 0;
+    }
+
+    &__actions .link-button {
+      padding: 4px 20px;
+      min-height: 23px;
+      border: 1px solid #808080;
+      border-radius: 3px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-sizing: border-box;
+    }
+  }
+}
+
+// Toast notification bar
+.notification-bar {
+  background: var(--color-xp-toast-bg);
+  color: var(--color-xp-toast-text);
+  border: 1px solid var(--color-xp-toast-border);
+  border-radius: 3px;
+
+  .notification-bar__action {
+    color: var(--color-xp-toast-action);
+  }
+}
+
+// Mobile bottom navigation bar - XP Taskbar style
+.ui__navigation-bar {
+  background: linear-gradient(
+    180deg,
+    #3168d5 0%,
+    #4289ef 3%,
+    #2862d3 5%,
+    #1c5bce 90%,
+    #1941a0 100%
+  );
+  border-top: 2px solid #0a246a;
+  backdrop-filter: none;
+
+  &__items {
+    padding: 0 4px;
+  }
+
+  &__item {
+    color: #fff;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 50%);
+    padding: 8px 12px;
+    border-top: none;
+    gap: 4px;
+    font-weight: bold;
+    font-size: 11px;
+
+    .icon {
+      color: #fff;
+    }
+
+    &:hover {
+      background: rgba(255, 255, 255, 20%);
+    }
+
+    &.active {
+      background: linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 30%) 0%,
+        rgba(255, 255, 255, 10%) 100%
+      );
+      color: #fff;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 30%);
+
+      .icon {
+        color: #fff;
+      }
+    }
+
+    &:focus-visible {
+      border-top-color: #fff;
+    }
+  }
+
+  // XP Black Edition dark mode
+  @media (prefers-color-scheme: dark) {
+    background: linear-gradient(180deg, #3a3a3a 0%, #2a2a2a 50%, #1e1e1e 100%);
+    border-top: 2px solid #0a0a0a;
+
+    &__item {
+      &.active {
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 15%) 0%,
+          rgba(255, 255, 255, 5%) 100%
+        );
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 15%);
       }
     }
   }

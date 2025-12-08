@@ -30,4 +30,10 @@
   --color-xp-orange: #f60;
   --color-xp-red: #c42b1c;
   --color-xp-green: #2f9c2f;
+
+  // Toast notification (balloon tip style)
+  --color-xp-toast-bg: #ffc;
+  --color-xp-toast-text: #000;
+  --color-xp-toast-border: #808080;
+  --color-xp-toast-action: var(--color-xp-link);
 }
