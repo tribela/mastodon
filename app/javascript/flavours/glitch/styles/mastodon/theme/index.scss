@@ -6,7 +6,8 @@
 html {
   @include base.palette;
 
-  &[data-user-theme='system'] {
+  &[data-user-theme='system'],
+  &[data-user-theme='mastodon-big'] {
     color-scheme: dark light;
 
     @media (prefers-color-scheme: dark) {
@@ -31,7 +32,11 @@ html {
 
 .theme-dark,
 html:where(
-  :not([data-user-theme='mastodon-light'], [data-user-theme='system'])
+  :not(
+    [data-user-theme='mastodon-light'],
+    [data-user-theme='mastodon-big'],
+    [data-user-theme='system']
+  )
 ) {
   color-scheme: dark;
 
