@@ -1,0 +1,9 @@
+@use 'fonts/qdon';
+
+@use 'common';
+@use 'qdon/theme';
+@use 'qdon/diff-dark';
+
+html {
+  color-scheme: dark;
+}

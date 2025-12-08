@@ -10,8 +10,12 @@ html {
   @include base.palette;
 }
 
-// System theme: apply appropriate tokens based on user preference
-html[data-user-theme='system'] {
+// Qdon themes follow OS dark/light preference
+html[data-user-theme='system'],
+html[data-user-theme='qdon'],
+html[data-user-theme='qdon-big'] {
+  color-scheme: dark light;
+
   @media (prefers-color-scheme: dark) {
     @include mastodon-dark.tokens;
     @include utils.invert-on-dark;
@@ -25,9 +29,17 @@ html[data-user-theme='system'] {
   }
 }
 
-// Dark theme (qdon, qdon-big skins or default when qdon stylesheet is loaded)
+// Dark theme fallback (default when qdon stylesheet is loaded)
 .theme-dark,
-html:where(:not([data-user-theme='qdon-light'], [data-user-theme='system'])) {
+html:where(
+  :not(
+    [data-user-theme='qdon'],
+    [data-user-theme='qdon-dark'],
+    [data-user-theme='qdon-light'],
+    [data-user-theme='qdon-big'],
+    [data-user-theme='system']
+  )
+) {
   color-scheme: dark;
 
   @include mastodon-dark.tokens;
@@ -35,7 +47,16 @@ html:where(:not([data-user-theme='qdon-light'], [data-user-theme='system'])) {
   @include dark.tokens;
 }
 
-// Light theme (qdon-light skin)
+// Dark theme (qdon-dark skin - fixed dark mode)
+html:where([data-user-theme='qdon-dark']) {
+  color-scheme: dark;
+
+  @include mastodon-dark.tokens;
+  @include utils.invert-on-dark;
+  @include dark.tokens;
+}
+
+// Light theme (qdon-light skin - fixed light mode)
 .theme-light,
 html:where([data-user-theme='qdon-light']) {
   color-scheme: light;

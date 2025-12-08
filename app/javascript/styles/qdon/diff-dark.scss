@@ -12,11 +12,11 @@ html {
   }
 }
 
-// Colourise mention and hashtag with qdon brand colors (use dark-pink and dark-blue for light theme)
+// Colourise mention and hashtag with qdon brand colors (dark theme)
 a.mention {
-  color: var(--color-dark-pink);
+  color: var(--color-pink);
 }
 
 a.hashtag {
-  color: var(--color-dark-blue);
+  color: var(--color-skyblue);
 }

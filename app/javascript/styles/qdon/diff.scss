@@ -13,10 +13,23 @@ html {
 }
 
 // Colourise mention and hashtag with qdon brand colors
-a.mention {
-  color: var(--color-pink);
+// Colors change based on OS dark/light preference
+@media (prefers-color-scheme: dark) {
+  a.mention {
+    color: var(--color-pink);
+  }
+
+  a.hashtag {
+    color: var(--color-skyblue);
+  }
 }
 
-a.hashtag {
-  color: var(--color-skyblue);
+@media (prefers-color-scheme: light) {
+  a.mention {
+    color: var(--color-dark-pink);
+  }
+
+  a.hashtag {
+    color: var(--color-dark-blue);
+  }
 }
