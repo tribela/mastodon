@@ -1,10 +1,7 @@
 @use 'fonts/qdon';
 
-@use 'qdon-light/css_variables';
-@use 'mastodon/variables' with (
-  $emojis-requiring-inversion: 'chains'
-);
 @use 'common';
+@use 'qdon-light/css_variables';
 @use 'qdon-light/var_diff';
 
 html {

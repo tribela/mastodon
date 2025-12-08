@@ -1,7 +1,5 @@
-@use '../mastodon-light/css_variables';
-@use '../mastodon/theme_utils' as utils;
-
-:root {
+:root,
+html[data-user-theme='system'] {
   // Qdon brand colors (light theme uses slightly different shades)
   --color-skyblue: hsl(212deg, 100%, 65%);
   --color-dark-blue: hsl(212deg, 100%, 50%);
