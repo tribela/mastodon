@@ -6,7 +6,9 @@
   = opengraph 'og:site_name', site_title
   = opengraph 'profile:username', acct(@account)[1..]
 
-  = vite_typescript_tag 'wrapstodon.tsx', crossorigin: 'anonymous'
+  = flavoured_vite_typescript_tag 'wrapstodon.tsx', crossorigin: 'anonymous'
+
+- content_for :html_classes, 'theme-dark'
 
 #wrapstodon
 = render_wrapstodon_share_data @generated_annual_report

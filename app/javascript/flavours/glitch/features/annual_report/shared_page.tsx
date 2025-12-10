@@ -1,14 +1,14 @@
 import type { FC } from 'react';
 
-import { IconLogo } from '@/mastodon/components/logo';
+import { IconLogo } from '@/flavours/glitch/components/logo';
 
 import { AnnualReport } from './index';
-import classes from './share.module.css';
+import classes from './shared_page.module.css';
 
-export const WrapstodonShare: FC = () => {
+export const WrapstodonSharedPage: FC = () => {
   return (
     <main className={classes.wrapper}>
-      <AnnualReport share={false} />
+      <AnnualReport />
       <footer className={classes.footer}>
         <IconLogo className={classes.logo} />
         Generated with ♥ by the Mastodon team
