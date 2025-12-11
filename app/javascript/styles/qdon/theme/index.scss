@@ -37,7 +37,8 @@ html:where(
     [data-user-theme='qdon-dark'],
     [data-user-theme='qdon-light'],
     [data-user-theme='qdon-big'],
-    [data-user-theme='system']
+    [data-user-theme='qdon-big-dark'],
+    [data-user-theme='qdon-big-light']
   )
 ) {
   color-scheme: dark;
@@ -48,7 +49,8 @@ html:where(
 }
 
 // Dark theme (qdon-dark skin - fixed dark mode)
-html:where([data-user-theme='qdon-dark']) {
+html:where([data-user-theme='qdon-dark']),
+html:where([data-user-theme='qdon-big-dark']) {
   color-scheme: dark;
 
   @include mastodon-dark.tokens;
@@ -58,7 +60,8 @@ html:where([data-user-theme='qdon-dark']) {
 
 // Light theme (qdon-light skin - fixed light mode)
 .theme-light,
-html:where([data-user-theme='qdon-light']) {
+html:where([data-user-theme='qdon-light']),
+html:where([data-user-theme='qdon-big-light']) {
   color-scheme: light;
 
   @include mastodon-light.tokens;
