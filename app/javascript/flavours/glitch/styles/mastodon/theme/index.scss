@@ -6,8 +6,8 @@
 html {
   @include base.palette;
 
-  &[data-user-theme='system'],
-  &[data-user-theme='mastodon-big'] {
+  &:where([data-user-theme='system']),
+  &:where([data-user-theme='mastodon-big']) {
     color-scheme: dark light;
 
     @media (prefers-color-scheme: dark) {

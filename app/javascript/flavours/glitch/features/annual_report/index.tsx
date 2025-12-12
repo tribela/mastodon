@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import type { FC } from 'react';
 
-import { defineMessage, FormattedMessage, useIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 
 import { useLocation } from 'react-router';
 
@@ -23,12 +23,6 @@ import { NewPosts } from './new_posts';
 
 const moduleClassNames = classNames.bind(styles);
 
-export const shareMessage = defineMessage({
-  id: 'annual_report.summary.share_message',
-  defaultMessage: 'I got the {archetype} archetype!',
-});
-
-// Share = false when using the embedded version of the report.
 export const AnnualReport: FC<{ context?: 'modal' | 'standalone' }> = ({
   context = 'standalone',
 }) => {
@@ -67,23 +61,16 @@ export const AnnualReport: FC<{ context?: 'modal' | 'standalone' }> = ({
     0,
   );
 
-  const newFollowerCount = report.data.time_series.reduce(
-    (sum, item) => sum + item.followers,
-    0,
-  );
+  const newFollowerCount =
+    context === 'modal' &&
+    report.data.time_series.reduce((sum, item) => sum + item.followers, 0);
 
   const topHashtag = report.data.top_hashtags[0];
 
   return (
     <div className={moduleClassNames(styles.wrapper, 'theme-dark')}>
       <div className={styles.header}>
-        <h1>
-          <FormattedMessage
-            id='annual_report.summary.title'
-            defaultMessage='Wrapstodon {year}'
-            values={{ year: report.year }}
-          />
-        </h1>
+        <h1>Wrapstodon {report.year}</h1>
         {account && <p>@{account.acct}</p>}
         {context === 'modal' && (
           <IconButton
@@ -100,7 +87,7 @@ export const AnnualReport: FC<{ context?: 'modal' | 'standalone' }> = ({
       </div>
 
       <div className={styles.stack}>
-        <HighlightedPost data={report.data.top_statuses} />
+        <HighlightedPost data={report.data.top_statuses} context={context} />
         <div
           className={moduleClassNames(styles.statsGrid, {
             noHashtag: !topHashtag,
@@ -110,13 +97,15 @@ export const AnnualReport: FC<{ context?: 'modal' | 'standalone' }> = ({
         >
           {!!newFollowerCount && <Followers count={newFollowerCount} />}
           {!!newPostCount && <NewPosts count={newPostCount} />}
-          {topHashtag && <MostUsedHashtag hashtag={topHashtag} />}
+          {topHashtag && (
+            <MostUsedHashtag
+              hashtag={topHashtag}
+              name={account?.display_name}
+              context={context}
+            />
+          )}
         </div>
-        <Archetype
-          report={report}
-          account={account}
-          canShare={context === 'modal'}
-        />
+        <Archetype report={report} account={account} context={context} />
       </div>
     </div>
   );

@@ -3,16 +3,14 @@
 @use '../../mastodon/theme/light' as mastodon-light;
 @use '../../mastodon/theme/utils' as utils;
 
-// Apply Retro 95 color palette to all elements
 html {
   @include base.palette;
-}
 
-// Retro 95 always uses light theme (classic 95 look)
-html[data-user-theme='retro95'] {
-  color-scheme: light;
+  &:where([data-user-theme='retro95']) {
+    color-scheme: light;
 
-  @include mastodon-light.tokens;
-  @include utils.invert-on-light;
-  @include light.tokens;
+    @include mastodon-light.tokens;
+    @include utils.invert-on-light;
+    @include light.tokens;
+  }
 }

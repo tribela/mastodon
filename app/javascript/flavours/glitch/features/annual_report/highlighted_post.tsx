@@ -4,10 +4,14 @@
                   @typescript-eslint/no-unsafe-member-access,
                   @typescript-eslint/no-unsafe-call */
 
+import type { ComponentPropsWithoutRef } from 'react';
+import { useCallback } from 'react';
+
 import { FormattedMessage } from 'react-intl';
 
 import classNames from 'classnames';
 
+import { InterceptStatusClicks } from 'flavours/glitch/components/status/intercept_status_clicks';
 import { StatusQuoteManager } from 'flavours/glitch/components/status_quoted';
 import type { TopStatuses } from 'flavours/glitch/models/annual_report';
 import { makeGetStatus } from 'flavours/glitch/selectors';
@@ -19,13 +23,32 @@ const getStatus = makeGetStatus() as unknown as (arg0: any, arg1: any) => any;
 
 export const HighlightedPost: React.FC<{
   data: TopStatuses;
-}> = ({ data }) => {
+  context: 'modal' | 'standalone';
+}> = ({ data, context }) => {
   const { by_reblogs, by_favourites, by_replies } = data;
 
   const statusId = by_reblogs || by_favourites || by_replies;
 
   const status = useAppSelector((state) =>
     statusId ? getStatus(state, { id: statusId }) : undefined,
+  );
+
+  const handleClick = useCallback<
+    ComponentPropsWithoutRef<typeof InterceptStatusClicks>['onPreventedClick']
+  >(
+    (clickedArea) => {
+      const link: string =
+        clickedArea === 'account'
+          ? status.getIn(['account', 'url'])
+          : status.get('url');
+
+      if (context === 'standalone') {
+        window.location.href = link;
+      } else {
+        window.open(link, '_blank');
+      }
+    },
+    [status, context],
   );
 
   if (!status) {
@@ -68,10 +91,12 @@ export const HighlightedPost: React.FC<{
             defaultMessage='Most popular post'
           />
         </h2>
-        <p>{label}</p>
+        {context === 'modal' && <p>{label}</p>}
       </div>
 
-      <StatusQuoteManager showActions={false} id={`${statusId}`} />
+      <InterceptStatusClicks onPreventedClick={handleClick}>
+        <StatusQuoteManager showActions={false} id={statusId} />
+      </InterceptStatusClicks>
     </div>
   );
 };
