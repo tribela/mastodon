@@ -5,27 +5,25 @@
 @use '../../mastodon/theme/light' as mastodon-light;
 @use '../../mastodon/theme/utils' as utils;
 
-// Apply qdon brand palette to all elements
 html {
   @include base.palette;
-}
 
-// Qdon themes follow OS dark/light preference
-html[data-user-theme='system'],
-html[data-user-theme='qdon'],
-html[data-user-theme='qdon-big'] {
-  color-scheme: dark light;
+  &:where([data-user-theme='system']),
+  &:where([data-user-theme='qdon']),
+  &:where([data-user-theme='qdon-big']) {
+    color-scheme: dark light;
 
-  @media (prefers-color-scheme: dark) {
-    @include mastodon-dark.tokens;
-    @include utils.invert-on-dark;
-    @include dark.tokens;
-  }
+    @media (prefers-color-scheme: dark) {
+      @include mastodon-dark.tokens;
+      @include utils.invert-on-dark;
+      @include dark.tokens;
+    }
 
-  @media (prefers-color-scheme: light) {
-    @include mastodon-light.tokens;
-    @include utils.invert-on-light;
-    @include light.tokens;
+    @media (prefers-color-scheme: light) {
+      @include mastodon-light.tokens;
+      @include utils.invert-on-light;
+      @include light.tokens;
+    }
   }
 }
 
