@@ -107,7 +107,7 @@ module Account::Interactions
     # When toggling a mute between hiding and allowing notifications, the mute will already exist, so the find_or_create_by! call will return the existing Mute without updating the hide_notifications attribute. Therefore, we check that hide_notifications? is what we want and set it if it isn't.
     domain_mute.update(hide_from_home: hide_from_home) if domain_mute.hide_from_home? != hide_from_home
 
-    domain_mute.save!
+    domain_mute
   end
 
   def unfollow!(other_account)

@@ -163,6 +163,40 @@ RSpec.describe Account::Interactions do
     end
   end
 
+  describe '#mute_domain!' do
+    subject { account.mute_domain!(domain, hide_from_home: hide_from_home) }
+
+    let(:domain) { 'example.com' }
+    let(:hide_from_home) { false }
+
+    it 'creates and returns AccountDomainMute' do
+      expect do
+        expect(subject).to be_a AccountDomainMute
+      end.to change { account.domain_mutes.count }.by 1
+    end
+
+    context 'with hide_from_home set to true' do
+      let(:hide_from_home) { true }
+
+      it 'creates AccountDomainMute with hide_from_home true' do
+        subject
+        expect(account.domain_mutes.find_by(domain: domain).hide_from_home).to be true
+      end
+    end
+
+    context 'when AccountDomainMute already exists' do
+      before do
+        account.mute_domain!(domain, hide_from_home: false)
+      end
+
+      let(:hide_from_home) { true }
+
+      it 'updates hide_from_home' do
+        expect { subject }.to change { account.domain_mutes.find_by(domain: domain).hide_from_home }.from(false).to(true)
+      end
+    end
+  end
+
   describe '#block_idna_domain!' do
     subject do
       [
@@ -270,6 +304,27 @@ RSpec.describe Account::Interactions do
     end
 
     context 'when unblocking the domain' do
+      it 'returns nil' do
+        expect(subject).to be_nil
+      end
+    end
+  end
+
+  describe '#unmute_domain!' do
+    subject { account.unmute_domain!(domain) }
+
+    let(:domain) { 'example.com' }
+
+    context 'when muting the domain' do
+      it 'returns destroyed AccountDomainMute' do
+        account_domain_mute = Fabricate(:account_domain_mute, domain: domain)
+        account.domain_mutes << account_domain_mute
+        expect(subject).to be_a AccountDomainMute
+        expect(subject).to be_destroyed
+      end
+    end
+
+    context 'when not muting the domain' do
       it 'returns nil' do
         expect(subject).to be_nil
       end
