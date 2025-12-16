@@ -6,6 +6,7 @@ import classNames from 'classnames';
 
 import { Avatar } from '@/flavours/glitch/components/avatar';
 import { Button } from '@/flavours/glitch/components/button';
+import { DisplayName } from '@/flavours/glitch/components/display_name';
 import { me } from '@/flavours/glitch/initial_state';
 import type { Account } from '@/flavours/glitch/models/account';
 import type {
@@ -137,9 +138,6 @@ export const Archetype: React.FC<{
     ? archetypeSelfDescriptions
     : archetypePublicDescriptions;
 
-  // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing -- we specifically want to fallback if `display_name` is empty
-  const name = account?.display_name || account?.username;
-
   return (
     <div
       className={classNames(styles.box, styles.archetype)}
@@ -182,7 +180,9 @@ export const Archetype: React.FC<{
             <FormattedMessage
               id='annual_report.summary.archetype.title_public'
               defaultMessage="{name}'s archetype"
-              values={{ name }}
+              values={{
+                name: <DisplayName variant='simple' account={account} />,
+              }}
             />
           )}
         </h2>
@@ -199,7 +199,7 @@ export const Archetype: React.FC<{
         <p>
           {isRevealed ? (
             intl.formatMessage(descriptions[archetype], {
-              name,
+              name: <DisplayName variant='simple' account={account} />,
             })
           ) : (
             <FormattedMessage
