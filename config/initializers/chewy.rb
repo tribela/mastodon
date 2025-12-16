@@ -8,7 +8,8 @@ password        = ENV.fetch('ES_PASS', nil).presence
 prefix          = ENV.fetch('ES_PREFIX', nil)
 ca_file         = ENV.fetch('ES_CA_FILE', nil).presence
 
-transport_options = { ssl: { ca_file: ca_file } } if ca_file.present?
+transport_options = { proxy: nil }
+transport_options[:ssl] = { ca_file: ca_file } if ca_file.present?
 
 Chewy.settings = {
   host: "#{host}:#{port}",
