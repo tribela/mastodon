@@ -7,7 +7,6 @@ import classNames from 'classnames';
 
 import { openModal } from '@/flavours/glitch/actions/modal';
 import { Icon } from '@/flavours/glitch/components/icon';
-import { selectWrapstodonYear } from '@/flavours/glitch/reducers/slices/annual_report';
 import {
   createAppSelector,
   useAppDispatch,
@@ -23,8 +22,7 @@ const selectReportModalOpen = createAppSelector(
 );
 
 export const AnnualReportNavItem: FC = () => {
-  const { state } = useAppSelector((state) => state.annualReport);
-  const year = useAppSelector(selectWrapstodonYear);
+  const { state, year } = useAppSelector((state) => state.annualReport);
   const active = useAppSelector(selectReportModalOpen);
 
   const dispatch = useAppDispatch();
