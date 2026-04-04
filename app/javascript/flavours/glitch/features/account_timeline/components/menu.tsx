@@ -46,6 +46,7 @@ import MoreHorizIcon from '@/material-icons/400-24px/more_horiz.svg?react';
 import PersonRemoveIcon from '@/material-icons/400-24px/person_remove.svg?react';
 import ReportIcon from '@/material-icons/400-24px/report.svg?react';
 import ShareIcon from '@/material-icons/400-24px/share.svg?react';
+import VolumeOffIcon from '@/material-icons/400-24px/volume_off.svg?react';
 
 import classes from './redesign.module.scss';
 
@@ -512,7 +513,7 @@ function redesignMenuItems({
         }
       },
       dangerous: true,
-      icon: BlockIcon,
+      icon: VolumeOffIcon,
       iconId: 'domain-mute',
     });
   }

@@ -9,6 +9,7 @@
   "domain_mute_modal.you_wont_see_posts": "이 도메인의 게시물을 공개 타임라인에 표시하지 않습니다.",
   "empty_column.domain_mutes": "아직 뮤트한 도메인이 없습니다.",
   "navigation_bar.domain_mutes": "뮤트한 도메인",
+  "account.menu.mute_domain": "도메인 {domain} 뮤트",
   "account.disclaimer_full": "아래에 있는 정보들은 사용자의 프로필을 완벽하게 나타내지 못하고 있을 수도 있습니다.",
   "account.follows": "팔로우",
   "account.suspended_disclaimer_full": "이 사용자는 중재자에 의해 정지되었습니다.",
