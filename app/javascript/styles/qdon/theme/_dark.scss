@@ -10,6 +10,7 @@
   /* BACKGROUND TOKENS */
 
   --color-bg-brand-base: hsl(212deg 100% 44%);
+  --color-bg-brand-base-hover: hsl(212deg 100% 30%);
   --color-bg-brand-soft: #{utils.css-alpha(
       hsl(212deg 100% 44%),
       calc(var(--overlay-strength-brand) * 2)
