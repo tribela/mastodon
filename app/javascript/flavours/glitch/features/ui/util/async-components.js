@@ -1,7 +1,3 @@
-import { isServerFeatureEnabled } from '@/flavours/glitch/utils/environment';
-
-import ScheduledTimelineComponent from '../../scheduled_timeline';
-
 export function EmojiPicker () {
   return import('../../emoji/emoji_picker');
 }
@@ -81,10 +77,7 @@ export function PinnedStatuses () {
 }
 
 export function AccountTimeline () {
-  if (isServerFeatureEnabled('profile_redesign')) {
-    return import('../../account_timeline/v2');
-  }
-  return import('../../account_timeline');
+  return import('../../account_timeline/v2');
 }
 
 export function AccountGallery () {
@@ -142,7 +135,7 @@ export function BookmarkedStatuses () {
 }
 
 export function ScheduledTimeline () {
-  return Promise.resolve({ default: ScheduledTimelineComponent });
+  return import('../../scheduled_timeline');
 }
 
 export function Blocks () {

@@ -18,7 +18,7 @@ module Auth::CaptchaConcern
   ).freeze
 
   included do
-    helper_method :render_captcha
+    helper_method :render_captcha, :hcaptcha_enabled?, :korean_captcha_enabled?, :captcha_enabled?
   end
 
   def captcha_available?

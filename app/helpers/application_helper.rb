@@ -34,19 +34,11 @@ module ApplicationHelper
     Setting.registrations_mode == 'none'
   end
 
-  def hcaptcha_enabled?
-    ENV['HCAPTCHA_SECRET_KEY'].present? && ENV['HCAPTCHA_SITE_KEY'].present? && Setting.captcha_enabled
-  end
-
-  def korean_captcha_enabled?
-    Setting.korean_captcha_enabled
-  end
-
-  def available_sign_up_path
+  def available_sign_up_url
     if closed_registrations? || omniauth_only?
-      'https://joinmastodon.org/#getting-started'
+      'https://joinmastodon.org/'
     else
-      ENV.fetch('SSO_ACCOUNT_SIGN_UP', new_user_registration_path)
+      ENV.fetch('SSO_ACCOUNT_SIGN_UP', new_user_registration_url)
     end
   end
 

@@ -76,6 +76,7 @@ interface AccountProps {
   withMenu?: boolean;
   withBorder?: boolean;
   extraAccountInfo?: React.ReactNode;
+  className?: string;
   children?: React.ReactNode;
 }
 
@@ -89,6 +90,7 @@ export const Account: React.FC<AccountProps> = ({
   withMenu = true,
   withBorder = true,
   extraAccountInfo,
+  className,
   children,
 }) => {
   const intl = useIntl();
@@ -276,7 +278,7 @@ export const Account: React.FC<AccountProps> = ({
   if (account?.mute_expires_at) {
     muteTimeRemaining = (
       <>
-        · <RelativeTimestamp timestamp={account.mute_expires_at} futureDate />
+        · <RelativeTimestamp timestamp={account.mute_expires_at} />
       </>
     );
   }
@@ -291,7 +293,7 @@ export const Account: React.FC<AccountProps> = ({
 
   return (
     <div
-      className={classNames('account', {
+      className={classNames('account', className, {
         'account--minimal': minimal,
         'account--without-border': !withBorder,
       })}

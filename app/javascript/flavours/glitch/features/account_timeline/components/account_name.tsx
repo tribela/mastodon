@@ -7,17 +7,16 @@ import classNames from 'classnames';
 
 import Overlay from 'react-overlays/esm/Overlay';
 
+import { Badge } from '@/flavours/glitch/components/badge';
 import { DisplayName } from '@/flavours/glitch/components/display_name';
 import { Icon } from '@/flavours/glitch/components/icon';
 import { useAccount } from '@/flavours/glitch/hooks/useAccount';
+import { useRelationship } from '@/flavours/glitch/hooks/useRelationship';
 import { useAppSelector } from '@/flavours/glitch/store';
+import FollowerIcon from '@/images/icons/icon_follower.svg?react';
 import AtIcon from '@/material-icons/400-24px/alternate_email.svg?react';
 import HelpIcon from '@/material-icons/400-24px/help.svg?react';
 import DomainIcon from '@/material-icons/400-24px/language.svg?react';
-import LockIcon from '@/material-icons/400-24px/lock.svg?react';
-
-import { DomainPill } from '../../account/components/domain_pill';
-import { isRedesignEnabled } from '../common';
 
 import classes from './redesign.module.scss';
 
@@ -34,12 +33,12 @@ const messages = defineMessages({
 });
 
 export const AccountName: FC<{ accountId: string }> = ({ accountId }) => {
-  const intl = useIntl();
   const account = useAccount(accountId);
   const me = useAppSelector((state) => state.meta.get('me') as string);
   const localDomain = useAppSelector(
     (state) => state.meta.get('domain') as string,
   );
+  const relationship = useRelationship(accountId);
 
   if (!account) {
     return null;
@@ -47,37 +46,24 @@ export const AccountName: FC<{ accountId: string }> = ({ accountId }) => {
 
   const [username = '', domain = localDomain] = account.acct.split('@');
 
-  if (!isRedesignEnabled()) {
-    return (
-      <h1>
-        <DisplayName account={account} variant='simple' />
-        <small>
-          <span>
-            @{username}
-            <span className='invisible'>@{domain}</span>
-          </span>
-          <DomainPill
-            username={username}
-            domain={domain}
-            isSelf={me === account.id}
-          />
-          {account.locked && (
-            <Icon
-              id='lock'
-              icon={LockIcon}
-              aria-label={intl.formatMessage(messages.lockedInfo)}
-            />
-          )}
-        </small>
-      </h1>
-    );
-  }
-
   return (
-    <div className={classes.name}>
-      <h1>
-        <DisplayName account={account} variant='simple' />
-      </h1>
+    <div className={classes.nameWrapper}>
+      <div className={classes.name}>
+        <h1>
+          <DisplayName account={account} variant='simple' />
+        </h1>
+        {relationship?.followed_by && (
+          <Badge
+            icon={<FollowerIcon className={classes.followerBadgeIcon} />}
+            label={
+              <FormattedMessage
+                id='account.follows_you'
+                defaultMessage='Follows you'
+              />
+            }
+          />
+        )}
+      </div>
       <p className={classes.username}>
         @{username}@{domain}
         <AccountNameHelp
