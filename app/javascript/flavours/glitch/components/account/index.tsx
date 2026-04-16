@@ -20,6 +20,7 @@ import { openModal } from 'flavours/glitch/actions/modal';
 import { initMuteModal } from 'flavours/glitch/actions/mutes';
 import { apiFollowAccount } from 'flavours/glitch/api/accounts';
 import { Avatar } from 'flavours/glitch/components/avatar';
+import { VerifiedBadge } from 'flavours/glitch/components/badge';
 import { Button } from 'flavours/glitch/components/button';
 import { FollowersCounter } from 'flavours/glitch/components/counters';
 import { DisplayName } from 'flavours/glitch/components/display_name';
@@ -28,7 +29,6 @@ import { FollowButton } from 'flavours/glitch/components/follow_button';
 import { RelativeTimestamp } from 'flavours/glitch/components/relative_timestamp';
 import { ShortNumber } from 'flavours/glitch/components/short_number';
 import { Skeleton } from 'flavours/glitch/components/skeleton';
-import { VerifiedBadge } from 'flavours/glitch/components/verified_badge';
 import { useIdentity } from 'flavours/glitch/identity_context';
 import { me } from 'flavours/glitch/initial_state';
 import type { MenuItem } from 'flavours/glitch/models/dropdown_menu';
@@ -278,7 +278,7 @@ export const Account: React.FC<AccountProps> = ({
   if (account?.mute_expires_at) {
     muteTimeRemaining = (
       <>
-        · <RelativeTimestamp timestamp={account.mute_expires_at} />
+        · <RelativeTimestamp hasFuture timestamp={account.mute_expires_at} />
       </>
     );
   }
