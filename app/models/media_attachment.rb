@@ -434,6 +434,7 @@ class MediaAttachment < ApplicationRecord
 
   def image_geometry(file)
     width, height = FastImage.size(file.path)
+    type = FastImage.type(file.path)
 
     return {} if width.nil?
 
@@ -442,6 +443,7 @@ class MediaAttachment < ApplicationRecord
       height: height,
       size: "#{width}x#{height}",
       aspect: width.to_f / height,
+      extension: type.to_s,
     }
   end
 
@@ -450,12 +452,22 @@ class MediaAttachment < ApplicationRecord
 
     return {} unless movie.valid?
 
+    format = movie.format || ''
+    extension = if format.include?('mp4') || format.include?('mov')
+                  'mp4'
+                elsif format.include?('webm')
+                  'webm'
+                else
+                  format.split(',').first
+                end
+
     {
       width: movie.width,
       height: movie.height,
       frame_rate: movie.frame_rate,
       duration: movie.duration,
       bitrate: movie.bitrate,
+      extension: extension,
     }.compact
   end
 

@@ -2,7 +2,8 @@
 
 class VideoMetadataExtractor
   attr_reader :duration, :bitrate, :video_codec, :audio_codec,
-              :colorspace, :width, :height, :frame_rate, :r_frame_rate
+              :colorspace, :width, :height, :frame_rate, :r_frame_rate,
+              :format
 
   def initialize(path)
     @path     = path
@@ -30,6 +31,7 @@ class VideoMetadataExtractor
     if @metadata.key?(:format)
       @duration = @metadata[:format][:duration].to_f
       @bitrate  = @metadata[:format][:bit_rate].to_i
+      @format   = @metadata[:format][:format_name]
     end
 
     if @metadata.key?(:streams)

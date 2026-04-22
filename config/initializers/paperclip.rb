@@ -13,6 +13,18 @@ Paperclip.interpolates :filename do |attachment, style|
   end
 end
 
+Paperclip.interpolates :extension do |attachment, style|
+  if attachment.instance.respond_to?(:file_meta)
+    meta = attachment.instance.file_meta
+    if meta.is_a?(Hash)
+      meta_key = (attachment.name == :thumbnail ? :small : style).to_s
+      return meta[meta_key]['extension'] if meta[meta_key].is_a?(Hash) && meta[meta_key]['extension'].present?
+    end
+  end
+
+  attachment.styles[style]&.format || File.extname(attachment.original_filename).delete('.')
+end
+
 Paperclip.interpolates :prefix_path do |attachment, _style|
   if attachment.storage_schema_version >= 1 && attachment.instance.respond_to?(:local?) && !attachment.instance.local?
     "cache#{File::SEPARATOR}"
