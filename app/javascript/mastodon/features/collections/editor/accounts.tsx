@@ -4,6 +4,9 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { useHistory } from 'react-router-dom';
 
+import type { Map as ImmutableMap } from 'immutable';
+
+import { useComboboxItemProps } from '@/mastodon/components/form_fields/combobox_field';
 import type { ApiMutedAccountJSON } from 'mastodon/api_types/accounts';
 import type { ApiCollectionJSON } from 'mastodon/api_types/collections';
 import { AccountListItem } from 'mastodon/components/account_list_item';
@@ -25,6 +28,7 @@ import {
 import { useAccount } from 'mastodon/hooks/useAccount';
 import { useSearchAccounts } from 'mastodon/hooks/useSearchAccounts';
 import { domain } from 'mastodon/initial_state';
+import type { Relationship } from 'mastodon/models/relationship';
 import {
   addCollectionItem,
   getCollectionItemIds,
@@ -64,18 +68,18 @@ const AddedAccountItem: React.FC<{
 const SuggestedAccountItem: React.FC<{ id: string }> = ({ id }) => {
   const account = useAccount(id);
   const handle = useAccountHandle(account, domain);
+  const comboboxItemProps = useComboboxItemProps();
 
   if (!account) return null;
 
   return (
-    <ListItemWrapper
-      className={classes.suggestion}
-      icon={<Avatar account={account} size={40} />}
-    >
-      <ListItemContent subtitle={handle}>
-        <DisplayName account={account} variant='simple' />
-      </ListItemContent>
-    </ListItemWrapper>
+    <li {...comboboxItemProps} className={classes.suggestion}>
+      <ListItemWrapper icon={<Avatar account={account} size={40} />}>
+        <ListItemContent subtitle={handle}>
+          <DisplayName account={account} variant='simple' />
+        </ListItemContent>
+      </ListItemWrapper>
+    </li>
   );
 };
 
@@ -85,19 +89,37 @@ const renderAccountItem = (account: ApiMutedAccountJSON) => (
 
 type GroupKey = 'available' | 'mustFollow' | 'disabled';
 
-function groupSuggestions(accounts: ApiMutedAccountJSON[]) {
-  const { available, disabled } = Object.groupBy(accounts, (account) => {
-    if (getIsItemDisabled(account)) {
+const canAccountBeAdded = (account: ApiMutedAccountJSON) =>
+  ['automatic', 'manual'].includes(account.feature_approval.current_user);
+
+function groupSuggestions(
+  accounts: ApiMutedAccountJSON[],
+  relationships: ImmutableMap<string, Relationship>,
+) {
+  const { available, mustFollow, disabled } = Object.groupBy(
+    accounts,
+    (account): GroupKey => {
+      if (canAccountBeAdded(account)) {
+        return 'available';
+      }
+
+      const canAccountBeAddedByFollowers =
+        account.feature_approval.automatic.includes('followers') ||
+        account.feature_approval.manual.includes('followers');
+
+      if (
+        canAccountBeAddedByFollowers &&
+        !relationships.get(account.id)?.following
+      ) {
+        return 'mustFollow';
+      }
+
       return 'disabled';
-    }
-    // if (account.locked && !relationship?.following) {
-    //   return 'mustFollow';
-    // }
-    return 'available';
-  });
+    },
+  );
 
   // Returning a new object ensures a fixed property order
-  return { available, disabled };
+  return { available, mustFollow, disabled };
 }
 
 const renderGroupTitle = (groupKey: GroupKey, titleId: string) => {
@@ -137,19 +159,19 @@ const renderGroupTitle = (groupKey: GroupKey, titleId: string) => {
   }
 
   return (
-    <ListItemWrapper className={classes.suggestionGroup}>
-      <ListItemContent id={titleId} subtitle={description}>
-        {title}
-      </ListItemContent>
-    </ListItemWrapper>
+    <li role='presentation'>
+      <ListItemWrapper className={classes.suggestionGroup}>
+        <ListItemContent id={titleId} subtitle={description}>
+          {title}
+        </ListItemContent>
+      </ListItemWrapper>
+    </li>
   );
 };
 
 const getItemId = (account: ApiMutedAccountJSON) => account.id;
-
-// Disable accounts who can't be added to a collection
 const getIsItemDisabled = (account: ApiMutedAccountJSON) =>
-  !['automatic', 'manual'].includes(account.feature_approval.current_user);
+  !canAccountBeAdded(account);
 
 export const CollectionAccounts: React.FC<{
   collection?: ApiCollectionJSON | null;
@@ -188,6 +210,10 @@ export const CollectionAccounts: React.FC<{
     // Don't suggest accounts that were already added
     filterResults: (account) => !accountIds.includes(account.id),
   });
+
+  const relationships = useAppSelector((state) => state.relationships);
+
+  const groupedItems = groupSuggestions(suggestedAccounts, relationships);
 
   const handleSearchValueChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -330,7 +356,7 @@ export const CollectionAccounts: React.FC<{
             onKeyDown={handleSearchKeyDown}
             disabled={hasMaxAccounts}
             isLoading={isLoadingSuggestions}
-            items={groupSuggestions(suggestedAccounts)}
+            items={groupedItems}
             getItemId={getItemId}
             getIsItemDisabled={getIsItemDisabled}
             renderItem={renderAccountItem}

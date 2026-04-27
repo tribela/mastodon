@@ -741,7 +741,10 @@ export const composeReducer = (state = initialState, action) => {
   case COMPOSE_LANGUAGE_CHANGE:
     return state.set('language', action.language);
   case COMPOSE_FOCUS:
-    return state.set('focusDate', new Date()).update('text', text => text.length > 0 ? text : action.defaultText);
+    return state
+      .set('focusDate', new Date())
+      .update('text', text => text.length > 0 ? text : action.defaultText)
+      .update('caretPosition', position => action.caretStart ? 0 : position);
   case 'COMPOSE_SET_SCHEDULED': {
     const s = action.scheduledStatus;
     const params = s.get('params') || ImmutableMap();

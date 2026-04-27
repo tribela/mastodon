@@ -164,10 +164,11 @@ export function resetCompose() {
   };
 }
 
-export const focusCompose = (defaultText = '') => (dispatch, getState) => {
+export const focusCompose = (defaultText = '', caretStart = false) => (dispatch, getState) => {
   dispatch({
     type: COMPOSE_FOCUS,
     defaultText,
+    caretStart,
   });
 
   ensureComposeIsVisible(getState);
