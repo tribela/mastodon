@@ -6,10 +6,10 @@
 #
 #  id             :bigint(8)        not null, primary key
 #  domain         :string
-#  account_id     :bigint(8)
 #  hide_from_home :boolean          default(FALSE), not null
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
+#  account_id     :bigint(8)
 #
 class AccountDomainMute < ApplicationRecord
   include Paginable
