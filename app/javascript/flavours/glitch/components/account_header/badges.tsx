@@ -98,6 +98,20 @@ export const AccountBadges: FC<{ accountId: string }> = ({ accountId }) => {
         />,
       );
     }
+    if (relationship.domain_muting) {
+      badges.push(
+        <MutedBadge
+          key='domain-muting'
+          domain={domain}
+          label={
+            <FormattedMessage
+              id='account.badges.domain_muted'
+              defaultMessage='Muted domain'
+            />
+          }
+        />,
+      );
+    }
   }
 
   if (!badges.length) {
