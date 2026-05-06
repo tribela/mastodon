@@ -5,7 +5,6 @@
   "account.menu.mute_domain": "Mute {domain}",
   "account.menu.unmute_domain": "Unmute {domain}",
   "account.suspended_disclaimer_full": "This user has been suspended by a moderator.",
-  "account.unmute_domain_short": "Unmute",
   "account.view_full_profile": "View full profile",
   "boost_modal.missing_description": "This toot contains some media without description",
   "column.domain_mutes": "Muted domains",
