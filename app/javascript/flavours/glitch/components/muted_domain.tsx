@@ -17,13 +17,15 @@ const messages = defineMessages({
 export const MutedDomain: React.FC<{
   domain: string;
   hide_from_home: boolean;
-}> = ({ domain, hide_from_home }) => {
+  onUnmute?: (domain: string) => void;
+}> = ({ domain, hide_from_home, onUnmute }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
   const handleDomainUnmute = useCallback(() => {
     dispatch(unmuteDomain(domain));
-  }, [dispatch, domain]);
+    onUnmute?.(domain);
+  }, [dispatch, domain, onUnmute]);
 
   let hide_home_tl;
   if (hide_from_home) {

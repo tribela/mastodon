@@ -63,6 +63,10 @@ const Mutes: React.FC<{ multiColumn: boolean }> = ({ multiColumn }) => {
     columnRef.current?.scrollTop();
   }, []);
 
+  const handleUnmute = useCallback((domain: string) => {
+    setDomains((prev) => prev.filter((d) => d.domain !== domain));
+  }, []);
+
   const emptyMessage = (
     <FormattedMessage
       id='empty_column.domain_mutes'
@@ -100,6 +104,7 @@ const Mutes: React.FC<{ multiColumn: boolean }> = ({ multiColumn }) => {
             key={domain.domain}
             domain={domain.domain}
             hide_from_home={domain.hide_from_home}
+            onUnmute={handleUnmute}
           />
         ))}
       </ScrollableList>
