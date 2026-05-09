@@ -7,7 +7,7 @@ import { List as ImmutableList } from 'immutable';
 import CalendarTodayIcon from '@/material-icons/400-24px/calendar_today.svg?react';
 import { addColumn, removeColumn, moveColumn } from 'flavours/glitch/actions/columns';
 import { fetchScheduledStatuses } from 'flavours/glitch/actions/scheduled_statuses';
-import { Helmet } from 'react-helmet';
+import { Helmet } from '@unhead/react/helmet';
 import Column from 'flavours/glitch/components/column';
 import ColumnHeader from 'flavours/glitch/components/column_header';
 import { LoadingIndicator } from 'flavours/glitch/components/loading_indicator';

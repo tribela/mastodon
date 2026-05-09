@@ -2,7 +2,7 @@ import { useEffect, useRef, useCallback, useState } from 'react';
 
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 
-import { Helmet } from 'react-helmet';
+import { Helmet } from '@unhead/react/helmet';
 
 import VisibilityOffIcon from '@/material-icons/400-24px/visibility_off.svg?react';
 import { apiGetDomainmutes } from 'mastodon/api/domain_mutes';

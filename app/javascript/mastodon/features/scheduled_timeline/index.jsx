@@ -7,7 +7,7 @@ import { List as ImmutableList } from 'immutable';
 import CalendarTodayIcon from '@/material-icons/400-24px/calendar_today.svg?react';
 import { addColumn, removeColumn, moveColumn } from 'mastodon/actions/columns';
 import { fetchScheduledStatuses } from 'mastodon/actions/scheduled_statuses';
-import { Helmet } from 'react-helmet';
+import { Helmet } from '@unhead/react/helmet';
 import Column from 'mastodon/components/column';
 import ColumnHeader from 'mastodon/components/column_header';
 import { LoadingIndicator } from 'mastodon/components/loading_indicator';
