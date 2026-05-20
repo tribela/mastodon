@@ -15,17 +15,14 @@
 
   /* BACKGROUND TOKENS */
 
+  // Brand
   --color-bg-brand-base: var(--color-dark-blue);
   --color-bg-brand-base-hover: hsl(212deg 100% 30%);
   --color-bg-brand-soft: #{utils.css-alpha(
       hsl(212deg 100% 42%),
       calc(var(--overlay-strength-brand) * 2)
     )};
-  --color-bg-brand-softer: #{utils.css-alpha(
-      hsl(212deg 100% 42%),
-      var(--overlay-strength-brand)
-    )};
-  --color-bg-secondary-base: var(--color-grey-600);
+  --color-bg-brand-softest: hsl(212deg 100% 97%);
 
   /* BORDER TOKENS */
 
@@ -35,9 +32,20 @@
     var(--color-grey-950) 15%
   );
 
-  /* LEGACY TOKENS */
+  /* GRAPHS/CHARTS TOKENS (LEGACY) */
+
+  --color-graph-primary-stroke: var(--color-text-brand);
+  --color-graph-primary-fill: var(--color-bg-brand-softest);
+
+  /* RICH TEXT TOKENS (LEGACY) */
 
   --rich-text-container-color: #efefef;
   --rich-text-text-color: #181818;
   --rich-text-decorations-color: hsl(212deg 100% 65% / 100%);
+}
+
+@mixin contrast-overrides {
+  /* TEXT TOKENS */
+
+  --color-text-brand: var(--color-dark-pink);
 }
