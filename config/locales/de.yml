@@ -349,6 +349,7 @@ de:
       back_to_report: Zurück zu den Meldungen
       batch:
         add_to_report: Der Meldung Nr. %{id} hinzufügen
+        remove_from_report: Aus der Meldung entfernen
         report: Meldung
       collection_title: Sammlung von %{name}
       contents: Inhalte
@@ -978,6 +979,7 @@ de:
     site_uploads:
       delete: Hochgeladene Datei löschen
       destroyed_msg: Upload erfolgreich gelöscht!
+    skip_to_content: Zum Inhalt wechseln
     software_updates:
       critical_update: Kritisch — bitte zügig aktualisieren
       description: Es wird empfohlen, deine Mastodon-Installation auf dem aktuellen Stand zu halten, um von den neuesten Fehlerkorrekturen und Funktionen zu profitieren. Darüber hinaus ist es wichtig, Mastodon zeitnah zu aktualisieren, um Sicherheitslücken zu schließen. Aus diesen Gründen prüft Mastodon alle 30 Minuten auf Updates und du wirst deinen Einstellungen entsprechend per E-Mail informiert.

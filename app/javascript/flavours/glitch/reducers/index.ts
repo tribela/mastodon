@@ -32,7 +32,7 @@ import push_notifications from './push_notifications';
 import { relationshipsReducer } from './relationships';
 import scheduled_statuses from './scheduled_statuses';
 import { searchReducer } from './search';
-import server from './server';
+import { serverReducer } from './server';
 import settings from './settings';
 import { sliceReducers } from './slices';
 import status_lists from './status_lists';
@@ -61,7 +61,7 @@ const reducers = {
   settings,
   local_settings,
   push_notifications,
-  server,
+  server: serverReducer,
   contexts: contextsReducer,
   compose: composeReducer,
   scheduled_statuses,

@@ -345,6 +345,7 @@ vi:
       back_to_report: Quay lại trang báo cáo
       batch:
         add_to_report: 'Thêm vào báo cáo #%{id}'
+        remove_from_report: Xóa khỏi báo cáo
         report: Báo cáo
       collection_title: Gói khởi đầu bởi %{name}
       contents: Nội dung
@@ -962,6 +963,7 @@ vi:
     site_uploads:
       delete: Xóa tệp đã tải lên
       destroyed_msg: Đã xóa tệp tải lên thành công!
+    skip_to_content: Đến nội dung chính
     software_updates:
       critical_update: Quan trọng — vui lòng cập nhật sớm
       description: Bạn nên cập nhật Mastodon phiên bản mới nhất để được hưởng lợi từ các bản sửa lỗi và thêm tính năng mới. Nhất là để tránh các vấn đề bảo mật. Vì những lý do này, Mastodon sẽ kiểm tra các bản cập nhật 30 phút một lần và sẽ thông báo cho bạn theo tùy chọn thông báo qua email của bạn.

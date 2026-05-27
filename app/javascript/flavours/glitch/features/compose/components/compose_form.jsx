@@ -95,10 +95,6 @@ class ComposeForm extends ImmutablePureComponent {
     autoFocus: false,
   };
 
-  state = {
-    highlighted: false,
-  };
-
   constructor(props) {
     super(props);
     this.textareaRef = createRef(null);
@@ -247,8 +243,6 @@ class ComposeForm extends ImmutablePureComponent {
       Promise.resolve().then(() => {
         this.textareaRef.current.setSelectionRange(selectionStart, selectionEnd);
         this.textareaRef.current.focus();
-        this.setState({ highlighted: true });
-        this.timeout = setTimeout(() => this.setState({ highlighted: false }), 700);
       }).catch(console.error);
     } else if(prevProps.isSubmitting && !this.props.isSubmitting) {
       this.textareaRef.current.focus();
@@ -279,7 +273,6 @@ class ComposeForm extends ImmutablePureComponent {
 
   render () {
     const { intl, onPaste, onDrop, autoFocus, withoutNavigation, maxChars, isSubmitting } = this.props;
-    const { highlighted } = this.state;
 
     return (
       <form className='compose-form' onSubmit={this.handleSubmit}>
@@ -287,7 +280,7 @@ class ComposeForm extends ImmutablePureComponent {
         {!withoutNavigation && <NavigationBar />}
         <Warning />
 
-        <div className={classNames('compose-form__highlightable', { active: highlighted })} ref={this.setRef}>
+        <div className='compose-form__highlightable' ref={this.setRef}>
           <EditIndicator />
 
           <div className='compose-form__dropdowns'>

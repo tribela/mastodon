@@ -541,13 +541,15 @@ body > [data-popper-placement] {
     flex: 0 1 auto;
     border-radius: 4px;
     border: 1px solid var(--color-border-primary);
-    transition: border-color 300ms linear;
     position: relative;
     background: var(--color-bg-secondary);
+    outline: var(--outline-focus-default);
+    outline-color: transparent;
+    outline-offset: -1px;
+    transition: outline-color 0.15s ease-out;
 
-    &.active {
-      transition: none;
-      border-color: var(--color-border-brand);
+    &:has(textarea:focus) {
+      outline-color: var(--color-border-brand);
     }
   }
 
@@ -595,8 +597,15 @@ body > [data-popper-placement] {
 
     .autosuggest-input {
       flex: 1 1 auto;
-      border: 1px solid var(--color-border-primary);
-      border-width: 1px 0;
+      border-block: 1px solid var(--color-border-primary);
+      padding-block: 1px;
+      transition: border-color 0.15s ease-out;
+
+      &:focus-within {
+        padding-block: 0;
+        border-color: var(--color-border-brand);
+        border-block-width: 2px;
+      }
     }
   }
 
@@ -621,7 +630,7 @@ body > [data-popper-placement] {
   }
 
   .spoiler-input__input {
-    padding: 12px 12px - 5px;
+    padding: 11px 7px;
     background: var(--color-bg-brand-softest);
     color: var(--color-text-brand);
   }
@@ -2751,6 +2760,7 @@ a.account__display-name {
       font-size: 14px;
       line-height: 20px;
       font-weight: 500;
+      outline-offset: 0;
 
       .display-name__account {
         font-size: 14px;
@@ -3665,7 +3675,11 @@ a.account__display-name {
 
 .compose-panel {
   width: 285px;
-  margin-top: 10px;
+  margin-top: 8px;
+
+  // Padding prevents focus outlines from being cut off
+  margin-inline-start: -2px;
+  padding: 2px;
   display: flex;
   flex-direction: column;
   height: calc(100% - 10px);
@@ -3760,16 +3774,6 @@ a.account__display-name {
     margin-bottom: 12px;
   }
 
-  .getting-started__trends h4 {
-    padding: 10px 12px;
-    padding-inline-start: 16px;
-  }
-
-  .getting-started__trends .trends__item {
-    padding: 10px 12px;
-    padding-inline-start: 16px;
-  }
-
   @media screen and (height <= 930px) {
     &__portal .trends__item:nth-child(n + 5) {
       display: none;
@@ -3797,7 +3801,8 @@ a.account__display-name {
 
 .navigation-panel,
 .compose-panel {
-  hr {
+  hr,
+  li[role='separator'] {
     flex: 0 0 auto;
     border: 0;
     background: transparent;
@@ -4135,24 +4140,29 @@ a.account__display-name {
   border: 1px solid var(--color-border-primary);
   border-top: 0;
 
+  &__trends-heading {
+    border-bottom: 1px solid var(--color-border-primary);
+    padding: 10px;
+    font-size: 12px;
+    text-transform: uppercase;
+    font-weight: 500;
+
+    .navigation-panel & {
+      padding: 10px 12px;
+      padding-inline-start: 16px;
+    }
+
+    a {
+      color: var(--color-text-secondary);
+      text-decoration: none;
+    }
+  }
+
   &__trends {
     flex: 0 1 auto;
     opacity: 1;
     animation: fade 150ms linear;
     margin-top: 10px;
-
-    h4 {
-      border-bottom: 1px solid var(--color-border-primary);
-      padding: 10px;
-      font-size: 12px;
-      text-transform: uppercase;
-      font-weight: 500;
-
-      a {
-        color: var(--color-text-secondary);
-        text-decoration: none;
-      }
-    }
 
     .trends__item {
       border-bottom: 0;
@@ -4160,6 +4170,11 @@ a.account__display-name {
 
       &__current {
         color: var(--color-text-secondary);
+      }
+
+      .navigation-panel & {
+        padding: 10px 12px;
+        padding-inline-start: 16px;
       }
     }
   }
@@ -5943,7 +5958,7 @@ a.status-card {
     display: none;
     position: absolute;
     inset-inline-start: 0;
-    margin-top: -2px;
+    margin-top: 1px;
     width: 100%;
     background: var(--color-bg-primary);
     border: 1px solid var(--color-border-primary);
@@ -6038,14 +6053,8 @@ a.status-card {
     }
   }
 
-  &.active {
-    .search__input {
-      border-radius: 4px 4px 0 0;
-    }
-
-    .search__popout {
-      display: block;
-    }
+  &.active .search__popout {
+    display: block;
   }
 }
 
@@ -6057,14 +6066,8 @@ a.status-card {
   padding-inline-start: 16px + 15px + 8px;
   line-height: normal;
 
-  &::-moz-focus-inner {
-    border: 0;
-  }
-
-  &::-moz-focus-inner,
-  &:focus,
-  &:active {
-    outline: 0 !important;
+  &:focus {
+    outline-color: var(--color-border-brand);
   }
 }
 
@@ -9332,6 +9335,10 @@ noscript {
       display: flex;
       align-items: center;
 
+      &:has(input:focus) {
+        outline-color: var(--color-border-brand);
+      }
+
       input {
         background: transparent;
         color: inherit;
@@ -9360,7 +9367,7 @@ noscript {
     }
 
     .search__popout {
-      margin-top: -1px;
+      margin-top: 1px;
       padding-top: 5px;
       padding-bottom: 5px;
       border: 1px solid var(--color-border-primary);
@@ -9372,10 +9379,6 @@ noscript {
 
     &.expanded .search__popout {
       display: block;
-    }
-
-    &.expanded &__input {
-      border-radius: 4px 4px 0 0;
     }
   }
 
@@ -9751,41 +9754,6 @@ noscript {
   }
 }
 
-.link-footer {
-  flex: 0 0 auto;
-  padding-top: 20px;
-  z-index: 1;
-  font-size: 13px;
-
-  .column & {
-    padding: 15px;
-  }
-
-  p {
-    color: var(--color-text-secondary);
-    margin-bottom: 20px;
-
-    .version {
-      white-space: nowrap;
-    }
-
-    strong {
-      font-weight: 500;
-    }
-
-    a {
-      color: var(--color-text-secondary);
-      text-decoration: underline;
-
-      &:hover,
-      &:focus,
-      &:active {
-        text-decoration: none;
-      }
-    }
-  }
-}
-
 .about {
   padding: 20px;
   border-top: 1px solid var(--color-border-primary);
@@ -9919,18 +9887,6 @@ noscript {
     &:focus,
     &:active {
       text-decoration: underline;
-    }
-  }
-
-  .link-footer {
-    padding: 0;
-    margin-top: 60px;
-    text-align: center;
-    font-size: 15px;
-    line-height: 22px;
-
-    @media screen and (min-width: $no-gap-breakpoint) {
-      display: none;
     }
   }
 
@@ -10237,17 +10193,17 @@ noscript {
     background: var(--color-bg-brand-softest);
   }
 
+  &__title {
+    font-size: 15px;
+    line-height: 22px;
+    font-weight: 500;
+  }
+
   &__header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 0 16px;
-
-    h3 {
-      font-size: 15px;
-      line-height: 22px;
-      font-weight: 500;
-    }
 
     &__actions {
       display: flex;

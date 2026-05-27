@@ -7,7 +7,7 @@ import api from 'flavours/glitch/api';
 import { browserHistory } from 'flavours/glitch/components/router';
 import { countableText } from 'flavours/glitch/features/compose/util/counter';
 import { tagHistory } from 'flavours/glitch/settings';
-import { fetchCustomEmojiData } from '@/flavours/glitch/features/emoji/picker';
+import { emojiMartSearch } from '@/flavours/glitch/features/emoji/picker';
 import { recoverHashtags } from 'flavours/glitch/utils/hashtag';
 
 import { showAlert, showAlertForError } from './alerts';
@@ -107,7 +107,7 @@ export const ensureComposeIsVisible = (getState) => {
 
 export function setComposeToStatus(status, text, spoiler_text, content_type) {
   return (dispatch, getState) => {
-    const maxOptions = getState().server.getIn(['server', 'configuration', 'polls', 'max_options']);
+    const maxOptions = getState().server.server.item?.configuration.polls.max_options;
 
     dispatch({
       type: COMPOSE_SET_STATUS,
@@ -682,9 +682,9 @@ const fetchComposeSuggestionsAccounts = throttle((dispatch, token) => {
 }, 200, { leading: true, trailing: true });
 
 const fetchComposeSuggestionsEmojis = async (dispatch, token) => {
-  const custom = await fetchCustomEmojiData();
-  const { search } = await import('@/flavours/glitch/features/emoji/emoji_mart_search_light');
-  const results = search(token.replace(':', ''), { maxResults: 5, custom });
+  // Right now we are hard-coding the locale to English since the picker search only supports English.
+  // Once we replace the legacy picker we can remove this and use the actual locale of the user.
+  const results = await emojiMartSearch(token, 'en', 5);
   dispatch(readyComposeSuggestionsEmojis(token, results));
 };
 
@@ -761,7 +761,7 @@ export function selectComposeSuggestion(position, token, suggestion, path) {
     let completion, startPosition;
 
     if (suggestion.type === 'emoji') {
-      completion    = suggestion.native || suggestion.colons;
+      completion    = suggestion.native || `:${suggestion.id}:`;
       startPosition = position - 1;
 
       dispatch(useEmoji(suggestion));
