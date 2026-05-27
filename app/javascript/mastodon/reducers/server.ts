@@ -5,16 +5,19 @@ import {
   fetchServerTranslationLanguages,
   fetchExtendedDescription,
   fetchDomainBlocks,
+  fetchDomainMutes,
 } from 'mastodon/actions/server';
 import type {
   Server,
   ExtendedDescription,
   DomainBlock,
+  DomainMute,
 } from 'mastodon/models/server';
 import {
   createServerFromServerJSON,
   createExtendedDescriptionFromServerJSON,
   createDomainBlockFromServerJSON,
+  createDomainMuteFromServerJSON,
 } from 'mastodon/models/server';
 
 interface State {
@@ -38,6 +41,12 @@ interface State {
     isAvailable: boolean;
     items: DomainBlock[];
   };
+
+  domainMutes: {
+    isLoading: boolean;
+    isAvailable: boolean;
+    items: DomainMute[];
+  };
 }
 
 const initialState: State = {
@@ -57,6 +66,12 @@ const initialState: State = {
   },
 
   domainBlocks: {
+    isLoading: false,
+    isAvailable: true,
+    items: [],
+  },
+
+  domainMutes: {
     isLoading: false,
     isAvailable: true,
     items: [],
@@ -123,5 +138,22 @@ export const serverReducer = createReducer(initialState, (builder) => {
   builder.addCase(fetchDomainBlocks.rejected, (state) => {
     state.domainBlocks.isLoading = false;
     state.domainBlocks.isAvailable = false;
+  });
+
+  builder.addCase(fetchDomainMutes.pending, (state) => {
+    state.domainMutes.isLoading = true;
+  });
+
+  builder.addCase(fetchDomainMutes.fulfilled, (state, action) => {
+    state.domainMutes.items = action.payload.map((obj) =>
+      createDomainMuteFromServerJSON(obj),
+    );
+    state.domainMutes.isLoading = false;
+    state.domainMutes.isAvailable = true;
+  });
+
+  builder.addCase(fetchDomainMutes.rejected, (state) => {
+    state.domainMutes.isLoading = false;
+    state.domainMutes.isAvailable = false;
   });
 });

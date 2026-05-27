@@ -19,3 +19,9 @@ export type DomainBlock = ApiDomainBlockJSON;
 export const createDomainBlockFromServerJSON = (
   obj: ApiDomainBlockJSON,
 ): DomainBlock => obj;
+
+export type DomainMute = ApiDomainBlockJSON;
+
+export const createDomainMuteFromServerJSON = (
+  obj: ApiDomainBlockJSON,
+): DomainMute => obj;

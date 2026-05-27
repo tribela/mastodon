@@ -36,6 +36,8 @@ export interface ApiDomainBlockJSON {
   comment: string;
 }
 
+export type ApiDomainMuteJSON = ApiDomainBlockJSON;
+
 export type ApiTranslationLanguagesJSON = Record<string, string[]>;
 
 export interface ApiInstanceJSON {

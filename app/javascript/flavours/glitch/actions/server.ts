@@ -3,6 +3,7 @@ import {
   apiGetExtendedDescription,
   apiGetDomainBlocks,
   apiGetTranslationLanguages,
+  apiGetDomainMutes,
 } from 'flavours/glitch/api/instance';
 import { createDataLoadingThunk } from 'flavours/glitch/store/typed_functions';
 
@@ -31,4 +32,9 @@ export const fetchServerTranslationLanguages = createDataLoadingThunk(
 export const fetchDomainBlocks = createDataLoadingThunk(
   'server/domain_blocks',
   () => apiGetDomainBlocks(),
+);
+
+export const fetchDomainMutes = createDataLoadingThunk(
+  'server/domain_mutes',
+  () => apiGetDomainMutes(),
 );

@@ -31,3 +31,6 @@ export const apiGetTranslationLanguages = () =>
 
 export const apiGetDomainBlocks = () =>
   apiRequestGet<ApiDomainBlockJSON[]>('v1/instance/domain_blocks');
+
+export const apiGetDomainMutes = () =>
+  apiRequestGet<ApiDomainBlockJSON[]>('v1/instance/domain_mutes');
