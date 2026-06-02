@@ -230,9 +230,9 @@ gem 'hcaptcha', '~> 7.1'
 
 gem 'prometheus-client', '~> 2.1'
 
-gem 'sentry-rails', '~> 5.9'
-gem 'sentry-ruby', '~> 5.9'
-gem 'sentry-sidekiq', '~> 5.9'
+gem 'sentry-rails', '~> 6.6'
+gem 'sentry-ruby', '~> 6.6'
+gem 'sentry-sidekiq', '~> 6.6'
 gem 'stackprof'
 
 gem 'mail', '~> 2.8'
