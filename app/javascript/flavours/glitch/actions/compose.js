@@ -101,7 +101,7 @@ const messages = defineMessages({
 
 export const ensureComposeIsVisible = (getState) => {
   if (!getState().getIn(['compose', 'mounted'])) {
-    browserHistory.push('/publish');
+    browserHistory.push('/publish', { focusTarget: false });
   }
 };
 
@@ -357,7 +357,10 @@ export function submitCompose(overridePrivacy = null, successCallback = undefine
           message: effectiveStatusId === null ? messages.published : messages.saved,
           action: messages.open,
           dismissAfter: 10000,
-          onClick: () => browserHistory.push(`/@${response.data.account.username}/${response.data.id}`),
+          onClick: () => browserHistory.push(
+            `/@${response.data.account.username}/${response.data.id}`,
+            { focusTarget: 'detailed-status' }
+          ),
         }));
       }
     }).catch(function (error) {
@@ -427,11 +430,6 @@ export function uploadCompose(files) {
 
     if (files.length + media.size + pending > uploadLimit) {
       dispatch(showAlert({ message: messages.uploadErrorLimit }));
-      return;
-    }
-
-    if (getState().getIn(['compose', 'poll'])) {
-      dispatch(showAlert({ message: messages.uploadErrorPoll }));
       return;
     }
 

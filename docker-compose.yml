@@ -31,6 +31,7 @@ services:
   #   build:
   #     dockerfile: es.Dockerfile
   #   environment:
+  #     - "ELASTIC_PASSWORD=password"  #Username is elastic. Do not change the username.
   #     - "ES_JAVA_OPTS=-Xms512m -Xmx512m -Des.enforce.bootstrap.checks=true"
   #     - "xpack.license.self_generated.type=basic"
   #     - "xpack.security.enabled=false"

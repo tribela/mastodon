@@ -2576,7 +2576,7 @@ a.account__display-name {
   overflow: hidden;
 
   strong,
-  span {
+  span:not(.emojione) {
     display: block;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -3668,6 +3668,8 @@ a.account__display-name {
   text-align: center;
   padding-bottom: 32px;
 
+  h1,
+  h2,
   h3 {
     font-size: 24px;
     line-height: 1.5;
@@ -4739,10 +4741,17 @@ a.status-card {
   z-index: 2;
   outline: 0;
 
+  &__title-wrapper {
+    display: flex;
+    flex-grow: 1;
+    min-width: 0;
+  }
+
   &__title {
     display: flex;
     align-items: center;
     gap: 5px;
+    flex-grow: 1;
     margin: 0;
     border: 0;
     padding: 13px;
@@ -4751,10 +4760,11 @@ a.status-card {
     background: transparent;
     font: inherit;
     text-align: start;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-    flex: 1;
+    min-width: 0;
+
+    &--with-back-button {
+      padding-inline-start: 0;
+    }
 
     &:focus-visible {
       outline: var(--outline-focus-default);
@@ -4765,8 +4775,10 @@ a.status-card {
     }
   }
 
-  .column-header__back-button + &__title {
-    padding-inline-start: 0;
+  &__text {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
   }
 
   .column-header__back-button {
@@ -9595,6 +9607,8 @@ noscript {
     padding-bottom: 32px;
   }
 
+  h1,
+  h2,
   h3 {
     font-size: 22px;
     line-height: 33px;
@@ -9625,6 +9639,8 @@ noscript {
   &__lead {
     margin-bottom: 20px;
 
+    h1,
+    h2,
     h3 {
       margin-bottom: 15px;
     }
@@ -9700,6 +9716,8 @@ noscript {
       flex: 1;
       box-sizing: border-box;
 
+      h1,
+      h2,
       h3 {
         margin-bottom: 20px;
       }
@@ -10297,6 +10315,10 @@ noscript {
   display: flex;
   flex-direction: column;
   gap: 4px;
+
+  &:empty {
+    display: none;
+  }
 }
 
 .notification-bar {

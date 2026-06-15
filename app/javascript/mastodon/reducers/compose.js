@@ -159,6 +159,10 @@ function appendMedia(state, media, file) {
 
     if (prevSize === 0 && (state.get('default_sensitive') || state.get('spoiler'))) {
       map.set('sensitive', true);
+
+      if (state.get('default_sensitive')) {
+        map.set('spoiler', true);
+      }
     }
   });
 }
@@ -404,7 +408,7 @@ export const composeReducer = (state = initialState, action) => {
       map.set('spoiler', !state.get('spoiler'));
       map.set('idempotencyKey', uuid());
 
-      if (state.get('media_attachments').size >= 1 && !state.get('default_sensitive')) {
+      if (state.get('media_attachments').size >= 1) {
         map.set('sensitive', !state.get('spoiler'));
       }
     });
@@ -549,7 +553,7 @@ export const composeReducer = (state = initialState, action) => {
         map.set('spoiler', true);
         map.set('spoiler_text', action.status.get('spoiler_text'));
       } else {
-        map.set('spoiler', false);
+        map.set('spoiler', action.status.get('sensitive') && action.status.get('media_attachments').size > 0);
         map.set('spoiler_text', '');
       }
 
@@ -586,7 +590,7 @@ export const composeReducer = (state = initialState, action) => {
         map.set('spoiler', true);
         map.set('spoiler_text', action.spoiler_text);
       } else {
-        map.set('spoiler', false);
+        map.set('spoiler', action.status.get('sensitive') && action.status.get('media_attachments').size > 0);
         map.set('spoiler_text', '');
       }
 
