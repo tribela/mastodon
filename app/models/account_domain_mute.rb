@@ -25,7 +25,7 @@ class AccountDomainMute < ApplicationRecord
 
   def invalidate_domain_muting_cache
     Rails.cache.delete("mute_domains_for:#{account_id}")
-    Rails.cache.delete(['mute_domains', account_id, domain])
+    Rails.cache.delete(['hide_domains', account_id, domain])
   end
 
   def invalidate_follow_recommendations_cache
