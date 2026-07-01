@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
-import { useRef, useState, useEffect } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import classNames from 'classnames';
-import Overlay from 'react-overlays/Overlay';
+import { Popover } from 'flavours/glitch/components/popover';
 import { Icon } from 'flavours/glitch/components/icon';
 import CalendarTodayIcon from '@/material-icons/400-24px/calendar_today.svg?react';
 
@@ -48,10 +48,12 @@ function fromDatetimeLocal(value) {
 export function ScheduleButton({ scheduledAt, onScheduleChange, disabled, isEditing, iconOnly }) {
   const intl = useIntl();
   const [open, setOpen] = useState(false);
-  const [placement, setPlacement] = useState('bottom');
   const [inputValue, setInputValue] = useState(() => toDatetimeLocal(scheduledAt));
-  const triggerRef = useRef(null);
-  const overlayRef = useRef(null);
+  const [popoverTarget, setPopoverTarget] = useState(null);
+
+  const handleClose = useCallback(() => {
+    setOpen(false);
+  }, []);
 
   useEffect(() => {
     setInputValue(toDatetimeLocal(scheduledAt));
@@ -62,29 +64,6 @@ export function ScheduleButton({ scheduledAt, onScheduleChange, disabled, isEdit
       setInputValue(toDatetimeLocal(scheduledAt));
     }
   }, [open, scheduledAt]);
-
-  useEffect(() => {
-    if (!open) return;
-    const handleClickOutside = (e) => {
-      const trigger = triggerRef.current;
-      const overlay = overlayRef.current;
-      if (
-        e.target instanceof Node &&
-        trigger &&
-        !trigger.contains(e.target) &&
-        overlay &&
-        !overlay.contains(e.target)
-      ) {
-        setOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [open]);
-
-  const handleOverlayEnter = (state) => {
-    if (state.placement) setPlacement(state.placement);
-  };
 
   if (isEditing) {
     return null;
@@ -164,20 +143,17 @@ export function ScheduleButton({ scheduledAt, onScheduleChange, disabled, isEdit
   );
 
   return (
-    <div className='schedule-button' ref={triggerRef}>
+    <div className='schedule-button' ref={setPopoverTarget}>
       {triggerButton}
-      <Overlay
-        show={open}
-        placement={placement}
-        offset={[5, 5]}
-        flip
-        target={triggerRef}
-        popperConfig={{ strategy: 'fixed', onFirstUpdate: handleOverlayEnter }}
+      <Popover
+        isOpen={open}
+        offset={5}
+        reference={popoverTarget}
+        onClose={handleClose}
       >
-        {({ props: overlayProps }) => (
-          <div {...overlayProps}>
+        {({ props, placement }) => (
+          <div {...props}>
             <div
-              ref={overlayRef}
               className={classNames('dropdown-animation', 'schedule-button__dropdown', placement)}
             >
               <label className='schedule-button__label-text'>
@@ -224,7 +200,7 @@ export function ScheduleButton({ scheduledAt, onScheduleChange, disabled, isEdit
             </div>
           </div>
         )}
-      </Overlay>
+      </Popover>
     </div>
   );
 }

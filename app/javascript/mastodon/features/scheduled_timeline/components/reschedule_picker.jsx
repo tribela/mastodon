@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
-import { useRef, useState, useEffect } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import classNames from 'classnames';
-import Overlay from 'react-overlays/Overlay';
+import { Popover } from 'mastodon/components/popover';
 import { Icon } from 'mastodon/components/icon';
 import CalendarTodayIcon from '@/material-icons/400-24px/calendar_today.svg?react';
 
@@ -41,11 +41,13 @@ function fromDatetimeLocal(value) {
 export function ReschedulePicker({ scheduledAt, onReschedule, disabled }) {
   const intl = useIntl();
   const [open, setOpen] = useState(false);
-  const [placement, setPlacement] = useState('bottom');
   const initialValue = toDatetimeLocal(scheduledAt);
   const [inputValue, setInputValue] = useState(initialValue);
-  const triggerRef = useRef(null);
-  const overlayRef = useRef(null);
+  const [popoverTarget, setPopoverTarget] = useState(null);
+
+  const handleClose = useCallback(() => {
+    setOpen(false);
+  }, []);
 
   useEffect(() => {
     setInputValue(initialValue);
@@ -56,29 +58,6 @@ export function ReschedulePicker({ scheduledAt, onReschedule, disabled }) {
       setInputValue(initialValue);
     }
   }, [open, scheduledAt, initialValue]);
-
-  useEffect(() => {
-    if (!open) return;
-    const handleClickOutside = (e) => {
-      const trigger = triggerRef.current;
-      const overlay = overlayRef.current;
-      if (
-        e.target instanceof Node &&
-        trigger &&
-        !trigger.contains(e.target) &&
-        overlay &&
-        !overlay.contains(e.target)
-      ) {
-        setOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [open]);
-
-  const handleOverlayEnter = (state) => {
-    if (state.placement) setPlacement(state.placement);
-  };
 
   const minDate = getMinDatetime();
   const minDatetime = toDatetimeLocal(minDate.toISOString());
@@ -106,7 +85,7 @@ export function ReschedulePicker({ scheduledAt, onReschedule, disabled }) {
   };
 
   return (
-    <div className='schedule-button reschedule-picker' ref={triggerRef}>
+    <div className='schedule-button reschedule-picker' ref={setPopoverTarget}>
       <button
         type='button'
         className={classNames('icon-button', { active: open })}
@@ -116,18 +95,15 @@ export function ReschedulePicker({ scheduledAt, onReschedule, disabled }) {
       >
         <Icon id='calendar' icon={CalendarTodayIcon} />
       </button>
-      <Overlay
-        show={open}
-        placement={placement}
-        offset={[5, 5]}
-        flip
-        target={triggerRef}
-        popperConfig={{ strategy: 'fixed', onFirstUpdate: handleOverlayEnter }}
+      <Popover
+        isOpen={open}
+        offset={5}
+        reference={popoverTarget}
+        onClose={handleClose}
       >
-        {({ props: overlayProps }) => (
-          <div {...overlayProps}>
+        {({ props, placement }) => (
+          <div {...props}>
             <div
-              ref={overlayRef}
               className={classNames('dropdown-animation', 'schedule-button__dropdown', placement)}
             >
               <label className='schedule-button__label-text'>
@@ -165,7 +141,7 @@ export function ReschedulePicker({ scheduledAt, onReschedule, disabled }) {
             </div>
           </div>
         )}
-      </Overlay>
+      </Popover>
     </div>
   );
 }
