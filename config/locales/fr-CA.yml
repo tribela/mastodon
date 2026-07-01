@@ -1935,7 +1935,7 @@ fr-CA:
     next: Suivant
     older: Plus ancien
     prev: Précédent
-    truncate: "&hellip;"
+    truncate_html: "&hellip;"
   polls:
     errors:
       already_voted: Vous avez déjà voté sur ce sondage
