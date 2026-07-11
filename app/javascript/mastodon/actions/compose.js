@@ -12,7 +12,7 @@ import { emojiMartSearch } from '@/mastodon/features/emoji/picker';
 import { showAlert, showAlertForError } from './alerts';
 import { useEmoji } from './emojis';
 import { importFetchedAccounts, importFetchedStatus } from './importer';
-import { addScheduledStatus } from './scheduled_statuses';
+import { addScheduledStatus, SCHEDULED_STATUS_DELETE_SUCCESS } from './scheduled_statuses';
 import { openModal } from './modal';
 import { updateTimeline } from './timelines';
 import { insertStatusIntoAccountTimelines } from './timelines_typed';
@@ -239,28 +239,24 @@ export function submitCompose(successCallback) {
     }
 
     const visibility = getState().getIn(['compose', 'privacy']);
-    const scheduledAt = effectiveStatusId === null ? getState().getIn(['compose', 'scheduled_at']) : null;
-    const requestData = {
-      status: statusText,
-      spoiler_text,
-      in_reply_to_id: getState().getIn(['compose', 'in_reply_to'], null),
-      media_ids: media.map(item => item.get('id')),
-      media_attributes,
-      sensitive: getState().getIn(['compose', 'sensitive']),
-      visibility: visibility,
-      poll: getState().getIn(['compose', 'poll'], null),
-      language: getState().getIn(['compose', 'language']),
-      quoted_status_id: getState().getIn(['compose', 'quoted_status_id']),
-      quote_approval_policy: visibility === 'private' || visibility === 'direct' ? 'nobody' : getState().getIn(['compose', 'quote_policy']),
-    };
-    if (scheduledAt) {
-      requestData.scheduled_at = scheduledAt;
-    }
 
     const doSubmit = () => api().request({
       url: effectiveStatusId === null ? '/api/v1/statuses' : `/api/v1/statuses/${effectiveStatusId}`,
       method: effectiveStatusId === null ? 'post' : 'put',
-      data: requestData,
+      data: {
+        status: statusText,
+        spoiler_text,
+        in_reply_to_id: getState().getIn(['compose', 'in_reply_to'], null),
+        media_ids: media.map(item => item.get('id')),
+        media_attributes,
+        sensitive: getState().getIn(['compose', 'sensitive']),
+        visibility: visibility,
+        poll: getState().getIn(['compose', 'poll'], null),
+        language: getState().getIn(['compose', 'language']),
+        quoted_status_id: getState().getIn(['compose', 'quoted_status_id']),
+        quote_approval_policy: visibility === 'private' || visibility === 'direct' ? 'nobody' : getState().getIn(['compose', 'quote_policy']),
+        scheduled_at: effectiveStatusId === null ? getState().getIn(['compose', 'scheduled_at']) : undefined,
+      },
       headers: {
         'Idempotency-Key': getState().getIn(['compose', 'idempotencyKey']),
       },
@@ -334,7 +330,7 @@ export function submitCompose(successCallback) {
 
     if (isRedraftingScheduled) {
       api().delete(`/api/v1/scheduled_statuses/${editingScheduledId}`).then(() => {
-        dispatch({ type: 'SCHEDULED_STATUS_DELETE_SUCCESS', id: editingScheduledId });
+        dispatch({ type: SCHEDULED_STATUS_DELETE_SUCCESS, id: editingScheduledId });
         doSubmit();
       }).catch((err) => {
         dispatch(submitComposeFail(err));
