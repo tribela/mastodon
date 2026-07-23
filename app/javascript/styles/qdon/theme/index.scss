@@ -1,9 +1,9 @@
 @use 'base';
 @use 'dark';
 @use 'light';
-@use '../../mastodon/theme/dark' as mastodon-dark;
-@use '../../mastodon/theme/light' as mastodon-light;
-@use '../../mastodon/theme/utils' as utils;
+@use '../../mastodon/tokens/theme/dark' as mastodon-dark;
+@use '../../mastodon/tokens/theme/light' as mastodon-light;
+@use '../../mastodon/tokens/theme/utils' as utils;
 
 html {
   @include base.palette;
