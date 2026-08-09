@@ -111,7 +111,7 @@ GEM
     aws-sdk-kms (1.130.0)
       aws-sdk-core (~> 3, >= 3.254.0)
       aws-sigv4 (~> 1.5)
-    aws-sdk-s3 (1.228.1)
+    aws-sdk-s3 (1.228.2)
       aws-sdk-core (~> 3, >= 3.254.0)
       aws-sdk-kms (~> 1)
       aws-sigv4 (~> 1.5)
@@ -214,7 +214,6 @@ GEM
       railties (>= 5)
     dotenv (3.2.0)
     drb (2.2.3)
-    dry-cli (1.4.1)
     elastic-transport (8.5.3)
       faraday (< 3)
       multi_json
@@ -353,7 +352,7 @@ GEM
       azure-blob (~> 0.5.2)
       hashie (~> 5.0)
     jmespath (1.6.2)
-    json (2.21.1)
+    json (2.21.2)
     json-canonicalization (1.0.0)
     json-jwt (1.17.1)
       activesupport (>= 4.2)
@@ -553,7 +552,7 @@ GEM
       opentelemetry-instrumentation-base (~> 0.25)
     opentelemetry-instrumentation-net_http (0.29.0)
       opentelemetry-instrumentation-base (~> 0.25)
-    opentelemetry-instrumentation-pg (0.36.0)
+    opentelemetry-instrumentation-pg (0.37.0)
       opentelemetry-helpers-sql
       opentelemetry-helpers-sql-processor
       opentelemetry-instrumentation-base (~> 0.25)
@@ -587,7 +586,7 @@ GEM
     ox (2.14.28)
       bigdecimal (>= 3.0)
     parallel (2.1.0)
-    parser (3.3.11.1)
+    parser (3.3.12.0)
       ast (~> 2.4.1)
       racc
     parslet (2.0.0)
@@ -596,7 +595,7 @@ GEM
     pg (1.6.3)
     pghero (3.8.0)
       activerecord (>= 7.2)
-    playwright-ruby-client (1.61.0)
+    playwright-ruby-client (1.62.0)
       base64
       concurrent-ruby (>= 1.1.6)
       mime-types (>= 3.0)
@@ -643,8 +642,8 @@ GEM
       base64 (>= 0.1.0)
       logger (>= 1.6.0)
       rack (>= 3.0.0, < 4)
-    rack-proxy (0.8.3)
-      rack
+    rack-proxy (1.0.1)
+      rack (>= 2.0, < 4)
     rack-session (2.1.2)
       base64 (>= 0.1.0)
       rack (>= 3.0.0)
@@ -757,7 +756,7 @@ GEM
       rspec-mocks (~> 3.0)
       sidekiq (>= 5, < 9)
     rspec-support (3.13.7)
-    rubocop (1.88.2)
+    rubocop (1.89.0)
       json (~> 2.3)
       language_server-protocol (~> 3.17.0.2)
       lint_roller (~> 1.1.0)
@@ -912,15 +911,6 @@ GEM
     validate_url (1.0.15)
       activemodel (>= 3.0.0)
       public_suffix
-    vite_rails (3.11.1)
-      railties (>= 5.1, < 9)
-      vite_ruby (~> 3.0, >= 3.2.2)
-    vite_ruby (3.10.2)
-      dry-cli (>= 0.7, < 2)
-      logger (~> 1.6)
-      mutex_m
-      rack-proxy (~> 0.6, >= 0.6.1)
-      zeitwerk (~> 2.2)
     warden (1.2.9)
       rack (>= 2.0.9)
     webauthn (3.4.3)
@@ -1043,7 +1033,7 @@ DEPENDENCIES
   opentelemetry-instrumentation-http (~> 0.30.0)
   opentelemetry-instrumentation-http_client (~> 0.29.0)
   opentelemetry-instrumentation-net_http (~> 0.29.0)
-  opentelemetry-instrumentation-pg (~> 0.36.0)
+  opentelemetry-instrumentation-pg (~> 0.37.0)
   opentelemetry-instrumentation-rack (~> 0.31.0)
   opentelemetry-instrumentation-rails (~> 0.42.0)
   opentelemetry-instrumentation-redis (~> 0.29.0)
@@ -1063,6 +1053,7 @@ DEPENDENCIES
   pundit (~> 2.3)
   rack-attack (~> 6.6)
   rack-cors
+  rack-proxy
   rack-test (~> 2.1)
   rails (~> 8.1.0)
   rails-i18n (~> 8.0)
@@ -1106,7 +1097,6 @@ DEPENDENCIES
   tty-prompt (~> 0.23)
   twitter-text (~> 3.1.0)
   tzinfo-data (~> 1.2023)
-  vite_rails
   webauthn (~> 3.0)
   webmock (~> 3.18)
   webpush!
