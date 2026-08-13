@@ -166,6 +166,10 @@ function apiStatusToTextHashtags (state, status) {
   )).join('');
 }
 
+/**
+ * @param {typeof initialState} state
+ * @returns {typeof initialState}
+ */
 function clearAll(state) {
   return state.withMutations(map => {
     map.set('id', null);

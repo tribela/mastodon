@@ -69,10 +69,19 @@
   width: 100%;
 }
 
+.menuItemIcon {
+  width: var(--space-lg);
+  height: var(--space-lg);
+}
+
 .menu > hr {
   height: 1px;
   background-color: var(--color-border-primary);
   margin: var(--space-2xs) var(--space-sm);
   border: none;
   width: calc(100% - (2 * var(--space-sm)));
+}
+
+.popoverMenu {
+  width: 100%;
 }

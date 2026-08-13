@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { PureComponent } from 'react';
+import { lazy, PureComponent, Suspense } from 'react';
 
 import { defineMessages } from 'react-intl';
 
@@ -24,6 +24,7 @@ import { PictureInPicture } from 'mastodon/features/picture_in_picture';
 import { identityContextPropShape, withIdentity } from 'mastodon/identity_context';
 import { layoutFromWindow } from 'mastodon/is_mobile';
 import { WithRouterPropTypes } from 'mastodon/utils/react_router';
+import { isRedesignEnabled } from '@/mastodon/utils/environment';
 import { checkAnnualReport } from '@/mastodon/reducers/slices/annual_report';
 
 import { uploadCompose, resetCompose, changeComposeSpoilerness } from '../../actions/compose';
@@ -124,6 +125,7 @@ class SwitchingColumnsArea extends PureComponent {
     singleColumn: PropTypes.bool,
     layout: PropTypes.string.isRequired,
     forceOnboarding: PropTypes.bool,
+    minimalShell: PropTypes.bool,
   };
 
   componentDidMount () {
@@ -161,7 +163,7 @@ class SwitchingColumnsArea extends PureComponent {
   };
 
   render () {
-    const { children, singleColumn, forceOnboarding } = this.props;
+    const { children, singleColumn, forceOnboarding, minimalShell } = this.props;
     const { signedIn } = this.props.identity;
     const pathName = this.props.location.pathname;
 
@@ -188,7 +190,7 @@ class SwitchingColumnsArea extends PureComponent {
 
     return (
       <ColumnsContextProvider multiColumn={!singleColumn}>
-        <ColumnsArea ref={this.setRef} singleColumn={singleColumn} domain={domain} minimalShell={!signedIn && landingPage === 'overview' && pathName.startsWith('/overview')}>
+        <ColumnsArea ref={this.setRef} singleColumn={singleColumn} domain={domain} minimalShell={minimalShell}>
           <WrappedSwitch>
             <Redirect from='/' to={{pathname: rootRedirect, state: {...this.props.location.state, focusTarget: false}}} exact />
 
@@ -273,8 +275,12 @@ class SwitchingColumnsArea extends PureComponent {
       </ColumnsContextProvider>
     );
   }
-
 }
+
+const LazyRedesignComposeButton = lazy(
+  () => import('@/mastodon/features/compose/redesign/trigger')
+    .then(({ ComposeRedesignButton }) => ({ default: ComposeRedesignButton }))
+);
 
 class UI extends PureComponent {
   static propTypes = {
@@ -682,6 +688,7 @@ class UI extends PureComponent {
             singleColumn={layout === 'mobile' || layout === 'single-column'}
             layout={layout}
             forceOnboarding={firstLaunch && newAccount}
+            minimalShell={minimalShell}
           >
             {children}
           </SwitchingColumnsArea>
@@ -694,6 +701,12 @@ class UI extends PureComponent {
           <LoadingBarContainer className='loading-bar' />
           <ModalContainer />
           <UploadArea active={draggingOver} onClose={this.closeUploadModal} />
+
+          {isRedesignEnabled() && (
+            <Suspense>
+              <LazyRedesignComposeButton />
+            </Suspense>
+          )}
         </div>
       </Hotkeys>
     );

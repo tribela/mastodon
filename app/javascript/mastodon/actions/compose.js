@@ -10,7 +10,7 @@ import { tagHistory } from 'mastodon/settings';
 import { emojiMartSearch } from '@/mastodon/features/emoji/picker';
 
 import { showAlert, showAlertForError } from './alerts';
-import { useEmoji } from './emojis';
+import { emojiUse } from './emojis';
 import { importFetchedAccounts, importFetchedStatus } from './importer';
 import { addScheduledStatus, SCHEDULED_STATUS_DELETE_SUCCESS } from './scheduled_statuses';
 import { openModal } from './modal';
@@ -679,7 +679,7 @@ export function selectComposeSuggestion(position, token, suggestion, path) {
       completion    = suggestion.native || `:${suggestion.id}:`;
       startPosition = position - 1;
 
-      dispatch(useEmoji(suggestion));
+      dispatch(emojiUse(suggestion));
     } else if (suggestion.type === 'hashtag') {
       // TODO: it could make sense to keep the “most capitalized” of the two
       const tokenName = token.slice(1); // strip leading '#'

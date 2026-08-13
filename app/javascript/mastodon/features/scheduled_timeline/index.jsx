@@ -1,15 +1,15 @@
 import PropTypes from 'prop-types';
-import { useEffect, useRef, useCallback } from 'react';
+import { useEffect, useCallback } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { useDispatch, useSelector } from 'react-redux';
 import { List as ImmutableList } from 'immutable';
 
 import CalendarTodayIcon from '@/material-icons/400-24px/calendar_today.svg?react';
+import { Column } from '@/mastodon/components/column';
+import { ColumnHeader } from '@/mastodon/components/column/header';
 import { addColumn, removeColumn, moveColumn } from 'mastodon/actions/columns';
 import { fetchScheduledStatuses } from 'mastodon/actions/scheduled_statuses';
 import { Helmet } from '@unhead/react/helmet';
-import Column from 'mastodon/components/column';
-import ColumnHeader from 'mastodon/components/column_header';
 import { LoadingIndicator } from 'mastodon/components/loading_indicator';
 import ScrollableList from 'mastodon/components/scrollable_list';
 import { me } from 'mastodon/initial_state';
@@ -24,7 +24,6 @@ const messages = defineMessages({
 const ScheduledTimeline = ({ columnId, multiColumn }) => {
   const intl = useIntl();
   const dispatch = useDispatch();
-  const columnRef = useRef();
   const items = useSelector(state => state.getIn(['scheduled_statuses', 'items'])) ?? ImmutableList();
   const isLoading = useSelector(state => state.getIn(['scheduled_statuses', 'isLoading']));
   const account = useSelector(state => state.getIn(['accounts', me]));
@@ -43,29 +42,21 @@ const ScheduledTimeline = ({ columnId, multiColumn }) => {
     dispatch(moveColumn(columnId, dir));
   }, [dispatch, columnId]);
 
-  const handleHeaderClick = useCallback(() => {
-    if (columnRef.current) columnRef.current.scrollTop();
-  }, []);
-
   useEffect(() => {
     dispatch(fetchScheduledStatuses());
   }, [dispatch]);
 
-  const setRef = useCallback((c) => {
-    columnRef.current = c;
-  }, []);
-
   const emptyMessage = <FormattedMessage {...messages.empty} />;
 
   return (
-    <Column bindToDocument={!multiColumn} ref={setRef} label={intl.formatMessage(messages.title)}>
+    <Column bindToDocument={!multiColumn} label={intl.formatMessage(messages.title)}>
       <ColumnHeader
         icon='calendar'
         iconComponent={CalendarTodayIcon}
         title={intl.formatMessage(messages.title)}
         onPin={handlePin}
         onMove={handleMove}
-        onClick={handleHeaderClick}
+        scrollTopOnClick
         pinned={pinned}
         multiColumn={multiColumn}
       />

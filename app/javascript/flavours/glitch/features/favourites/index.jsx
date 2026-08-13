@@ -14,12 +14,12 @@ import RefreshIcon from '@/material-icons/400-24px/refresh.svg?react';
 import StarIcon from '@/material-icons/400-24px/star-fill.svg?react';
 import { fetchFavourites, expandFavourites } from 'flavours/glitch/actions/interactions';
 import { Account } from 'flavours/glitch/components/account';
-import ColumnHeader from 'flavours/glitch/components/column_header';
+import { Column } from 'flavours/glitch/components/column';
+import { ColumnHeader } from '@/flavours/glitch/components/column/header';
 import { Icon }  from 'flavours/glitch/components/icon';
 import { injectIntl } from '@/flavours/glitch/components/intl';
 import { LoadingIndicator } from 'flavours/glitch/components/loading_indicator';
 import ScrollableList from 'flavours/glitch/components/scrollable_list';
-import Column from 'flavours/glitch/features/ui/components/column';
 
 const messages = defineMessages({
   heading: { id: 'column.favourited_by', defaultMessage: 'Favourited by' },

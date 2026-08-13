@@ -12,15 +12,15 @@ import { debounce } from 'lodash';
 
 import RefreshIcon from '@/material-icons/400-24px/refresh.svg?react';
 import RepeatIcon from '@/material-icons/400-24px/repeat.svg?react';
-import { Account } from 'flavours/glitch/components/account';
-import { Icon }  from 'flavours/glitch/components/icon';
+import { fetchReblogs, expandReblogs } from '@/flavours/glitch/actions/interactions';
+import { Account } from '@/flavours/glitch/components/account';
+import { Column } from '@/flavours/glitch/components/column';
+import { ColumnHeader } from '@/flavours/glitch/components/column/header';
+import { Icon }  from '@/flavours/glitch/components/icon';
 import { injectIntl } from '@/flavours/glitch/components/intl';
 
-import { fetchReblogs, expandReblogs } from '../../actions/interactions';
-import ColumnHeader from '../../components/column_header';
-import { LoadingIndicator } from '../../components/loading_indicator';
-import ScrollableList from '../../components/scrollable_list';
-import Column from '../ui/components/column';
+import { LoadingIndicator } from '@/flavours/glitch/components/loading_indicator';
+import ScrollableList from '@/flavours/glitch/components/scrollable_list';
 
 const messages = defineMessages({
   heading: { id: 'column.reblogged_by', defaultMessage: 'Boosted by' },

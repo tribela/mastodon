@@ -7,9 +7,9 @@ import { Icon } from 'flavours/glitch/components/icon';
 import { getColumnSkipLinkId } from 'flavours/glitch/features/ui/components/skip_links';
 import { ButtonInTabsBar } from 'flavours/glitch/features/ui/util/columns_context';
 
-import { useColumnIndexContext } from '../features/ui/components/columns_area';
+import { useAppHistory } from '../router';
 
-import { useAppHistory } from './router';
+import { useColumnIndexContext } from './context';
 
 type OnClickCallback = () => void;
 
