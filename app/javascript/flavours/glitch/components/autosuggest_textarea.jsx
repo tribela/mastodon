@@ -30,9 +30,11 @@ const AutosuggestTextarea = forwardRef(({
   onPaste,
   onDrop,
   onFocus,
+  onBlur,
   autoFocus = true,
   lang,
   className,
+  ...props
 }, textareaRef) => {
 
   const [suggestionsHidden, setSuggestionsHidden] = useState(true);
@@ -112,14 +114,13 @@ const AutosuggestTextarea = forwardRef(({
     onKeyDown(e);
   }, [disabled, suggestions, suggestionsHidden, selectedSuggestion, setSelectedSuggestion, setSuggestionsHidden, onSuggestionSelected, onKeyDown]);
 
-  const closeMenu = useCallback(() => {
+  const closeMenu = useCallback((e) => {
     setSuggestionsHidden(true);
+    onBlur?.(e);
   }, [setSuggestionsHidden]);
 
   const handleFocus = useCallback((e) => {
-    if (onFocus) {
-      onFocus(e);
-    }
+    onFocus?.(e);
   }, [onFocus]);
 
   const handleSuggestionClick = useCallback((e) => {
@@ -183,6 +184,7 @@ const AutosuggestTextarea = forwardRef(({
   return (
     <div className={classNames('autosuggest-textarea', className)}>
       <DebounceInput
+        {...props}
         element={Textarea}
         inputRef={handleRef}
         debounceTimeout={20}

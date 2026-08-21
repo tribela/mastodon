@@ -25,7 +25,7 @@ import { HoverCardController } from 'flavours/glitch/components/hover_card_contr
 import { Permalink } from 'flavours/glitch/components/permalink';
 import { PictureInPicture } from 'flavours/glitch/features/picture_in_picture';
 import { identityContextPropShape, withIdentity } from 'flavours/glitch/identity_context';
-import { layoutFromWindow } from 'flavours/glitch/is_mobile';
+import { layoutFromWindow, transientSingleColumn } from 'flavours/glitch/is_mobile';
 import { selectUnreadNotificationGroupsCount } from 'flavours/glitch/selectors/notifications';
 import { WithRouterPropTypes } from 'flavours/glitch/utils/react_router';
 import { isRedesignEnabled } from '@/flavours/glitch/utils/environment';
@@ -35,7 +35,7 @@ import { uploadCompose, resetCompose, changeComposeSpoilerness } from '../../act
 import { clearHeight } from '../../actions/height_cache';
 import { fetchServer, fetchServerTranslationLanguages } from '../../actions/server';
 import { expandHomeTimeline } from '../../actions/timelines';
-import { initialState, me, owner, singleUserMode, trendsEnabled, landingPage, localLiveFeedAccess, disableHoverCards, domain } from '../../initial_state';
+import { initialState, forceSingleColumn, me, owner, singleUserMode, trendsEnabled, landingPage, localLiveFeedAccess, disableHoverCards, domain } from '../../initial_state';
 
 import BundleColumnError from './components/bundle_column_error';
 import { NavigationBar } from './components/navigation_bar';
@@ -203,8 +203,8 @@ class SwitchingColumnsArea extends PureComponent {
           <WrappedSwitch>
             <Redirect from='/' to={{pathname: rootRedirect, state: {...this.props.location.state, focusTarget: false}}} exact />
 
-            {singleColumn ? <Redirect from='/deck' to='/home' exact /> : null}
-            {singleColumn && pathName.startsWith('/deck/') ? <Redirect from={pathName} to={{...this.props.location, pathname: pathName.slice(5)}} /> : null}
+            {forceSingleColumn || transientSingleColumn ? <Redirect from='/deck' to='/home' exact /> : null}
+            {(forceSingleColumn || transientSingleColumn) && pathName.startsWith('/deck/') ? <Redirect from={pathName} to={{...this.props.location, pathname: pathName.slice(5)}} /> : null}
             {/* Redirect old bookmarks (without /deck) with home-like routes to the advanced interface */}
             {!singleColumn && pathName === '/home' ? <Redirect from='/home' to='/deck/getting-started' exact /> : null}
             {pathName === '/getting-started' ? <Redirect from='/getting-started' to={singleColumn ? '/home' : '/deck/getting-started'} exact /> : null}

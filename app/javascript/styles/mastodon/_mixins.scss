@@ -83,7 +83,7 @@
 }
 
 @mixin type-micro {
-  font-family: var(--font-monospace);
+  font-family: var(--font-body);
   font-size: var(--fs-3xs);
   font-weight: normal;
   line-height: var(--lh-tighter);
@@ -155,4 +155,16 @@
     font-weight: 500;
     color: var(--color-text-primary);
   }
+}
+
+/**
+ * Utilities
+ */
+
+@mixin line-clamp($lines) {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: $lines;
+  line-clamp: $lines;
 }

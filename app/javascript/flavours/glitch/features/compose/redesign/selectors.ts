@@ -4,6 +4,7 @@ import type { ApiMediaAttachmentJSON } from '@/flavours/glitch/api_types/media_a
 import type { StatusVisibility } from '@/flavours/glitch/models/status';
 import type { ComposeType } from '@/flavours/glitch/reducers/slices/composer';
 import { createAppSelector } from '@/flavours/glitch/store';
+import { DAY, MINUTE } from '@/flavours/glitch/utils/time';
 
 import { countableText } from '../util/counter';
 
@@ -44,9 +45,10 @@ export const selectComposeCharsCount = createAppSelector(
   (maxChars, text, spoilerText) => {
     const allText = (countableText(text) as string) + spoilerText;
     return {
-      text: allText,
-      current: length(allText),
+      text,
+      allText,
       max: maxChars ?? 500,
+      current: length(allText),
     };
   },
 );
@@ -58,23 +60,48 @@ export const selectComposeCanSubmit = createAppSelector(
     (state) => !!state.compose.get('is_changing_upload'),
     selectComposeCharsCount,
   ],
-  (isSubmitting, isUploading, isChangingUpload, { current, max }) =>
-    !isSubmitting && !isUploading && !isChangingUpload && current <= max,
+  (isSubmitting, isUploading, isChangingUpload, { text, max }) =>
+    !isSubmitting &&
+    !isUploading &&
+    !isChangingUpload &&
+    text.trim().length <= max &&
+    text.trim().length > 0,
 );
 
-export const selectComposeState = createAppSelector(
-  [(state) => state.compose, selectComposeType, selectComposeCanSubmit],
-  (compose, type, canSubmit) => ({
-    type,
-    text: compose.get('text') as string,
-    sensitive: !!compose.get('spoiler'),
-    sensitiveText: compose.get('spoiler_text') as string,
-    lang: compose.get('language') as string,
-    suggestions: compose.get(
-      'suggestions',
-    ) as unknown as Immutable.List<unknown>,
-    canSubmit,
-    isSubmitting: !!compose.get('is_submitting'),
+export const selectComposeMentions = createAppSelector(
+  [
+    (state) => state.accounts_map,
+    (state) => state.compose.get('text') as string,
+    (state) => state.server.server.item?.domain,
+  ],
+  (accountsMap, text, localDomain) => {
+    const accounts = new Set<string>();
+    const potentialAccounts = text.matchAll(
+      /@(?<username>[a-zA-Z0-9_.-]+)(?<domain>@[a-zA-Z0-9_.-]+)?/g,
+    );
+    for (const match of potentialAccounts) {
+      const { username, domain } = match.groups ?? {};
+      if (!username) {
+        continue;
+      }
+      const account =
+        domain && domain !== localDomain ? `${username}@${domain}` : username;
+      if (accountsMap[account]) {
+        accounts.add(accountsMap[account]);
+      }
+    }
+    return [...accounts];
+  },
+);
+
+export const selectComposeSensitive = createAppSelector(
+  [
+    (state) => !!state.compose.get('spoiler'),
+    (state) => state.compose.get('spoiler_text'),
+  ],
+  (sensitive, text) => ({
+    sensitive,
+    sensitiveText: typeof text === 'string' ? text : '',
   }),
 );
 
@@ -150,7 +177,9 @@ export const selectComposeHasAttachments = createAppSelector(
   },
 );
 
-export type ComposeAttachment = ApiMediaAttachmentJSON & {
+export type ComposeAttachment<
+  TAttachment extends ApiMediaAttachmentJSON = ApiMediaAttachmentJSON,
+> = TAttachment & {
   file?: File;
   unattached: boolean;
 };
@@ -170,20 +199,43 @@ export const selectComposeAttachments = createAppSelector(
   },
 );
 
+export const selectComposeAttachment = createAppSelector(
+  [selectComposeAttachments, (_, id?: string) => id],
+  (attachments, id) => {
+    if (!id) {
+      return null;
+    }
+    return attachments.find((attachment) => attachment.id === id) ?? null;
+  },
+);
+
 export const selectComposePoll = createAppSelector(
   [
     (state) =>
       state.compose.get('poll') as Immutable.Map<string, unknown> | null,
+    (state) => state.server.server.item?.configuration.polls,
   ],
-  (rawPoll) => {
+  (rawPoll, rawConfig) => {
+    const config = {
+      maxOptions: rawConfig?.max_options ?? 4,
+      maxCharacters: rawConfig?.max_characters_per_option ?? 50,
+      minExpiration: rawConfig?.min_expiration ?? 5 * MINUTE,
+      maxExpiration: rawConfig?.max_expiration ?? 30 * DAY,
+    };
     if (rawPoll === null) {
-      return null;
+      return {
+        options: [],
+        expiresIn: DAY,
+        multiple: false,
+        ...config,
+      };
     }
 
     return {
       options: (rawPoll.get('options') as Immutable.List<string>).toArray(),
       expiresIn: Number(rawPoll.get('expires_in')),
       multiple: !!rawPoll.get('multiple'),
+      ...config,
     };
   },
 );

@@ -3,7 +3,13 @@ import { useCallback, useRef } from 'react';
 
 import { FormattedMessage } from 'react-intl';
 
-import { ImageSquareIcon, ChartBarHorizontalIcon } from '@phosphor-icons/react';
+import classNames from 'classnames';
+
+import {
+  ImageSquareIcon,
+  ChartBarHorizontalIcon,
+  WarningCircleIcon,
+} from '@phosphor-icons/react';
 
 import { addPoll, uploadCompose } from '@/mastodon/actions/compose';
 import { Button, IconButton } from '@/mastodon/components/button/redesign';
@@ -62,7 +68,13 @@ export const ComposeFooter: React.FC<{ onEmojiPick: OnEmojiPick }> = ({
       </IconButton>
 
       <div className={classes.flexGrowWrap}>
-        <span className={classes.counter}>
+        <span
+          className={classNames(
+            classes.counter,
+            current > max && classes.counterError,
+          )}
+        >
+          {current > max && <WarningCircleIcon weight='fill' />}
           <FormattedMessage
             id='compose.counter'
             defaultMessage='{current, number}/{max, number}'
@@ -106,7 +118,7 @@ const selectUpload = createAppSelector(
     (state) => state.compose.get('resetFileKey') as number,
   ],
   (
-    fileTypes,
+    fileTypesList,
     isUploading,
     attachments,
     pendingAttachments,
@@ -117,8 +129,14 @@ const selectUpload = createAppSelector(
       (attachment) =>
         attachment.type === 'audio' || attachment.type === 'video',
     );
+    const hasImages = attachments.some(
+      (attachment) => attachment.type === 'image' || attachment.type === 'gifv',
+    );
+    const fileTypes = (fileTypesList?.toArray() ?? []).filter(
+      (fileType) => !hasImages || fileType.startsWith('image/'),
+    );
     return {
-      accepted: (fileTypes?.toArray() ?? []).join(','),
+      accepted: fileTypes.join(','),
       loading: isUploading || pendingAttachments > 0,
       disabled:
         attachments.length + pendingAttachments >= maxAttachments ||

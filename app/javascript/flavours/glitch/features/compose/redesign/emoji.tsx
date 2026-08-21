@@ -12,7 +12,7 @@ import { emojiUse } from '@/flavours/glitch/actions/emojis';
 import { changeSetting } from '@/flavours/glitch/actions/settings';
 import { IconButton } from '@/flavours/glitch/components/button/redesign';
 import { CircularProgress } from '@/flavours/glitch/components/circular_progress';
-import { Dropdown } from '@/flavours/glitch/components/dropdown/redesign';
+import { MenuCard } from '@/flavours/glitch/components/menu/card';
 import type { PopoverChildProps } from '@/flavours/glitch/components/popover';
 import { Popover } from '@/flavours/glitch/components/popover';
 import { useToggle } from '@/flavours/glitch/hooks/useToggle';
@@ -55,6 +55,7 @@ export const ComposeEmojiButton: React.FC<{ onPick: OnEmojiPick }> = ({
         icon={SmileyIcon}
         ref={setTarget}
         onClick={onToggle}
+        aria-expanded={open}
       >
         <FormattedMessage
           id='emoji_button.label'
@@ -66,7 +67,7 @@ export const ComposeEmojiButton: React.FC<{ onPick: OnEmojiPick }> = ({
         isOpen={open}
         onClose={onFalse}
         reference={target}
-        placement='bottom'
+        placement='top-start'
         offset={4}
       >
         {({ props, placement }) => (
@@ -162,7 +163,7 @@ const ComposeEmojiDropdown: React.FC<
   );
 
   return (
-    <Dropdown
+    <MenuCard
       {...props}
       className={classNames(
         'dropdown-animation',
@@ -217,7 +218,7 @@ const ComposeEmojiDropdown: React.FC<
           </div>
         </div>
       </Suspense>
-    </Dropdown>
+    </MenuCard>
   );
 };
 
