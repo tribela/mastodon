@@ -1,8 +1,9 @@
 /* eslint-disable jsx-a11y/no-autofocus */
-import type React from 'react';
-import { lazy, Suspense, useCallback } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useState } from 'react';
 
 import { FormattedMessage } from 'react-intl';
+
+import classNames from 'classnames';
 
 import {
   ChatCircleIcon,
@@ -14,7 +15,7 @@ import { IconButton } from '@/flavours/glitch/components/button/redesign';
 import { CircularProgress } from '@/flavours/glitch/components/circular_progress';
 import {
   Menu,
-  MenuButton,
+  MenuTrigger,
   MenuList,
   MenuItem,
 } from '@/flavours/glitch/components/menu';
@@ -32,8 +33,27 @@ const ComposeLazyForm = lazy(() =>
   })),
 );
 
-export const ComposeRedesignButton: React.FC = () => {
+export const ComposeRedesignButton: React.FC<{
+  /**
+   * Render the button in regular document flow instead of fixed positioning for mobile layout
+   */
+  inline?: boolean;
+}> = ({ inline }) => {
   const displayState = useAppSelector((state) => state.composer.displayState);
+
+  // Update viewport based on visual size in order to account for the virtual keyboard.
+  const [viewportHeight, setViewportHeight] = useState<null | number>(null);
+  useEffect(() => {
+    const updateHeight = () => {
+      setViewportHeight(visualViewport?.height ?? null);
+    };
+
+    visualViewport?.addEventListener('resize', updateHeight);
+
+    return () => {
+      visualViewport?.removeEventListener('resize', updateHeight);
+    };
+  }, []);
 
   const dispatch = useAppDispatch();
   const handleComposerOpen: React.MouseEventHandler<HTMLButtonElement> =
@@ -62,27 +82,31 @@ export const ComposeRedesignButton: React.FC = () => {
   }
 
   if (displayState === 'showing') {
+    // Pass the viewport height as a CSS variable so it's only used for mobile.
+    const style = {
+      '--viewport-height': viewportHeight ? `${viewportHeight}px` : undefined,
+    } as React.CSSProperties;
     return (
       <Suspense fallback={<CircularProgress strokeWidth={2} size={50} />}>
-        <ComposeLazyForm autoFocus className={classes.composer} />
+        <ComposeLazyForm autoFocus className={classes.composer} style={style} />
       </Suspense>
     );
   }
 
   return (
     <Menu>
-      <MenuButton
+      <MenuTrigger
         as={IconButton}
         icon={PenNibIcon}
-        color='neutral'
-        className={classes.button}
+        variant='solid'
+        className={classNames(classes.button, inline && classes.buttonInline)}
         size='lg'
       >
         <FormattedMessage
           id='compose.new'
           defaultMessage='Write a new post or messsage'
         />
-      </MenuButton>
+      </MenuTrigger>
 
       <MenuList maxWidth={180} placement='top-end'>
         <MenuItem name='post' onClick={handleComposerOpen} icon={NewspaperIcon}>
