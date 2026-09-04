@@ -210,6 +210,33 @@ textarea.textarea {
   }
 }
 
+// Schedule
+
+.scheduleDropdown {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  padding: var(--space-xs);
+}
+
+.scheduleLabel {
+  @include mixins.type-label-sm;
+
+  color: var(--color-text-tertiary);
+}
+
+.scheduleWarning {
+  @include mixins.type-body-compact;
+
+  color: var(--color-text-error);
+}
+
+.scheduleActions {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-xs);
+}
+
 // Reply
 
 .reply {

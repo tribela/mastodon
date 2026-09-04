@@ -29,6 +29,7 @@ import {
   selectComposeCanSubmit,
   selectComposeCharsCount,
   selectComposeHasAttachments,
+  selectComposeScheduledAt,
   selectComposeType,
 } from './selectors';
 import classes from './styles.module.scss';
@@ -42,6 +43,7 @@ export const ComposeFooter: React.FC<{ onEmojiPick: OnEmojiPick }> = ({
     selectComposeHasAttachments,
   );
   const hasQuote = !!quotedStatusId;
+  const scheduledAt = useAppSelector(selectComposeScheduledAt);
   const isSubmitting = useAppSelector(
     (state) => !!state.compose.get('is_submitting'),
   );
@@ -91,10 +93,14 @@ export const ComposeFooter: React.FC<{ onEmojiPick: OnEmojiPick }> = ({
           disabled={!canSubmit}
           loading={isSubmitting}
         >
-          {type !== 'message' && (
+          {scheduledAt ? (
+            <FormattedMessage
+              id='compose_form.schedule_submit'
+              defaultMessage='Schedule'
+            />
+          ) : type !== 'message' ? (
             <FormattedMessage id='compose.publish' defaultMessage='Publish' />
-          )}
-          {type === 'message' && (
+          ) : (
             <FormattedMessage
               id='compose.message.publish'
               defaultMessage='Send'

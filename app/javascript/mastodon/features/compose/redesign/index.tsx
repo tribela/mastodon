@@ -10,6 +10,7 @@ import { LockSimpleOpenIcon, PepperIcon } from '@phosphor-icons/react';
 import {
   changeComposeSpoilerness,
   changeComposeSpoilerText,
+  changeScheduledAt,
   insertEmojiCompose,
 } from '@/mastodon/actions/compose';
 import { ToggleButton } from '@/mastodon/components/button/redesign';
@@ -29,8 +30,10 @@ import { ComposeFormHeader } from './header';
 import { ComposeHints } from './hints';
 import { LanguageButton } from './language';
 import { ComposeReply } from './reply';
+import { ScheduleButton } from './schedule';
 import {
   selectComposeCanSubmit,
+  selectComposeScheduledAt,
   selectComposeSensitive,
   selectComposeType,
 } from './selectors';
@@ -57,9 +60,15 @@ export const RedesignComposeForm: React.FC<
 > = ({ autoFocus, className, noMinimize, redirectOnSuccess, ...props }) => {
   const type = useAppSelector(selectComposeType);
   const { sensitive, sensitiveText } = useAppSelector(selectComposeSensitive);
+  const scheduledAt = useAppSelector(selectComposeScheduledAt);
 
-  const { onSensitiveChange, onSensitiveTextChange, onEmojiPick, onSubmit } =
-    useComposeHandlers(redirectOnSuccess);
+  const {
+    onSensitiveChange,
+    onSensitiveTextChange,
+    onEmojiPick,
+    onScheduleChange,
+    onSubmit,
+  } = useComposeHandlers(redirectOnSuccess);
 
   const intl = useIntl();
   const titleId = useId();
@@ -82,6 +91,11 @@ export const RedesignComposeForm: React.FC<
         <ComposeVisibility className={classes.flexGrowWrap} />
 
         <LanguageButton />
+
+        <ScheduleButton
+          scheduledAt={scheduledAt}
+          onScheduleChange={onScheduleChange}
+        />
 
         <ToggleButton
           size='sm'
@@ -155,6 +169,13 @@ function useComposeHandlers(redirectOnSuccess?: boolean) {
       [dispatch],
     );
 
+  const onScheduleChange = useCallback(
+    (scheduledAt: string | null) => {
+      dispatch(changeScheduledAt(scheduledAt));
+    },
+    [dispatch],
+  );
+
   const onEmojiPick: OnEmojiPick = useCallback(
     (emoji) => {
       const position = getComposerTextarea()?.selectionStart ?? 0;
@@ -194,5 +215,6 @@ function useComposeHandlers(redirectOnSuccess?: boolean) {
     onEmojiPick,
     onSensitiveChange,
     onSensitiveTextChange,
+    onScheduleChange,
   };
 }

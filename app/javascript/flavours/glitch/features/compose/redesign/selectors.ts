@@ -106,6 +106,11 @@ export const selectComposeSensitive = createAppSelector(
   }),
 );
 
+export const selectComposeScheduledAt = createAppSelector(
+  [(state) => state.compose.get('scheduled_at') as string | null],
+  (scheduledAt) => scheduledAt,
+);
+
 export const PER_LINE = 8;
 export const LINES = 2;
 const DEFAULTS = [
