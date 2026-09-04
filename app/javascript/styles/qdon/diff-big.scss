@@ -4,6 +4,25 @@ body {
   line-height: 26px;
 }
 
+// Bump the redesign type scale (rem tokens from `mastodon/tokens/_type`,
+// emitted on `html`). Token-sized text (redesign buttons, modals, composer,
+// navigation, menus, badges…) ignores `body` font-size, so without this the
+// whole redesign UI stays small under big skins. Uniform +0.125rem (+2px)
+// preserves the relative hierarchy. Skin stylesheet loads after the base
+// bundle, so equal-specificity `html` wins. Line-height tokens are relative
+// and scale on their own — left untouched.
+html {
+  --fs-3xs: 0.8125rem; // 13px
+  --fs-2xs: 0.875rem; // 14px
+  --fs-xs: 0.9375rem; // 15px
+  --fs-sm: 1rem; // 16px
+  --fs-md: 1.0625rem; // 17px
+  --fs-lg: 1.125rem; // 18px
+  --fs-xl: 1.375rem; // 22px
+  --fs-2xl: 1.5rem; // 24px
+  --fs-3xl: 1.75rem; // 28px
+}
+
 .button {
   font-size: 16px;
 }
