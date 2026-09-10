@@ -63,6 +63,7 @@ import {
   ToggleButton,
   ToggleIconButton,
 } from '../button/redesign';
+import { iconWeight, useIconWeight } from '../icon';
 import {
   Menu,
   MenuItem,
@@ -194,23 +195,10 @@ export const StatusActionBar: React.FC<StatusActionBarProps> = ({
 
   const intl = useIntl();
 
-  const favouriteIcon = useCallback(
-    (props: React.SVGProps<SVGSVGElement>) =>
-      status?.favourited ? (
-        <HeartIcon {...props} weight='fill' />
-      ) : (
-        <HeartIcon {...props} />
-      ),
-    [status?.favourited],
-  );
-  const bookmarkIcon = useCallback(
-    (props: React.SVGProps<SVGSVGElement>) =>
-      status?.bookmarked ? (
-        <BookmarkSimpleIcon {...props} weight='fill' />
-      ) : (
-        <BookmarkSimpleIcon {...props} />
-      ),
-    [status?.bookmarked],
+  const favouriteIcon = useIconWeight(HeartIcon, status?.favourited && 'fill');
+  const bookmarkIcon = useIconWeight(
+    BookmarkSimpleIcon,
+    status?.bookmarked && 'fill',
   );
 
   if (!status) {
@@ -371,9 +359,7 @@ const StatusReblogButton: React.FC<{
   );
 };
 
-const QuotesFilledIcon = (props: React.SVGProps<SVGSVGElement>) => (
-  <QuotesIcon {...props} weight='fill' />
-);
+const QuotesFilledIcon = iconWeight(QuotesIcon, 'fill');
 
 const StatusActionMenu: React.FC<{
   dismissQuoteHint: () => void;
