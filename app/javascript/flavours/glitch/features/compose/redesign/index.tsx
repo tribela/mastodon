@@ -16,8 +16,8 @@ import { ToggleButton } from '@/flavours/glitch/components/button/redesign';
 import { TextInputField } from '@/flavours/glitch/components/form_fields/redesign';
 import { Icon } from '@/flavours/glitch/components/icon';
 import {
-  focusComposerTextarea,
   getComposerTextarea,
+  requestComposerFocus,
   submitComposer,
 } from '@/flavours/glitch/reducers/slices/composer';
 import { useAppDispatch, useAppSelector } from '@/flavours/glitch/store';
@@ -143,9 +143,9 @@ function useComposeHandlers(redirectOnSuccess?: boolean) {
   const isSensitive = useAppSelector((state) => !!state.compose.get('spoiler'));
   useEffect(() => {
     if (!isSensitive) {
-      focusComposerTextarea();
+      dispatch(requestComposerFocus());
     }
-  }, [isSensitive]);
+  }, [isSensitive, dispatch]);
 
   const onSensitiveChange = useCallback(() => {
     dispatch(changeComposeSpoilerness());

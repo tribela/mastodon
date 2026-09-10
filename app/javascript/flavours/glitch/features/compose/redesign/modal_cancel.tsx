@@ -10,8 +10,8 @@ import {
   ModalTitle,
 } from '@/flavours/glitch/components/modal_shell/redesign';
 import {
-  focusComposerTextarea,
   openNewComposer,
+  requestComposerFocus,
   resetComposer,
 } from '@/flavours/glitch/reducers/slices/composer';
 import { useAppDispatch } from '@/flavours/glitch/store';
@@ -34,7 +34,7 @@ const ComposerModalCancelConfirm: React.FC<{ openNew?: boolean }> = ({
     dispatch(
       closeModal({ modalType: 'COMPOSER_DRAFT_DELETE', ignoreFocus: false }),
     );
-    focusComposerTextarea(true);
+    dispatch(requestComposerFocus());
   }, [dispatch]);
 
   return (

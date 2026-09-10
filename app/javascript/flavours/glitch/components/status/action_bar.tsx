@@ -55,6 +55,7 @@ import {
 } from '@/flavours/glitch/selectors/statuses';
 import type { AppDispatch } from '@/flavours/glitch/store';
 import { useAppDispatch, useAppSelector } from '@/flavours/glitch/store';
+import { isRedesignEnabled } from '@/flavours/glitch/utils/environment';
 
 import {
   Button,
@@ -583,7 +584,7 @@ function getMenuItems({
       ),
       action: onStatusInteraction('mute'),
     });
-    if (interactions.editQuotePolicy) {
+    if (interactions.editQuotePolicy && !isRedesignEnabled()) {
       menu.push({
         text: intl.formatMessage(messages.quotePolicyChange),
         action: onStatusInteraction('editQuotePolicy'),
