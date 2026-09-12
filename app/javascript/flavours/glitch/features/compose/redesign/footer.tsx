@@ -98,7 +98,7 @@ export const ComposeFooter: React.FC<{ onEmojiPick: OnEmojiPick }> = ({
               id='compose_form.schedule_submit'
               defaultMessage='Schedule'
             />
-          ) : type !== 'message' ? (
+          ) : type !== 'message' && type !== 'replyPrivate' ? (
             <FormattedMessage id='compose.publish' defaultMessage='Publish' />
           ) : (
             <FormattedMessage
