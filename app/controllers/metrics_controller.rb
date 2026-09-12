@@ -41,7 +41,10 @@ class MetricsController < ApplicationController
     MastodonPrometheus.get(:mastodon_domain_count).set(instance_presenter.domain_count)
 
     [1, 7, 30].each do |days|
-      MastodonPrometheus.get(:mastodon_sign_up_count).set(Account.local.where('created_at > ?', days.days.ago).count, labels: { days: days })
+      count = Rails.cache.fetch("metrics/sign_up_count/#{days}", expires_in: 5.minutes) do
+        Account.local.where('created_at > ?', days.days.ago).count
+      end
+      MastodonPrometheus.get(:mastodon_sign_up_count).set(count, labels: { days: days })
     end
 
     [1, 24].each do |hours|
@@ -81,13 +84,15 @@ class MetricsController < ApplicationController
   end
 
   def statuses_count(type, hours)
-    min_id = Mastodon::Snowflake.id_at(hours.hours.ago, with_random: false)
+    Rails.cache.fetch("metrics/statuses_count/#{type}/#{hours}", expires_in: 5.minutes) do
+      min_id = Mastodon::Snowflake.id_at(hours.hours.ago, with_random: false)
 
-    statuses = Status.where('id > ?', min_id)
-    statuses = statuses.local if type == :local
-    statuses = statuses.remote if type == :remote
+      statuses = Status.where('id > ?', min_id)
+      statuses = statuses.local if type == :local
+      statuses = statuses.remote if type == :remote
 
-    statuses.count
+      statuses.count
+    end
   end
 
   def media_size
