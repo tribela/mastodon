@@ -1,8 +1,8 @@
 diff --git a/app/models/concerns/account/avatar.rb b/app/models/concerns/account/avatar.rb
-index dfca274059..ea17e76929 100644
+index 6185d000c2..c0d491d454 100644
 --- a/app/models/concerns/account/avatar.rb
 +++ b/app/models/concerns/account/avatar.rb
-@@ -26,7 +26,7 @@ module Account::Avatar
+@@ -31,7 +31,7 @@ module Account::Avatar
    end
 
    def avatar_original_url
@@ -12,10 +12,10 @@ index dfca274059..ea17e76929 100644
 
    def avatar_static_url
 diff --git a/app/serializers/manifest_serializer.rb b/app/serializers/manifest_serializer.rb
-index 767535f442..1c1f7d0ad5 100644
+index a9ef723c19..3496f329f8 100644
 --- a/app/serializers/manifest_serializer.rb
 +++ b/app/serializers/manifest_serializer.rb
-@@ -44,7 +44,7 @@ class ManifestSerializer < ActiveModel::Serializer
+@@ -41,7 +41,7 @@ class ManifestSerializer < ActiveModel::Serializer
    end
 
    def theme_color
@@ -25,17 +25,18 @@ index 767535f442..1c1f7d0ad5 100644
 
    def background_color
 diff --git a/app/views/layouts/error.html.haml b/app/views/layouts/error.html.haml
-index 53ba97ac5e..942cebe59b 100644
+index 3e078e10d2..fa2dea531b 100644
 --- a/app/views/layouts/error.html.haml
 +++ b/app/views/layouts/error.html.haml
-@@ -12,6 +12,6 @@
+@@ -14,7 +14,7 @@
    %body.error
-     .dialog
+     %main.dialog
        .dialog__illustration
 -        %img{ alt: Setting.default_settings['site_title'], src: '/spilled_gyudon.png' }/
 +        %img{ alt: Setting.default_settings['site_title'], src: '/oops.png' }/
        .dialog__message
          %h1= yield :content
+         %a{ class: 'button button-secondary', href: '/' }= t('errors.go_home')
 diff --git a/public/gyudon.png b/public/gyudon.png
 deleted file mode 100644
 index 50e945a893a38eaf993263ea8f566570af3d0f35..0000000000000000000000000000000000000000
