@@ -307,8 +307,6 @@ const LinkCard: React.FC<{ card: CardShape; status: ExpandedStatusShape }> = ({
     target: '_blank',
     rel: 'noopener',
   } as const;
-  // While possible there is more than one author, the previous UI didn't handle it.
-  const authorAccountId = card.authors.at(0)?.accountId;
 
   return (
     <Card>
@@ -337,12 +335,27 @@ const LinkCard: React.FC<{ card: CardShape; status: ExpandedStatusShape }> = ({
         </CardBody>
       )}
 
-      {authorAccountId && <LinkCardAuthor authorId={authorAccountId} />}
+      {card.authors.length > 0 && (
+        <CardActions>
+          <FormattedMessage
+            id='status.link_preview.authors'
+            defaultMessage='{count, plural, one {Find the author in the Fediverse:} other {Find the authors in the Fediverse:}}'
+            values={{
+              count: card.authors.length,
+            }}
+            tagName='span'
+          />
+
+          {card.authors.map(({ accountId }) => (
+            <LinkCardAuthor authorId={accountId} key={accountId} />
+          ))}
+        </CardActions>
+      )}
     </Card>
   );
 };
 
-const LinkCardAuthor: React.FC<{ authorId: string }> = ({ authorId }) => {
+const LinkCardAuthor: React.FC<{ authorId?: string }> = ({ authorId }) => {
   const author = useAccount(authorId);
 
   if (!author) {
@@ -350,19 +363,16 @@ const LinkCardAuthor: React.FC<{ authorId: string }> = ({ authorId }) => {
   }
 
   return (
-    <CardActions>
-      <Button
-        as='link'
-        to={`/@${author.get('acct')}`}
-        className={classes.cardAuthor}
-      >
-        <Avatar account={author} />
-        <FormattedMessage
-          id='link_preview.more_from_author'
-          defaultMessage='More from {name}'
-          values={{ name: <DisplayName variant='simple' account={author} /> }}
-        />
-      </Button>
-    </CardActions>
+    <Button
+      as='link'
+      size='sm'
+      color='accent'
+      variant='ghost'
+      to={`/@${author.get('acct')}`}
+      className={classes.cardAuthor}
+    >
+      <Avatar account={author} />
+      <DisplayName variant='simple' account={author} />
+    </Button>
   );
 };
