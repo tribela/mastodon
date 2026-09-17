@@ -13,10 +13,9 @@ import InsertChartIcon from '@/material-icons/400-24px/insert_chart.svg?react';
 import PushPinIcon from '@/material-icons/400-24px/push_pin.svg?react';
 import RepeatIcon from '@/material-icons/400-24px/repeat.svg?react';
 import StarIcon from '@/material-icons/400-24px/star-fill.svg?react';
+import { LinkedDisplayName } from 'flavours/glitch/components/display_name';
 import { Icon } from 'flavours/glitch/components/icon';
 import { me } from 'flavours/glitch/initial_state';
-
-import { LinkedDisplayName } from './display_name';
 
 export default class StatusPrepend extends PureComponent {
 

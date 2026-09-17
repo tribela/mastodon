@@ -4,12 +4,11 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import classNames from 'classnames';
 
+import { Button } from '@/flavours/glitch/components/button';
+import { Icon } from '@/flavours/glitch/components/icon';
+import { Popover } from '@/flavours/glitch/components/popover';
 import { useDismissible } from '@/flavours/glitch/hooks/useDismissible';
 import MoreHorizIcon from '@/material-icons/400-24px/more_horiz.svg?react';
-
-import { Button } from '../button';
-import { Icon } from '../icon';
-import { Popover } from '../popover';
 
 import classes from './remove_quote_hint.module.css';
 

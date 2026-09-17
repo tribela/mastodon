@@ -7,32 +7,33 @@ import classNames from 'classnames';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 
-import { Hotkeys } from 'flavours/glitch/components/hotkeys';
-import { ContentWarning } from 'flavours/glitch/components/content_warning';
-import { PictureInPicturePlaceholder } from 'flavours/glitch/components/picture_in_picture_placeholder';
-import { autoUnfoldCW } from 'flavours/glitch/utils/content_warning';
+import { Hotkeys } from '@/flavours/glitch/components/hotkeys';
+import { PictureInPicturePlaceholder } from './picture_in_picture_placeholder';
 import { withOptionalRouter, WithOptionalRouterPropTypes } from 'flavours/glitch/utils/react_router';
 
-import Card from '../features/status/components/card';
+import { autoUnfoldCW } from 'flavours/glitch/utils/content_warning';
+
+import Card from '@/flavours/glitch/features/status/components/card';
 // We use the component (and not the container) since we do not want
 // to use the progress bar to show download progress
-import Bundle from '../features/ui/components/bundle';
-import { MediaGallery, Video, Audio } from '../features/ui/util/async-components';
-import { SensitiveMediaContext } from '../features/ui/util/sensitive_media_context';
-import { displayMedia } from '../initial_state';
+import Bundle from '@/flavours/glitch/features/ui/components/bundle';
+import { MediaGallery, Video, Audio } from '@/flavours/glitch/features/ui/util/async-components';
+import { SensitiveMediaContext } from '@/flavours/glitch/features/ui/util/sensitive_media_context';
+import { displayMedia } from '@/flavours/glitch/initial_state';
+import { CollectionPreviewCard } from '@/flavours/glitch/features/collections/components/collection_preview_card';
+import { compareUrls } from '@/flavours/glitch/utils/compare_urls';
+import AttachmentList from '@/flavours/glitch/components/attachment_list';
+import { FOCUS_TARGET } from '@/flavours/glitch/components/navigation_focus_target';
 
-import { injectIntl } from './intl';
-import AttachmentList from './attachment_list';
-import { StatusHeader } from './status/header'
+import { injectIntl } from '../../intl';
+import { ContentWarning } from './content_warning';
+import { StatusHeader } from './header'
 import { getHashtagBarForStatus } from './hashtag_bar';
 import { MentionsPlaceholder } from './mentions_placeholder';
-import StatusActionBar from './status_action_bar';
-import StatusContent from './status_content';
-import StatusIcons from './status_icons';
-import StatusPrepend from './status_prepend';
-import { CollectionPreviewCard } from '../features/collections/components/collection_preview_card';
-import { compareUrls } from '../utils/compare_urls';
-import { FOCUS_TARGET } from './navigation_focus_target';
+import StatusActionBar from './action_bar';
+import StatusContent from './content';
+import StatusIcons from './icons';
+import StatusPrepend from './prepend';
 
 const domParser = new DOMParser();
 
@@ -379,7 +380,7 @@ class Status extends ImmutablePureComponent {
       this.props.onOpen();
       return;
     }
-    
+
     const { history } = this.props;
     const status = this.props.status;
 

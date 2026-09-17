@@ -1,9 +1,9 @@
-import { useStatus } from '../hooks/useStatus';
+import { EmojiHTML } from '@/flavours/glitch/components/emoji/html';
+import { useStatus } from '@/flavours/glitch/hooks/useStatus';
 
-import { EmojiHTML } from './emoji/html';
+import { StatusBanner, BannerVariant } from './banner';
 import type { IconName } from './media_icon';
 import { MediaIcon } from './media_icon';
-import { StatusBanner, BannerVariant } from './status_banner';
 
 export const ContentWarning: React.FC<{
   statusId: string;

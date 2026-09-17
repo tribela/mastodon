@@ -9,11 +9,11 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import ForumIcon from '@/material-icons/400-24px/forum.svg?react';
 import HomeIcon from '@/material-icons/400-24px/home.svg?react';
 import { Icon } from 'flavours/glitch/components/icon';
-import { MediaIcon } from 'flavours/glitch/components/media_icon';
 import { languages } from 'flavours/glitch/initial_state';
 import { injectIntl } from '@/flavours/glitch/components/intl';
+import { VisibilityIcon } from '@/flavours/glitch/components/visibility_icon';
 
-import { VisibilityIcon } from './visibility_icon';
+import { MediaIcon } from './media_icon';
 
 const messages = defineMessages({
   inReplyTo: { id: 'status.in_reply_to', defaultMessage: 'This toot is a reply' },

@@ -1,4 +1,4 @@
-@use '@/styles/mastodon/mixins';
+@use '@/flavours/glitch/styles/mastodon/mixins';
 
 .root {
   @include mixins.type-label-md;

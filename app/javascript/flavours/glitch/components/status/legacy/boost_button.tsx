@@ -11,17 +11,23 @@ import { quoteComposeById } from '@/flavours/glitch/actions/compose_typed';
 import { toggleReblog } from '@/flavours/glitch/actions/interactions';
 import { openModal } from '@/flavours/glitch/actions/modal';
 import { fetchStatus } from '@/flavours/glitch/actions/statuses';
+import type { RenderItemFn } from '@/flavours/glitch/components/dropdown_menu';
+import {
+  Dropdown,
+  DropdownMenuItemContent,
+} from '@/flavours/glitch/components/dropdown_menu';
+import { IconButton } from '@/flavours/glitch/components/icon_button';
 import { useStatus } from '@/flavours/glitch/hooks/useStatus';
 import { quickBoosting } from '@/flavours/glitch/initial_state';
 import type { ActionMenuItem } from '@/flavours/glitch/models/dropdown_menu';
 import { selectStatusConditions } from '@/flavours/glitch/selectors/statuses';
 import { useAppDispatch, useAppSelector } from '@/flavours/glitch/store';
 
-import type { RenderItemFn } from '../dropdown_menu';
-import { Dropdown, DropdownMenuItemContent } from '../dropdown_menu';
-import { IconButton } from '../icon_button';
-
-import { boostItemState, messages, quoteItemState } from './boost_button_utils';
+import {
+  boostItemState,
+  messages,
+  quoteItemState,
+} from '../boost_button_utils';
 
 const StandaloneBoostButton: FC<ReblogButtonProps> = ({
   statusId,

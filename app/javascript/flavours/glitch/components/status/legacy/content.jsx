@@ -10,15 +10,15 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import { connect } from 'react-redux';
 
 import ChevronRightIcon from '@/material-icons/400-24px/chevron_right.svg?react';
-import { Icon } from 'flavours/glitch/components/icon';
-import { Poll } from 'flavours/glitch/components/poll';
-import { identityContextPropShape, withIdentity } from 'flavours/glitch/identity_context';
-import { languages as preloadedLanguages } from 'flavours/glitch/initial_state';
+import { Icon } from '@/flavours/glitch/components/icon';
+import { Poll } from '@/flavours/glitch/components/poll';
+import { identityContextPropShape, withIdentity } from '@/flavours/glitch/identity_context';
+import { languages as preloadedLanguages } from '@/flavours/glitch/initial_state';
+import { EmojiHTML } from '@/flavours/glitch/components/emoji/html';
+import { injectIntl } from '@/flavours/glitch/components/intl';
+import { compareUrls } from '@/flavours/glitch/utils/compare_urls';
 
-import { EmojiHTML } from './emoji/html';
-import { injectIntl } from './intl';
-import { HandledLink } from './status/handled_link';
-import { compareUrls } from '../utils/compare_urls';
+import { HandledLink } from '../handled_link';
 
 const MAX_HEIGHT = 706; // 22px * 32 (+ 2px padding at the top)
 

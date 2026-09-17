@@ -1,5 +1,5 @@
-@use '@/styles/mastodon/mixins';
-@use '@/styles/mastodon/variables' as *;
+@use '@/flavours/glitch/styles/mastodon/mixins';
+@use '@/flavours/glitch/styles/mastodon/variables' as *;
 
 .root {
   position: fixed;

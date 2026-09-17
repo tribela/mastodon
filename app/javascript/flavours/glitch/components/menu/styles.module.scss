@@ -1,5 +1,5 @@
-@use '@/styles/mastodon/mixins';
-@use '@/styles/mastodon/variables';
+@use '@/flavours/glitch/styles/mastodon/mixins';
+@use '@/flavours/glitch/styles/mastodon/variables';
 
 .card {
   @include mixins.elevation-1;

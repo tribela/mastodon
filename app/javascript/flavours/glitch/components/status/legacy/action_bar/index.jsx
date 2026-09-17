@@ -21,15 +21,15 @@ import { PERMISSION_MANAGE_USERS, PERMISSION_MANAGE_FEDERATION } from 'flavours/
 import { accountAdminLink, statusAdminLink } from 'flavours/glitch/utils/backend_links';
 import { WithRouterPropTypes } from 'flavours/glitch/utils/react_router';
 
-import { Dropdown } from 'flavours/glitch/components/dropdown_menu';
-import { me, quickBoosting } from '../../initial_state';
+import { Dropdown } from '@/flavours/glitch/components/dropdown_menu';
+import { me, quickBoosting } from '@/flavours/glitch/initial_state';
 
-import { IconButton } from '../icon_button';
-import { injectIntl } from '../intl';
-import { RelativeTimestamp } from '../relative_timestamp';
-import { BoostButton } from '../status/boost_button';
+import { IconButton } from '@/flavours/glitch/components/icon_button';
+import { injectIntl } from '@/flavours/glitch/components/intl';
+import { RelativeTimestamp } from '@/flavours/glitch/components/relative_timestamp';
+import { BoostButton } from '../boost_button';
 import { RemoveQuoteHint } from './remove_quote_hint';
-import { quoteItemState } from '../status/boost_button_utils';
+import { quoteItemState } from '../../boost_button_utils';
 import { selectStatusConditions } from '@/flavours/glitch/selectors/statuses';
 
 

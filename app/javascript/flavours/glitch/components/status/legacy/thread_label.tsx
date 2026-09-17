@@ -4,7 +4,7 @@ import ReplyIcon from '@/material-icons/400-24px/reply.svg?react';
 import { Icon } from 'flavours/glitch/components/icon';
 import { useAppSelector } from 'flavours/glitch/store';
 
-import { LinkedDisplayName } from './display_name';
+import { LinkedDisplayName } from '../../display_name';
 
 export const StatusThreadLabel: React.FC<{
   accountId: string;

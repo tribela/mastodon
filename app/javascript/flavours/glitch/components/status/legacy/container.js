@@ -1,15 +1,15 @@
 import { connect } from 'react-redux';
 
-import { initBlockModal } from 'flavours/glitch/actions/blocks';
+import { initBlockModal } from '@/flavours/glitch/actions/blocks';
 import {
   replyCompose,
   mentionCompose,
   directCompose,
-} from 'flavours/glitch/actions/compose';
-import { quoteComposeById } from 'flavours/glitch/actions/compose_typed';
+} from '@/flavours/glitch/actions/compose';
+import { quoteComposeById } from '@/flavours/glitch/actions/compose_typed';
 import {
   initAddFilter,
-} from 'flavours/glitch/actions/filters';
+} from '@/flavours/glitch/actions/filters';
 import {
   toggleReblog,
   toggleFavourite,
@@ -17,11 +17,11 @@ import {
   unbookmark,
   pin,
   unpin,
-} from 'flavours/glitch/actions/interactions';
-import { openModal } from 'flavours/glitch/actions/modal';
-import { initMuteModal } from 'flavours/glitch/actions/mutes';
-import { deployPictureInPicture } from 'flavours/glitch/actions/picture_in_picture';
-import { initReport } from 'flavours/glitch/actions/reports';
+} from '@/flavours/glitch/actions/interactions';
+import { openModal } from '@/flavours/glitch/actions/modal';
+import { initMuteModal } from '@/flavours/glitch/actions/mutes';
+import { deployPictureInPicture } from '@/flavours/glitch/actions/picture_in_picture';
+import { initReport } from '@/flavours/glitch/actions/reports';
 import {
   muteStatus,
   unmuteStatus,
@@ -31,12 +31,12 @@ import {
   editStatus,
   translateStatus,
   undoStatusTranslation,
-} from 'flavours/glitch/actions/statuses';
-import Status from 'flavours/glitch/components/status';
-import { deleteModal } from 'flavours/glitch/initial_state';
-import { makeGetStatus, makeGetPictureInPicture } from 'flavours/glitch/selectors';
+} from '@/flavours/glitch/actions/statuses';
+import { setStatusQuotePolicy } from '@/flavours/glitch/actions/statuses_typed';
+import { deleteModal } from '@/flavours/glitch/initial_state';
+import { makeGetStatus, makeGetPictureInPicture } from '@/flavours/glitch/selectors';
 
-import { setStatusQuotePolicy } from '../actions/statuses_typed';
+import Status from './status';
 
 const makeMapStateToProps = () => {
   const getStatus = makeGetStatus();

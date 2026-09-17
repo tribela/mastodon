@@ -1,4 +1,4 @@
-@use '@/styles/mastodon/mixins';
+@use '@/flavours/glitch/styles/mastodon/mixins';
 
 // If hovering over an account link, underline all account links.
 .title:has(.quoteAccountLink:hover) {

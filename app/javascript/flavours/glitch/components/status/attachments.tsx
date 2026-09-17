@@ -21,10 +21,10 @@ import { useAppDispatch, useAppSelector } from '@/flavours/glitch/store';
 import { compareUrls } from '@/flavours/glitch/utils/compare_urls';
 
 import { Card, CardBody, CardTitle } from '../card';
-import { PictureInPicturePlaceholder } from '../picture_in_picture_placeholder';
 import { RelativeTimestamp } from '../relative_timestamp';
 
 import { useStatusContext } from './hooks';
+import { PictureInPicturePlaceholder } from './legacy/picture_in_picture_placeholder';
 import { StatusQuote } from './quote';
 
 export const StatusAttachments: React.FC<{
