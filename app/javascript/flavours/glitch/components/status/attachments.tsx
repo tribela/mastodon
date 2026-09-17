@@ -1,10 +1,13 @@
 import { lazy, Suspense, useCallback } from 'react';
 
+import { FormattedMessage } from 'react-intl';
+
 import { openModal } from '@/flavours/glitch/actions/modal';
 import type { DeployPictureInPictureCallback } from '@/flavours/glitch/actions/picture_in_picture';
 import { deployPictureInPicture } from '@/flavours/glitch/actions/picture_in_picture';
 import { CollectionPreviewCard } from '@/flavours/glitch/features/collections/components/collection_preview_card';
 import MediaCard from '@/flavours/glitch/features/status/components/card';
+import { useAccount } from '@/flavours/glitch/hooks/useAccount';
 import { useExpandedStatus } from '@/flavours/glitch/hooks/useStatus';
 import { useToggle } from '@/flavours/glitch/hooks/useToggle';
 import { displayMedia } from '@/flavours/glitch/initial_state';
@@ -19,10 +22,15 @@ import { selectMediaFilters } from '@/flavours/glitch/selectors/filters';
 import { selectPictureInPicture } from '@/flavours/glitch/selectors/statuses';
 import { useAppDispatch, useAppSelector } from '@/flavours/glitch/store';
 import { compareUrls } from '@/flavours/glitch/utils/compare_urls';
+import { decodeIDNA } from '@/flavours/glitch/utils/links';
 
-import { Card, CardBody, CardTitle } from '../card';
+import { Avatar } from '../avatar';
+import { Button } from '../button/redesign';
+import { Card, CardActions, CardBody, CardTitle } from '../card';
+import { DisplayName } from '../display_name';
 import { RelativeTimestamp } from '../relative_timestamp';
 
+import classes from './attachments.module.scss';
 import { useStatusContext } from './hooks';
 import { PictureInPicturePlaceholder } from './legacy/picture_in_picture_placeholder';
 import { StatusQuote } from './quote';
@@ -279,9 +287,9 @@ const LinkCard: React.FC<{ card: CardShape; status: ExpandedStatusShape }> = ({
   status,
 }) => {
   // Use the old card if we have authors as the new design doesn't have attribution yet.
-  if (card.type === 'video' || card.authors.length > 0) {
+  if (card.type === 'video') {
     return (
-      <div>
+      <div className={classes.cardMedia}>
         <MediaCard
           key={`${status.id}-${status.edited_at}`}
           card={card}
@@ -299,6 +307,8 @@ const LinkCard: React.FC<{ card: CardShape; status: ExpandedStatusShape }> = ({
     target: '_blank',
     rel: 'noopener',
   } as const;
+  // While possible there is more than one author, the previous UI didn't handle it.
+  const authorAccountId = card.authors.at(0)?.accountId;
 
   return (
     <Card>
@@ -308,13 +318,16 @@ const LinkCard: React.FC<{ card: CardShape; status: ExpandedStatusShape }> = ({
             <RelativeTimestamp timestamp={card.published_at} />
           )
         }
+        lang={card.language ?? undefined}
       >
         <a
           href={`${providerUrl.protocol}//${providerUrl.host}`}
           target='_blank'
           rel='noopener'
         >
-          {card.author_name || card.provider_name || providerUrl.host}
+          {card.author_name ||
+            card.provider_name ||
+            decodeIDNA(providerUrl.host)}
         </a>
       </CardTitle>
       <CardBody {...cardLinkProps}>{card.title}</CardBody>
@@ -323,6 +336,33 @@ const LinkCard: React.FC<{ card: CardShape; status: ExpandedStatusShape }> = ({
           {card.description}
         </CardBody>
       )}
+
+      {authorAccountId && <LinkCardAuthor authorId={authorAccountId} />}
     </Card>
+  );
+};
+
+const LinkCardAuthor: React.FC<{ authorId: string }> = ({ authorId }) => {
+  const author = useAccount(authorId);
+
+  if (!author) {
+    return null;
+  }
+
+  return (
+    <CardActions>
+      <Button
+        as='link'
+        to={`/@${author.get('acct')}`}
+        className={classes.cardAuthor}
+      >
+        <Avatar account={author} />
+        <FormattedMessage
+          id='link_preview.more_from_author'
+          defaultMessage='More from {name}'
+          values={{ name: <DisplayName variant='simple' account={author} /> }}
+        />
+      </Button>
+    </CardActions>
   );
 };
