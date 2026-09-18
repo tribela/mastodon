@@ -5,7 +5,7 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 import classNames from 'classnames';
 
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import ImmutablePureComponent from 'react-immutable-pure-component';
+import { ImmutablePureComponent } from 'react-immutable-pure-component';
 
 import { Hotkeys } from '@/flavours/glitch/components/hotkeys';
 import { PictureInPicturePlaceholder } from './picture_in_picture_placeholder';

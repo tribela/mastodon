@@ -6,7 +6,7 @@ import classNames from 'classnames';
 import { withRouter } from 'react-router-dom';
 
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import ImmutablePureComponent from 'react-immutable-pure-component';
+import { ImmutablePureComponent } from 'react-immutable-pure-component';
 
 import FlagIcon from '@/material-icons/400-24px/flag-fill.svg?react';
 import PersonIcon from '@/material-icons/400-24px/person-fill.svg?react';
