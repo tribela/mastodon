@@ -21,10 +21,10 @@ import { Avatar } from '@/flavours/glitch/components/avatar';
 import { DisplayName } from '@/flavours/glitch/components/display_name';
 import { useAccountHandle } from '@/flavours/glitch/components/display_name/default';
 import {
-  ListItemButton,
-  ListItemContent,
-  ListItemWrapper,
-} from '@/flavours/glitch/components/list_item';
+  LockupButton,
+  LockupContent,
+  LockupWrapper,
+} from '@/flavours/glitch/components/lockup';
 import {
   Menu,
   MenuItem,
@@ -77,15 +77,15 @@ const AccountMenuTrigger: React.FC<React.ComponentPropsWithoutRef<'button'>> = (
   const handle = useAccountHandle(account);
 
   return (
-    <ListItemWrapper
+    <LockupWrapper
       icon={<Avatar account={account} size={32} />}
       sideContent={<DotsThreeIcon size={20} className={classes.dotsIcon} />}
       className={classes.root}
     >
-      <ListItemButton {...props} subtitle={handle}>
+      <LockupButton {...props} subtitle={handle}>
         <DisplayName variant='simple' account={account} />
-      </ListItemButton>
-    </ListItemWrapper>
+      </LockupButton>
+    </LockupWrapper>
   );
 };
 
@@ -217,14 +217,14 @@ const ProfileMenuItem: React.FC = () => {
 
   return (
     <MenuItemLink to={accountBasePath}>
-      <ListItemWrapper
+      <LockupWrapper
         icon={<Avatar account={account} size={40} />}
         className={classes.profileMenuItem}
       >
-        <ListItemContent subtitle={handle}>
+        <LockupContent subtitle={handle}>
           <DisplayName variant='simple' account={account} />
-        </ListItemContent>
-      </ListItemWrapper>
+        </LockupContent>
+      </LockupWrapper>
     </MenuItemLink>
   );
 };
