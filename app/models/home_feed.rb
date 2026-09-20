@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 class HomeFeed < Feed
-  def initialize(account)
+  def initialize(account, options = {})
     @account = account
-    super(:home, account.id)
+    super(:home, account.id, options)
   end
 
   def get(limit, max_id = nil, since_id = nil, min_id = nil)
@@ -79,6 +79,8 @@ class HomeFeed < Feed
       scope = scope.or(Status.where(visibility: :public).where(tag_exists.exists))
     end
 
+    scope = apply_options(scope)
+
     statuses = scope
       .includes(:tags)
       .to_a_paginated_by_id(limit, min_id: min_id, max_id: max_id, since_id: since_id)
@@ -96,6 +98,16 @@ class HomeFeed < Feed
   end
 
   private
+
+  # Applies the same server-side filters as Feed#from_redis to a database scope,
+  # so that the `exclude_*` options keep working on the infinite-timeline fallback.
+  def apply_options(scope)
+    scope = scope.where.not(visibility: :direct) if @options[:exclude_direct]
+    scope = scope.where(reblog_of_id: nil) if @options[:exclude_reblogs]
+    scope = scope.where.missing(:quote) if @options[:exclude_quotes]
+    scope = scope.where(in_reply_to_id: nil).or(scope.where(in_reply_to_id: @id)) if @options[:exclude_replies]
+    scope
+  end
 
   def fetch_min_redis_id
     redis.zrangebyscore(key, '(0', '(+inf', limit: [0, 1]).first&.to_i

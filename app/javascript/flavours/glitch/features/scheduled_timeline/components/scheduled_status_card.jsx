@@ -8,7 +8,7 @@ import CalendarTodayIcon from '@/material-icons/400-24px/calendar_today.svg?reac
 import DeleteIcon from '@/material-icons/400-24px/delete.svg?react';
 import EditIcon from '@/material-icons/400-24px/edit.svg?react';
 import { Icon } from 'flavours/glitch/components/icon';
-import { LanguageIcon } from 'flavours/glitch/components/status_icons';
+import { LanguageIcon } from 'flavours/glitch/components/status/legacy/icons';
 import { RelativeTimestamp } from 'flavours/glitch/components/relative_timestamp';
 import { VisibilityIcon } from 'flavours/glitch/components/visibility_icon';
 import MediaGallery from 'flavours/glitch/components/media_gallery';

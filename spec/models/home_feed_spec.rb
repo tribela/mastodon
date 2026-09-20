@@ -6,10 +6,60 @@ RSpec.describe HomeFeed do
   subject { described_class.new(account) }
 
   let(:account) { Fabricate(:account) }
-  let(:followed) { Fabricate(:account) }
-  let(:other) { Fabricate(:account) }
 
   describe '#get' do
+    before do
+      Fabricate(:status, account: account, id: 1)
+      Fabricate(:status, account: account, id: 2, reblog: Fabricate(:status))
+      Fabricate(:status, account: account, id: 3, visibility: :direct)
+      Fabricate(:status, account: account, id: 4)
+      Fabricate(:status, account: account, id: 10)
+    end
+
+    context 'when feed is generated' do
+      before do
+        redis.zadd(
+          FeedManager.instance.key(:home, account.id),
+          [[4, 4], [3, 3], [2, 2], [1, 1]]
+        )
+      end
+
+      it 'gets statuses with ids in the range from redis according to the given parameters' do
+        expect(described_class.new(account).get(3).map(&:id)).to eq [4, 3, 2]
+        expect(described_class.new(account, { exclude_direct: true }).get(3).map(&:id)).to eq [4, 2, 1]
+        expect(described_class.new(account, { exclude_reblogs: true }).get(3).map(&:id)).to eq [4, 3, 1]
+        expect(described_class.new(account, { exclude_direct: true, exclude_reblogs: true }).get(3).map(&:id)).to eq [4, 1]
+
+        expect(described_class.new(account).get(2, nil, nil, 0).map(&:id)).to eq [2, 1]
+        expect(described_class.new(account, { exclude_direct: true }).get(2, nil, nil, 0).map(&:id)).to eq [2, 1]
+        expect(described_class.new(account, { exclude_direct: true }).get(2, nil, nil, 1).map(&:id)).to eq [4, 2]
+        expect(described_class.new(account, { exclude_reblogs: true }).get(2, nil, nil, 0).map(&:id)).to eq [3, 1]
+        expect(described_class.new(account, { exclude_direct: true, exclude_reblogs: true }).get(2, nil, nil, 0).map(&:id)).to eq [4, 1]
+      end
+    end
+  end
+
+  describe '#get with database fallback' do
+    before do
+      Fabricate(:status, account: account, id: 1)
+      Fabricate(:status, account: account, id: 2, in_reply_to_id: 1)
+      Fabricate(:status, account: account, id: 3, reblog: Fabricate(:status))
+      Fabricate(:status, account: account, id: 4, visibility: :direct)
+    end
+
+    it 'applies the same exclude options as the redis path' do
+      expect(described_class.new(account).get(3).map(&:id)).to eq [4, 3, 2]
+      expect(described_class.new(account, { exclude_direct: true }).get(3).map(&:id)).to eq [3, 2, 1]
+      expect(described_class.new(account, { exclude_reblogs: true }).get(3).map(&:id)).to eq [4, 2, 1]
+      expect(described_class.new(account, { exclude_replies: true }).get(3).map(&:id)).to eq [4, 3, 1]
+      expect(described_class.new(account, { exclude_replies: true, exclude_reblogs: true }).get(3).map(&:id)).to eq [4, 1]
+    end
+  end
+
+  describe '#get (infinite home timeline)' do
+    let(:followed) { Fabricate(:account) }
+    let(:other) { Fabricate(:account) }
+
     before do
       account.follow!(followed)
 
