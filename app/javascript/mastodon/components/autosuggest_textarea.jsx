@@ -117,7 +117,7 @@ const AutosuggestTextarea = forwardRef(({
   const closeMenu = useCallback((e) => {
     setSuggestionsHidden(true);
     onBlur?.(e);
-  }, [setSuggestionsHidden]);
+  }, [setSuggestionsHidden, onBlur]);
 
   const handleFocus = useCallback((e) => {
     onFocus?.(e);
@@ -153,7 +153,7 @@ const AutosuggestTextarea = forwardRef(({
       textareaRef.current.blur();
       textareaRef.current.focus();
     }
-  }, [lang]);
+  }, [lang, textareaRef]);
 
   const renderSuggestion = useCallback((suggestion, i) => {
     let inner, key;
@@ -179,7 +179,7 @@ const AutosuggestTextarea = forwardRef(({
   const handleRef = useCallback((element) => {
     textareaRef.current = element;
     setTextareaElement(element);
-  }, []);
+  }, [textareaRef]);
 
   return (
     <div className={classNames('autosuggest-textarea', className)}>
