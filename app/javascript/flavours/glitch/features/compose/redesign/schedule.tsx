@@ -62,7 +62,9 @@ export const ScheduleButton: React.FC<ScheduleButtonProps> = ({
       <MenuTrigger
         size='sm'
         leadingIcon={CalendarTodayIcon}
-        title={scheduledAt ? scheduledLabel : undefined}
+        tooltip={
+          scheduledAt ? { type: 'label', text: scheduledLabel } : undefined
+        }
       >
         {scheduledAt ? (
           scheduledLabel
