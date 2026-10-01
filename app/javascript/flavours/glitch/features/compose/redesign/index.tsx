@@ -1,7 +1,7 @@
 import type React from 'react';
 import { useCallback, useEffect, useId } from 'react';
 
-import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 import classNames from 'classnames';
 
@@ -9,18 +9,15 @@ import { FlagIcon, LockSimpleOpenIcon } from '@phosphor-icons/react';
 
 import {
   changeComposeSpoilerness,
-  changeComposeSpoilerText,
   changeScheduledAt,
   insertEmojiCompose,
 } from '@/flavours/glitch/actions/compose';
 import { ToggleButton } from '@/flavours/glitch/components/button/redesign';
-import { TextInputField } from '@/flavours/glitch/components/form_fields/redesign';
 import { normalizeKey } from '@/flavours/glitch/components/hotkeys/utils';
 import { Icon, useIconWeight } from '@/flavours/glitch/components/icon';
 import {
   closeComposer,
   getComposerTextarea,
-  requestComposerFocus,
   submitComposer,
 } from '@/flavours/glitch/reducers/slices/composer';
 import { useAppDispatch, useAppSelector } from '@/flavours/glitch/store';
@@ -34,21 +31,14 @@ import { LanguageButton } from './language';
 import { ComposeReply } from './reply';
 import { ScheduleButton } from './schedule';
 import {
-  selectComposeCanSubmit,
   selectComposeScheduledAt,
   selectComposeSensitive,
   selectComposeType,
 } from './selectors';
+import { ComposeSensitiveField } from './sensitive';
 import classes from './styles.module.scss';
 import { ComposeTextarea } from './textarea';
 import { ComposeVisibility } from './visibility';
-
-const messages = defineMessages({
-  sensitiveText: {
-    id: 'compose.sensitive.text',
-    defaultMessage: 'Sensitive content description',
-  },
-});
 
 interface RedesignComposeFormProps {
   autoFocus?: boolean;
@@ -61,18 +51,12 @@ export const RedesignComposeForm: React.FC<
   RedesignComposeFormProps & React.ComponentPropsWithRef<'form'>
 > = ({ autoFocus, className, noMinimize, redirectOnSuccess, ...props }) => {
   const type = useAppSelector(selectComposeType);
-  const { sensitive, sensitiveText } = useAppSelector(selectComposeSensitive);
+  const { sensitive } = useAppSelector(selectComposeSensitive);
   const scheduledAt = useAppSelector(selectComposeScheduledAt);
 
-  const {
-    onSensitiveChange,
-    onSensitiveTextChange,
-    onEmojiPick,
-    onScheduleChange,
-    onSubmit,
-  } = useComposeHandlers(redirectOnSuccess);
+  const { onSensitiveChange, onEmojiPick, onScheduleChange, onSubmit } =
+    useComposeHandlers(redirectOnSuccess);
 
-  const intl = useIntl();
   const titleId = useId();
 
   const sensitiveIcon = useIconWeight(FlagIcon, sensitive && 'fill');
@@ -124,15 +108,7 @@ export const RedesignComposeForm: React.FC<
         </p>
       )}
 
-      {sensitive && (
-        <TextInputField
-          label={intl.formatMessage(messages.sensitiveText)}
-          value={sensitiveText}
-          onChange={onSensitiveTextChange}
-          // eslint-disable-next-line jsx-a11y/no-autofocus -- Focuses on open
-          autoFocus
-        />
-      )}
+      <ComposeSensitiveField />
 
       <ComposeTextarea
         // eslint-disable-next-line jsx-a11y/no-autofocus
@@ -176,24 +152,9 @@ function useComposeHandlers(redirectOnSuccess?: boolean) {
     };
   }, [dispatch, isModalOpen]);
 
-  // Sensitive handling
-  const isSensitive = useAppSelector((state) => !!state.compose.get('spoiler'));
-  useEffect(() => {
-    if (!isSensitive) {
-      dispatch(requestComposerFocus());
-    }
-  }, [isSensitive, dispatch]);
-
   const onSensitiveChange = useCallback(() => {
     dispatch(changeComposeSpoilerness());
   }, [dispatch]);
-  const onSensitiveTextChange: React.ChangeEventHandler<HTMLInputElement> =
-    useCallback(
-      (event) => {
-        dispatch(changeComposeSpoilerText(event.target.value));
-      },
-      [dispatch],
-    );
 
   const onScheduleChange = useCallback(
     (scheduledAt: string | null) => {
@@ -217,11 +178,10 @@ function useComposeHandlers(redirectOnSuccess?: boolean) {
   );
 
   // Submit status
-  const canSubmit = useAppSelector(selectComposeCanSubmit);
   const onSubmit = useCallback(
     (event?: React.SubmitEvent) => {
-      if (!canSubmit || event?.defaultPrevented) {
-        return;
+      if (event?.defaultPrevented) {
+        return false;
       }
       dispatch(
         submitComposer({
@@ -229,18 +189,16 @@ function useComposeHandlers(redirectOnSuccess?: boolean) {
         }),
       );
 
-      if (event) {
-        event.preventDefault();
-      }
+      event?.preventDefault();
+      return false;
     },
-    [canSubmit, dispatch, redirectOnSuccess],
+    [dispatch, redirectOnSuccess],
   );
 
   return {
     onSubmit,
     onEmojiPick,
     onSensitiveChange,
-    onSensitiveTextChange,
     onScheduleChange,
   };
 }
