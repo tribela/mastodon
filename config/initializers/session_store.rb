@@ -8,5 +8,5 @@ Rails
   .session_store :cookie_store,
                  key: '_mastodon_session',
                  secure: false, # All cookies have their secure flag set by the force_ssl option in production
-                 domain: :all, # Support subdomains
+                 domain: Rails.configuration.x.cookie_domains,
                  same_site: :lax
