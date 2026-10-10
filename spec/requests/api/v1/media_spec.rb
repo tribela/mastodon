@@ -152,6 +152,53 @@ RSpec.describe 'Media' do
         expect(response).to have_http_status(422)
       end
     end
+
+    context 'when the declared content type is spoofed' do
+      let(:params) { { file: fixture_file_upload('attachment.webm', 'image/png') } }
+
+      it 'rejects the upload based on the detected content type', :aggregate_failures do
+        expect { subject }.to_not change(MediaAttachment, :count)
+
+        expect(response).to have_http_status(422)
+        expect(response.content_type)
+          .to start_with('application/json')
+        expect(response.parsed_body).to match(
+          a_hash_including(error: 'This endpoint has been deprecated for larger media. Please use the new media endpoint')
+        )
+      end
+    end
+
+    context 'when the filename extension is also spoofed' do
+      let(:params) do
+        { file: Rack::Test::UploadedFile.new(Rails.root.join('spec', 'fixtures', 'files', 'attachment.webm'), 'image/png', original_filename: 'spoofed.png') }
+      end
+
+      it 'rejects the upload based on the detected content type' do
+        expect { subject }.to_not change(MediaAttachment, :count)
+
+        expect(response).to have_http_status(422)
+      end
+    end
+
+    context 'when the file is missing' do
+      let(:params) { {} }
+
+      it 'returns a client error instead of crashing' do
+        subject
+
+        expect(response).to have_http_status(422)
+      end
+    end
+
+    context 'when the file is not an uploaded file' do
+      let(:params) { { file: 'not-a-file' } }
+
+      it 'returns a client error instead of crashing' do
+        subject
+
+        expect(response).to have_http_status(422)
+      end
+    end
   end
 
   describe 'PUT /api/v1/media/:id' do

@@ -13,11 +13,18 @@ class Api::V1::MediaController < Api::BaseController
   end
 
   def create
-    content_type = media_attachment_params[:file].content_type
-    if DEPRECATED_MIME_TYPES.include?(content_type)
+    file = media_attachment_params[:file]
+
+    if file.present? && !file.respond_to?(:path)
+      render json: file_type_error, status: 422
+      return
+    end
+
+    if deprecated_mime_type?(file)
       render json: deprecated_error, status: 422
       return
     end
+
     @media_attachment = current_account.media_attachments.create!(media_attachment_params)
     render json: @media_attachment, serializer: REST::MediaAttachmentSerializer
   rescue Paperclip::Errors::NotIdentifiedByImageMagickError
@@ -57,6 +64,19 @@ class Api::V1::MediaController < Api::BaseController
 
   def media_attachment_params
     params.permit(:file, :thumbnail, :description, :focus)
+  end
+
+  # Decide based on the content type detected from the file's actual contents,
+  # not the client-supplied multipart `Content-Type`, which can be spoofed to
+  # bypass the deprecation guard.
+  def deprecated_mime_type?(file)
+    DEPRECATED_MIME_TYPES.include?(detected_content_type(file))
+  end
+
+  def detected_content_type(file)
+    return unless file.respond_to?(:path) && file.path.present?
+
+    Paperclip::ContentTypeDetector.new(file.path).detect
   end
 
   def updateable_media_attachment_params
