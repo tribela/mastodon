@@ -149,10 +149,22 @@ class Status < ApplicationRecord
   scope :not_domain_muted_by_account, lambda { |account|
     return self if account.muted_from_timeline_domains.blank?
 
+    muted_domains = account.muted_from_timeline_domains
+    followed_ids  = Follow.where(account_id: account.id).select(:target_account_id)
+
     left_outer_joins(:account)
-      .where('accounts.domain is NULL or statuses.account_id in (?) or accounts.domain not in (?)',
-             Follow.where(account_id: account.id).select(:target_account_id),
-             account.muted_from_timeline_domains)
+      .where('accounts.domain is NULL or statuses.account_id in (?) or accounts.domain not in (?)', followed_ids, muted_domains)
+      .where(<<~SQL.squish, muted_domains, followed_ids)
+        statuses.reblog_of_id IS NULL
+        OR NOT EXISTS (
+          SELECT 1
+          FROM statuses AS reblogged_statuses
+          INNER JOIN accounts AS reblogged_accounts ON reblogged_accounts.id = reblogged_statuses.account_id
+          WHERE reblogged_statuses.id = statuses.reblog_of_id
+            AND reblogged_accounts.domain IN (?)
+            AND reblogged_statuses.account_id NOT IN (?)
+        )
+      SQL
   }
   scope :tagged_with_all, lambda { |tag_ids|
     Array(tag_ids).map(&:to_i).reduce(self) do |result, id|

@@ -236,6 +236,32 @@ RSpec.describe PublicFeed do
         expect(subject).to_not include(blocked_status.id)
       end
 
+      it 'excludes statuses from accounts from personally muted domains' do
+        muted = Fabricate(:account, domain: 'example.com')
+        account.mute_domain!('example.com', hide_from_home: true)
+        muted_status = Fabricate(:status, account: muted)
+
+        expect(subject).to_not include(muted_status.id)
+      end
+
+      it 'excludes reblogs of statuses from personally muted domains' do
+        original = Fabricate(:status, account: Fabricate(:account, domain: 'example.com'))
+        boost = Fabricate(:status, account: Fabricate(:account), reblog_of_id: original.id)
+        account.mute_domain!('example.com', hide_from_home: true)
+
+        expect(described_class.new(account, with_reblogs: true).get(20).map(&:id)).to_not include(boost.id)
+      end
+
+      it 'includes reblogs of muted domains when the original author is followed' do
+        author = Fabricate(:account, domain: 'example.com')
+        original = Fabricate(:status, account: author)
+        boost = Fabricate(:status, account: Fabricate(:account), reblog_of_id: original.id)
+        account.mute_domain!('example.com', hide_from_home: true)
+        account.follow!(author)
+
+        expect(described_class.new(account, with_reblogs: true).get(20).map(&:id)).to include(boost.id)
+      end
+
       context 'with language preferences' do
         it 'excludes statuses in languages not allowed by the account user' do
           account.user.update(chosen_languages: [:en, :es, :und])
