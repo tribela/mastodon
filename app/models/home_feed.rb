@@ -59,17 +59,16 @@ class HomeFeed < Feed
 
   def from_database(limit, max_id, since_id, min_id)
     tag_following_ids = TagFollow.where(account: @account).pluck(:tag_id)
-    following_ids     = @account.active_relationships.pluck(:target_account_id)
-    all_account_ids   = following_ids + [@account.id]
+    # Use a subquery rather than plucking ids, so the generated SQL stays small
+    # regardless of how many accounts are followed.
+    following_ids     = @account.active_relationships.select(:target_account_id)
 
-    scope = Status.where(account_id: all_account_ids, visibility: %i(public unlisted private))
+    scope = Status.where(account_id: following_ids, visibility: %i(public unlisted private))
       .or(Status.where(account_id: @account.id))
 
-    if following_ids.any?
-      mention_exists = Mention.where(Mention.arel_table[:status_id].eq(Status.arel_table[:id]))
-        .where(account_id: @account.id)
-      scope = scope.or(Status.where(account_id: following_ids).where(mention_exists.arel.exists))
-    end
+    mention_exists = Mention.where(Mention.arel_table[:status_id].eq(Status.arel_table[:id]))
+      .where(account_id: @account.id)
+    scope = scope.or(Status.where(account_id: following_ids).where(mention_exists.arel.exists))
 
     if tag_following_ids.any?
       statuses_tags = Arel::Table.new(:statuses_tags)
