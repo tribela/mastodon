@@ -152,6 +152,38 @@ RSpec.describe FeedManager do
         expect(subject.filter?(:home, reblog, alice)).to be true
       end
 
+      it 'returns false for reblog of a muted domain when the original author is followed' do
+        alice.mute_domain!('example.com', hide_from_home: true)
+        alice.follow!(jeff)
+        alice.follow!(bob)
+        status = Fabricate(:status, text: 'Hello world', account: bob)
+        reblog = Fabricate(:status, reblog: status, account: jeff)
+        expect(subject.filter?(:home, reblog, alice)).to be false
+      end
+
+      it 'returns true for reblog of a muted domain when the original author is not followed' do
+        alice.mute_domain!('example.com', hide_from_home: true)
+        alice.follow!(jeff)
+        status = Fabricate(:status, text: 'Hello world', account: bob)
+        reblog = Fabricate(:status, reblog: status, account: jeff)
+        expect(subject.filter?(:home, reblog, alice)).to be true
+      end
+
+      it 'returns false for reblog of a muted domain without hide_from_home' do
+        alice.mute_domain!('example.com', hide_from_home: false)
+        alice.follow!(jeff)
+        status = Fabricate(:status, text: 'Hello world', account: bob)
+        reblog = Fabricate(:status, reblog: status, account: jeff)
+        expect(subject.filter?(:home, reblog, alice)).to be false
+      end
+
+      it 'returns false for a direct post from a home-muted domain the receiver follows' do
+        alice.mute_domain!('example.com', hide_from_home: true)
+        alice.follow!(bob)
+        status = Fabricate(:status, text: 'Hello world', account: bob)
+        expect(subject.filter?(:home, status, alice)).to be false
+      end
+
       it 'returns true for German post when follow is set to English only' do
         alice.follow!(bob, languages: %w(en))
         status = Fabricate(:status, text: 'Hallo Welt', account: bob, language: 'de')

@@ -523,7 +523,7 @@ class FeedManager
       should_filter   = crutches[:hiding_reblogs][status.account_id]                                                             # if the reblogger's reblogs are suppressed
       should_filter ||= crutches[:blocked_by][status.reblog.account_id]                                                          # or if the author of the reblogged status is blocking me
       should_filter ||= crutches[:domain_blocking][status.reblog.account.domain]                                                 # or the author's domain is blocked
-      should_filter ||= crutches[:domain_muting_home][status.reblog.account.domain] unless crutches[:following][status.reblog.account_id] # or the author's domain is muted and I'm not following them
+      should_filter ||= crutches[:domain_muting_home][status.reblog.account.domain] unless crutches[:following_reblog_authors][status.reblog.account_id] # or the author's domain is muted and I'm not following them
     else
       should_filter = false
     end
@@ -702,7 +702,10 @@ class FeedManager
       arr
     end
 
-    crutches[:following]            = crutches_following(receiver_id, statuses, list)
+    crutches[:following] = crutches_following(receiver_id, statuses, list)
+    # crutches[:following] only covers reply targets (in_reply_to_account_id), so it
+    # cannot tell whether the receiver follows a reblog's original author.
+    crutches[:following_reblog_authors] = Follow.where(account_id: receiver_id, target_account_id: statuses.filter_map { |s| s.reblog&.account_id }).pluck(:target_account_id).index_with(true)
     crutches[:languages]            = Follow.where(account_id: receiver_id, target_account_id: statuses.map(&:account_id)).pluck(:target_account_id, :languages).to_h
     crutches[:hiding_reblogs]       = Follow.where(account_id: receiver_id, target_account_id: statuses.filter_map { |s| s.account_id if s.reblog? }, show_reblogs: false).pluck(:target_account_id).index_with(true)
     crutches[:blocking]             = Block.where(account_id: receiver_id, target_account_id: check_for_blocks).pluck(:target_account_id).index_with(true)
