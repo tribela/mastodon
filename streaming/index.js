@@ -741,8 +741,6 @@ const startServer = async () => {
       // Filter based on domain blocks, blocks, mutes, or custom filters:
       // @ts-expect-error
       const targetAccountIds = [payload.account.id].concat(payload.mentions.map(item => item.id));
-      // @ts-expect-error
-      const accountDomain = payload.account.acct.split('@')[1];
       const statusAccountId = payload.account.id;
 
       // TODO: Move this logic out of the message handling loop
@@ -765,16 +763,17 @@ const startServer = async () => {
                           AND target_account_id IN (${placeholders(targetAccountIds, 2)})`, [req.accountId, payload.
                           // @ts-expect-error
                           account.id].concat(targetAccountIds)),
-        ];
 
-        if (accountDomain) {
+          // Resolve the author's domain from `accounts.domain`, the same column
+          // the domain blocks/mutes were normalized into, so the comparison does
+          // not depend on re-deriving IDN forms (which can disagree across runtimes).
           // @ts-expect-error
-          queries.push(client.query(
-            `SELECT 1 FROM account_domain_blocks WHERE account_id = $1 AND domain = $2
+          client.query(
+            `SELECT 1 FROM account_domain_blocks WHERE account_id = $1 AND domain = (SELECT domain FROM accounts WHERE id = $2)
              UNION
-             SELECT 1 FROM account_domain_mutes WHERE account_id = $1 AND domain = $2
-             AND NOT EXISTS (SELECT 1 FROM follows where account_id = $1 and target_account_id = $3)`, [req.accountId, accountDomain, statusAccountId]));
-        }
+             SELECT 1 FROM account_domain_mutes WHERE account_id = $1 AND domain = (SELECT domain FROM accounts WHERE id = $2)
+             AND NOT EXISTS (SELECT 1 FROM follows WHERE account_id = $1 AND target_account_id = $2)`, [req.accountId, statusAccountId]),
+        ];
 
         // @ts-expect-error
         if (!payload.filtered && !req.cachedFilters) {
@@ -788,7 +787,7 @@ const startServer = async () => {
           // Handling blocks & mutes and domain blocks: If one of those applies,
           // then we don't transmit the payload of the event to the client
           // @ts-expect-error
-          if (values[0].rows.length > 0 || (accountDomain && values[1].rows.length > 0)) {
+          if (values[0].rows.length > 0 || values[1].rows.length > 0) {
             return;
           }
 
@@ -805,7 +804,7 @@ const startServer = async () => {
           // @ts-ignore
           if (!req.cachedFilters) {
             // @ts-expect-error
-            const filterRows = values[accountDomain ? 2 : 1].rows;
+            const filterRows = values[2].rows;
 
             req.cachedFilters = filterRows.reduce((cache, filter) => {
               if (cache[filter.id]) {
