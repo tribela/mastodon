@@ -57,6 +57,15 @@ RSpec.describe TagFeed do
       expect(results).to_not include status_tagged_with_cats
     end
 
+    it 'excludes statuses from personally muted domains' do
+      muted = Fabricate(:account, domain: 'example.com')
+      account.mute_domain!('example.com', hide_from_home: true)
+      muted_status = Fabricate(:status, account: muted, tags: [tag_cats])
+
+      results = described_class.new(tag_cats, account).get(20)
+      expect(results.map(&:id)).to_not include(muted_status.id)
+    end
+
     it 'can restrict to local' do
       status_tagged_with_cats.account.update(domain: 'example.com')
       status_tagged_with_cats.update(local: false, uri: 'example.com/toot')

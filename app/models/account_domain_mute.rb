@@ -11,6 +11,10 @@
 #  updated_at     :datetime         not null
 #  account_id     :bigint(8)
 #
+# Account domain mutes are a firehose-scope filter, not a block: they hide a
+# domain's content from the public and hashtag timelines at all times, and from
+# the home timeline when +hide_from_home+ is set. Content the user opens
+# explicitly (an account's profile timeline, a thread) is not filtered.
 class AccountDomainMute < ApplicationRecord
   include Paginable
   include DomainNormalizable
