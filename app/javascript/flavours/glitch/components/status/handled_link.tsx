@@ -7,12 +7,12 @@ import { Link } from 'react-router-dom';
 import type { ApiMentionJSON } from '@/flavours/glitch/api_types/statuses';
 import { getCollectionPath } from '@/flavours/glitch/features/collections/utils';
 import { useAppSelector } from '@/flavours/glitch/store';
-import { isRedesignStatusEnabled } from '@/flavours/glitch/utils/environment';
+import { isRedesignEnabled } from '@/flavours/glitch/utils/environment';
 import type { OnElementHandler } from '@/flavours/glitch/utils/html';
 import { decodeIDNA } from 'flavours/glitch/utils/links';
 
 import { HashtagMenu } from '../hashtag_menu';
-import { MenuTrigger } from '../menu';
+import { MenuTriggerText } from '../menu';
 
 import classes from './handled_link.module.scss';
 
@@ -148,12 +148,15 @@ export const HandledLink: FC<HandledLinkProps & ComponentProps<'a'>> = ({
   ) {
     const hashtag = text.slice(1).trim();
 
-    if (isRedesignStatusEnabled()) {
+    if (isRedesignEnabled()) {
       return (
         <HashtagMenu tagId={hashtag} accountId={hashtagAccountId}>
-          <MenuTrigger as='button' className={classes.hashtag}>
+          <MenuTriggerText
+            className={classes.hashtag}
+            href={`/tags/${encodeURIComponent(hashtag)}`}
+          >
             {children}
-          </MenuTrigger>
+          </MenuTriggerText>
         </HashtagMenu>
       );
     }

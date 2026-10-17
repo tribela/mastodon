@@ -297,7 +297,9 @@ export default tseslint.config([
 
     languageOptions: {
       parserOptions: {
-        projectService: true,
+        projectService: {
+          allowDefaultProject: ['vitest.shims.d.ts'],
+        },
       },
     },
 
@@ -315,6 +317,7 @@ export default tseslint.config([
       'jsdoc/require-returns': 'off',
 
       'jsx-a11y/media-has-caption': 'off',
+      'jsx-a11y/no-autofocus': 'off',
 
       'react/prefer-stateless-function': 'warn',
       'react/function-component-definition': [

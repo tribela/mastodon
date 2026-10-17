@@ -647,7 +647,6 @@ sk:
         follow_recommendations: Odporúčania pre nasledovanie
         profile_directory: Katalóg profilov
         public_timelines: Verejné časové osi
-        publish_statistics: Zverejni štatistiky
         title: Objavovanie
         trends: Trendy
       domain_blocks:
@@ -901,7 +900,6 @@ sk:
   deletes:
     challenge_not_passed: Údaje, ktoré si zadal/a, sú nesprávne
     confirm_password: Napíš svoje terajšie heslo pre overenie tvojej identity
-    confirm_username: Zadaj svoju prezývku, na potvrdenie úkonu
     proceed: Odstrániť účet
     success_msg: Tvoj účet bol úspešne vymazaný
     warning:
@@ -1246,7 +1244,6 @@ sk:
     appearance: Vzhľad
     authorized_apps: Povolené aplikácie
     back: Späť na Mastodon
-    delete: Vymazanie účtu
     development: Vývoj
     edit_profile: Úprava profilu
     featured_tags: Zvýraznené hashtagy

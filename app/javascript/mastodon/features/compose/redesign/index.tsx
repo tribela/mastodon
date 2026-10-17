@@ -1,20 +1,13 @@
 import type React from 'react';
 import { useCallback, useEffect, useId } from 'react';
 
-import { FormattedMessage } from 'react-intl';
-
 import classNames from 'classnames';
 
-import { FlagIcon, LockSimpleOpenIcon } from '@phosphor-icons/react';
-
 import {
-  changeComposeSpoilerness,
   changeScheduledAt,
   insertEmojiCompose,
 } from '@/mastodon/actions/compose';
-import { ToggleButton } from '@/mastodon/components/button/redesign';
 import { normalizeKey } from '@/mastodon/components/hotkeys/utils';
-import { Icon, useIconWeight } from '@/mastodon/components/icon';
 import {
   closeComposer,
   getComposerTextarea,
@@ -30,18 +23,16 @@ import { ComposeHints } from './hints';
 import { LanguageButton } from './language';
 import { ComposeReply } from './reply';
 import { ScheduleButton } from './schedule';
-import {
-  selectComposeScheduledAt,
-  selectComposeSensitive,
-  selectComposeType,
-} from './selectors';
+import { selectComposeScheduledAt, selectComposeType } from './selectors';
 import { ComposeSensitiveField } from './sensitive';
+import { ComposeSettingsMenu } from './settings';
 import classes from './styles.module.scss';
 import { ComposeTextarea } from './textarea';
 import { ComposeVisibility } from './visibility';
 
 interface RedesignComposeFormProps {
   autoFocus?: boolean;
+  headless?: boolean;
   className?: string;
   noMinimize?: boolean;
   redirectOnSuccess?: boolean;
@@ -49,17 +40,21 @@ interface RedesignComposeFormProps {
 
 export const RedesignComposeForm: React.FC<
   RedesignComposeFormProps & React.ComponentPropsWithRef<'form'>
-> = ({ autoFocus, className, noMinimize, redirectOnSuccess, ...props }) => {
+> = ({
+  autoFocus,
+  headless,
+  className,
+  noMinimize,
+  redirectOnSuccess,
+  ...props
+}) => {
   const type = useAppSelector(selectComposeType);
-  const { sensitive } = useAppSelector(selectComposeSensitive);
   const scheduledAt = useAppSelector(selectComposeScheduledAt);
 
-  const { onSensitiveChange, onEmojiPick, onScheduleChange, onSubmit } =
+  const { onEmojiPick, onScheduleChange, onSubmit } =
     useComposeHandlers(redirectOnSuccess);
 
   const titleId = useId();
-
-  const sensitiveIcon = useIconWeight(FlagIcon, sensitive && 'fill');
 
   return (
     <form
@@ -67,15 +62,17 @@ export const RedesignComposeForm: React.FC<
       role='dialog'
       onSubmit={onSubmit}
       aria-labelledby={titleId}
-      className={classNames(className, classes.root)}
+      className={classNames(
+        className,
+        classes.root,
+        headless && classes.headless,
+      )}
     >
       {(type === 'message' || type === 'replyPrivate') && (
         <div className={classes.background} />
       )}
 
-      <ComposeFormHeader id={titleId} noMinimize={noMinimize} />
-
-      <ComposeReply />
+      {!headless && <ComposeFormHeader id={titleId} noMinimize={noMinimize} />}
 
       <div className={classes.toolbar}>
         <ComposeVisibility className={classes.flexGrowWrap} />
@@ -87,33 +84,18 @@ export const RedesignComposeForm: React.FC<
           onScheduleChange={onScheduleChange}
         />
 
-        <ToggleButton
-          size='sm'
-          active={sensitive}
-          onClick={onSensitiveChange}
-          leadingIcon={sensitiveIcon}
-        >
-          <FormattedMessage id='compose.sensitive' defaultMessage='Sensitive' />
-        </ToggleButton>
+        <ComposeSettingsMenu />
       </div>
 
-      {type === 'message' && (
-        <p className={classes.toolbarMessage}>
-          <Icon id='lock-open' icon={LockSimpleOpenIcon} />
-          <FormattedMessage
-            id='compose.message.notice'
-            defaultMessage='Messages are not end-to-end encrypted'
-            description='Message refers to a direct message. For languages where this is confusing, "chat" or "direct message" can be used.'
-          />
-        </p>
-      )}
-
-      <ComposeSensitiveField />
-
       <ComposeTextarea
-        // eslint-disable-next-line jsx-a11y/no-autofocus
         autoFocus={autoFocus}
-        onSubmit={onSubmit}
+        beforeTextArea={
+          <>
+            <ComposeReply />
+
+            <ComposeSensitiveField />
+          </>
+        }
       >
         <ComposeAttachments className={classes.attachments} />
       </ComposeTextarea>
@@ -151,10 +133,6 @@ function useComposeHandlers(redirectOnSuccess?: boolean) {
       document.removeEventListener('keydown', escapeComposer);
     };
   }, [dispatch, isModalOpen]);
-
-  const onSensitiveChange = useCallback(() => {
-    dispatch(changeComposeSpoilerness());
-  }, [dispatch]);
 
   const onScheduleChange = useCallback(
     (scheduledAt: string | null) => {
@@ -198,7 +176,6 @@ function useComposeHandlers(redirectOnSuccess?: boolean) {
   return {
     onSubmit,
     onEmojiPick,
-    onSensitiveChange,
     onScheduleChange,
   };
 }

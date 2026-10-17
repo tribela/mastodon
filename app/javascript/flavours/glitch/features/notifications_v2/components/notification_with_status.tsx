@@ -2,12 +2,9 @@ import { useMemo } from 'react';
 
 import classNames from 'classnames';
 
+import { replyComposeById } from '@/flavours/glitch/actions/compose_typed';
 import { LinkedDisplayName } from '@/flavours/glitch/components/display_name';
-import {
-  isRedesignEnabled,
-  isRedesignStatusEnabled,
-} from '@/flavours/glitch/utils/environment';
-import { replyComposeById } from 'flavours/glitch/actions/compose';
+import { isRedesignEnabled } from '@/flavours/glitch/utils/environment';
 import {
   toggleReblog,
   toggleFavourite,
@@ -75,7 +72,7 @@ export const NotificationWithStatus: React.FC<{
       },
 
       reply: () => {
-        dispatch(replyComposeById(statusId));
+        dispatch(replyComposeById({ statusId }));
       },
 
       boost: () => {
@@ -106,7 +103,7 @@ export const NotificationWithStatus: React.FC<{
             'notification-ungrouped--unread': unread,
             'notification-ungrouped--direct': isPrivateMention,
             'notification-ungrouped--redesign':
-              isRedesignEnabled() && isRedesignStatusEnabled(),
+              isRedesignEnabled() && isRedesignEnabled(),
           },
         )}
         tabIndex={0}

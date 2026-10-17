@@ -57,6 +57,7 @@ import type { AppDispatch } from '@/flavours/glitch/store';
 import { isRedesignEnabled } from '@/flavours/glitch/utils/environment';
 import type { OnElementHandler } from '@/flavours/glitch/utils/html';
 
+import type { HotkeyHandlerFunction, HotkeyName } from '../hotkeys';
 import { FOCUS_TARGET } from '../navigation_focus_target';
 
 import { boostItemState, quoteItemState } from './boost_button_utils';
@@ -76,6 +77,10 @@ import type { StatusContextType } from './types';
 export const StatusContext = createContext<{
   id?: string | null;
   contextType?: StatusContextType;
+  registerHotkeyCallback?: (
+    hotkey: HotkeyName,
+    handler: HotkeyHandlerFunction,
+  ) => void;
 }>({});
 
 export function useStatusContext() {
@@ -166,7 +171,7 @@ export function useStatusHandlers({
       const target = event.target;
       if (
         !(target instanceof HTMLElement) ||
-        target.closest('a, button') ||
+        target.closest('a, button, dialog') ||
         contextType === 'detailed' ||
         window.getSelection()?.type === 'Range'
       ) {
@@ -409,15 +414,25 @@ export function useTextForScreenReader({
 
     const spoilerText = status.translation?.spoiler_text ?? status.spoiler_text;
     const contentHtml = status.translation?.contentHtml ?? status.contentHtml;
-    const contentText = domParser.parseFromString(contentHtml, 'text/html')
-      .documentElement.textContent;
+    let contentText = spoilerText;
+    if (!status.hidden) {
+      contentText = '';
+      for (const paragraph of domParser
+        .parseFromString(contentHtml, 'text/html')
+        .querySelectorAll('p')) {
+        const text = paragraph.textContent.trim();
+        if (text) {
+          contentText += ` ${text}`;
+        }
+      }
+    }
 
     const values = [
       isQuote ? intl.formatMessage(screenReaderMessages.quote_noun) : undefined,
       displayName.length === 0
         ? status.account.acct.split('@')[0]
         : displayName,
-      spoilerText && status.hidden ? spoilerText : contentText,
+      contentText,
       status.quote
         ? intl.formatMessage(screenReaderMessages.contains_quote)
         : undefined,
@@ -574,7 +589,10 @@ export function useStatusMenuActions({
   const interactions = useAppSelector((state) =>
     selectStatusInteractionsAllowed(state, status.id),
   );
-  const statusInteractionFactory = useStatusInteractionFactory(status.id);
+  const statusInteractionFactory = useStatusInteractionFactory(
+    status.id,
+    contextType,
+  );
 
   return useMemo(
     () =>

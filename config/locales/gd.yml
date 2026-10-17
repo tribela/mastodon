@@ -644,8 +644,6 @@ gd:
           description: Fhuair thu clàradh o FASP. Diùlt e mur an do chuir thu fhèin seo a’ dol. Mas e tusa a bh’ ann, dèan coimeas cùramach air ainm agus lorg-meòir na h-iuchraiche mus dearbh thu an clàradh.
           reject: Diùlt
           title: Dearbh an clàradh FASP
-        save: Sàbhail
-        select_capabilities: Tagh comasan
         sign_in: Clàraich a-steach
         status: Staid
         title: Fediverse Auxiliary Service Providers
@@ -996,10 +994,8 @@ gd:
       discovery:
         follow_recommendations: Molaidhean leantainn
         preamble: Tha tighinn an uachdar susbainte inntinniche fìor-chudromach airson toiseach-tòiseachaidh an luchd-cleachdaidh ùr nach eil eòlach air duine sam bith air Mastodon, ma dh’fhaoidte. Stiùirich mar a dh’obraicheas gleusan an rùrachaidh air an fhrithealaiche agad.
-        privacy: Prìobhaideachd
         profile_directory: Eòlaire nam pròifil
         public_timelines: Loidhnichean-ama poblach
-        publish_statistics: Foillsich an stadastaireachd
         title: Rùrachadh
         trends: Treandaichean
         wrapstodon: Wrapstodon
@@ -1533,7 +1529,6 @@ gd:
   deletes:
     challenge_not_passed: Chan eil am fiosrachadh a chuir thu a-steach mar bu chòir
     confirm_password: Cuir a-steach am facal-faire làithreach a dhearbhadh cò thusa
-    confirm_username: Cuir a-steach an t-ainm-cleachdaiche agad a dhearbhadh a’ ghnìomha
     proceed: Sguab às an cunntas
     success_msg: Chaidh an cunntas agad a sguabadh às
     warning:
@@ -2173,7 +2168,6 @@ gd:
     appearance: Coltas
     authorized_apps: Aplacaidean ùghdarraichte
     back: Till gu Mastodon
-    delete: Sguabadh às cunntais
     development: Leasachadh
     edit_profile: Deasaich a’ phròifil
     export: Às-phortadh

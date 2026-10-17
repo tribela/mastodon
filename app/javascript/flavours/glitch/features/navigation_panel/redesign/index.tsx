@@ -29,6 +29,7 @@ import {
   disabledAccountId,
   localLiveFeedAccess,
   remoteLiveFeedAccess,
+  trendsEnabled,
 } from '@/flavours/glitch/initial_state';
 import { transientSingleColumn } from '@/flavours/glitch/is_mobile';
 import { canViewFeed } from '@/flavours/glitch/permissions';
@@ -114,9 +115,10 @@ export function useNotificationsCount() {
   const unreadNotificationsCount = useAppSelector(
     selectUnreadNotificationGroupsCount,
   );
-  const followRequestsCount = useFollowRequestsCount();
+  const { signedIn } = useIdentity();
+  const followRequestsCount = useFollowRequestsCount({ fetch: signedIn });
 
-  const { unreadAnnouncementCount } = useHasAnnouncements();
+  const { unreadAnnouncementCount } = useHasAnnouncements({ fetch: signedIn });
 
   return (
     unreadNotificationsCount + followRequestsCount + unreadAnnouncementCount
@@ -293,10 +295,7 @@ export const RedesignNavigationPanel: React.FC<{
                 <NavigationAccountCardAndMenu />
               </>
             )}
-            <NavigationFooterLinks
-              multiColumn={multiColumn}
-              siteName={siteName}
-            />
+            <NavigationFooterLinks multiColumn={multiColumn} />
           </footer>
         </>
       )}
@@ -314,10 +313,7 @@ export const RedesignNavigationPanel: React.FC<{
           </ul>
           <footer className={classes.footer} data-stuck={!isScrolledToBottom}>
             {disabledAccountId ? <DisabledAccountBanner /> : <LoggedOutInfo />}
-            <NavigationFooterLinks
-              multiColumn={multiColumn}
-              siteName={siteName}
-            />
+            <NavigationFooterLinks withVersionInfo multiColumn={multiColumn} />
           </footer>
         </>
       )}
@@ -330,16 +326,39 @@ const ExploreLink: React.FC = () => {
   return (
     <NavigationLink
       to={{
-        pathname: '/explore',
+        pathname: trendsEnabled ? '/explore' : '/search',
         state: { focusTarget: FOCUS_TARGET.SEARCH },
       }}
       iconComponent={MagnifyingGlassIcon}
-      onClick={invokeVirtualIosKeyboard}
+      onClick={handleSearchLinkClick}
     >
-      <FormattedMessage id='tabs_bar.explore' defaultMessage='Explore' />
+      {trendsEnabled ? (
+        <FormattedMessage id='tabs_bar.explore' defaultMessage='Explore' />
+      ) : (
+        <FormattedMessage id='navigation_bar.search' defaultMessage='Search' />
+      )}
     </NavigationLink>
   );
 };
+
+export function handleSearchLinkClick() {
+  const mainSearchInput = document.querySelector<HTMLInputElement>(
+    'input[data-main-search]',
+  );
+
+  // Focus the main search input if we're already on the search page
+  if (mainSearchInput) {
+    mainSearchInput.focus();
+    return;
+  }
+
+  // Otherwise, the search element is not on screen yet and
+  // the page needs to be rendered first. In this case, we use
+  // `invokeVirtualIosKeyboard` to work around an iOS quirk that
+  // prevents the virtual keyboard from opening when an element wasn't
+  // focused synchronously.
+  invokeVirtualIosKeyboard();
+}
 
 const PublicFeedsLink: React.FC = () => {
   const { signedIn, permissions } = useIdentity();

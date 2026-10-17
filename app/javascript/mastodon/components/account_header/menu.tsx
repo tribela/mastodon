@@ -233,6 +233,14 @@ const messages = defineMessages({
     id: 'status.admin_domain',
     defaultMessage: 'Open moderation interface for {domain}',
   },
+  enableNotifications: {
+    id: 'account.notify_me',
+    defaultMessage: 'Notify me about new posts',
+  },
+  disableNotifications: {
+    id: 'account.stop_notifying_me',
+    defaultMessage: 'Stop notifying me about new posts',
+  },
   languages: {
     id: 'account.languages',
     defaultMessage: 'Change subscribed languages',
@@ -301,17 +309,19 @@ function getMenuItems({
 
   // Mention and direct message options
   if (signedIn && !account.suspended) {
-    items.push(null);
     if (!account.invalid_handle) {
       if (isRedesignEnabled()) {
-        items.push({
-          text: intl.formatMessage(messages.redesignMessage),
-          action: () => {
-            dispatch(directCompose(account));
-          },
-        });
+        if (!relationship?.following) {
+          items.push(null, {
+            text: intl.formatMessage(messages.redesignMessage),
+            action: () => {
+              dispatch(directCompose(account));
+            },
+          });
+        }
       } else {
         items.push(
+          null,
           {
             text: intl.formatMessage(messages.mention),
             action: () => {
@@ -412,6 +422,20 @@ function getMenuItems({
 
   // Timeline options
   if (relationship?.following && !relationship.muting) {
+    if (isRedesignEnabled()) {
+      items.push({
+        text: intl.formatMessage(
+          relationship.notifying
+            ? messages.disableNotifications
+            : messages.enableNotifications,
+        ),
+        action: () => {
+          dispatch(
+            followAccount(account.id, { notify: !relationship.notifying }),
+          );
+        },
+      });
+    }
     items.push(
       {
         text: intl.formatMessage(
