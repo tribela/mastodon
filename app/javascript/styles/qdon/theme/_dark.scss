@@ -1,5 +1,13 @@
 @use '../../mastodon/tokens/theme/utils' as utils;
 
+// Qdon dark base palette (upstream `base-*` architecture).
+// Restores the classic Qdon dark app background (near-black neutral) instead
+// of inheriting the upstream indigo base.
+@mixin base {
+  --base-color-bg: var(--color-grey-950);
+  --base-color-bg-desktop: color-mix(in srgb, var(--color-grey-950), black 30%);
+}
+
 // Qdon dark theme token overrides
 @mixin tokens {
   /* TEXT TOKENS */
@@ -36,10 +44,4 @@
   --rich-text-container-color: #282828;
   --rich-text-text-color: #efefef;
   --rich-text-decorations-color: hsl(212deg 90% 80% / 100%);
-}
-
-@mixin contrast-overrides {
-  /* TEXT TOKENS */
-
-  --color-text-status-links: var(--color-text-brand);
 }

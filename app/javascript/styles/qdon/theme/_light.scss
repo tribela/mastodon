@@ -1,5 +1,15 @@
 @use '../../mastodon/tokens/theme/utils' as utils;
 
+// Qdon light base palette (upstream `base-*` architecture).
+@mixin base {
+  --base-color-bg: var(--color-white);
+  --base-color-bg-desktop: color-mix(
+    in srgb,
+    var(--color-qdon-grey),
+    white 92%
+  );
+}
+
 // Qdon light theme token overrides
 @mixin tokens {
   // Light theme uses slightly different brand color shades
@@ -42,10 +52,4 @@
   --rich-text-container-color: #efefef;
   --rich-text-text-color: #181818;
   --rich-text-decorations-color: hsl(212deg 100% 65% / 100%);
-}
-
-@mixin contrast-overrides {
-  /* TEXT TOKENS */
-
-  --color-text-brand: var(--color-dark-pink);
 }

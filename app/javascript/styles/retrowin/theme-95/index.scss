@@ -13,12 +13,13 @@ html {
 html:not([data-color-scheme]) {
   color-scheme: light;
 
+  @include light.base;
   @include mastodon-light.tokens;
   @include utils.invert-on-light;
   @include light.tokens;
 
   &[data-contrast='high'],
   [data-contrast='high'] & {
-    @include mastodon-light.contrast-overrides;
+    @include light.base-contrast;
   }
 }

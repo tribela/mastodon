@@ -1,21 +1,31 @@
 // Masto95 light theme - Classic Windows 95 look
+// Base palette (upstream `base-*` architecture): upstream `tokens` derives the
+// semantic `--color-*` tokens from these, so the whole theme stays consistent.
+@mixin base {
+  --base-color-bg: var(--color-win95-silver);
+  --base-color-bg-desktop: var(--color-win95-teal);
+  --base-color-fg: var(--color-win95-black);
+  --base-color-fg-on-accent: var(--color-win95-white);
+  --base-color-accent: var(--color-win95-navy);
+}
+
+@mixin base-contrast {
+  --base-color-accent: var(--color-win95-black);
+}
+
 @mixin tokens {
   /* TEXT TOKENS */
+  // text-primary / text-brand / text-on-brand-base are derived from the base
+  // palette above; only the diverging tokens are overridden here.
 
-  --color-text-primary: var(--color-win95-black);
   --color-text-secondary: var(--color-win95-dark-gray);
   --color-text-tertiary: var(--color-win95-gray);
-  --color-text-brand: var(--color-win95-navy);
   --color-text-brand-on-inverted: var(--color-win95-white);
-  --color-text-on-brand-base: var(--color-win95-white);
 
   /* BACKGROUND TOKENS */
 
-  --color-bg-ambient: var(--color-win95-teal);
-  --color-bg-primary: var(--color-win95-silver);
   --color-bg-secondary: var(--color-win95-button-face);
   --color-bg-tertiary: var(--color-win95-gray);
-  --color-bg-brand-base: var(--color-win95-navy);
   --color-bg-inverted: var(--color-win95-navy);
   --color-bg-elevated: var(--color-win95-window);
   --color-bg-overlay: var(--color-win95-silver);

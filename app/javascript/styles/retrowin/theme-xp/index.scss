@@ -15,12 +15,13 @@ html:not([data-color-scheme]) {
   color-scheme: dark;
 
   @include dark.palette-dark;
+  @include dark.base;
   @include mastodon-dark.tokens;
   @include dark.tokens-dark;
 
   &[data-contrast='high'],
   [data-contrast='high'] & {
-    @include mastodon-dark.contrast-overrides;
+    @include dark.base-contrast;
   }
 }
 
@@ -28,12 +29,13 @@ html:not([data-color-scheme]) {
 [data-color-scheme='light'] {
   color-scheme: light;
 
+  @include light.base;
   @include mastodon-light.tokens;
   @include utils.invert-on-light;
   @include light.tokens;
 
   &[data-contrast='high'],
   [data-contrast='high'] & {
-    @include mastodon-light.contrast-overrides;
+    @include light.base-contrast;
   }
 }
