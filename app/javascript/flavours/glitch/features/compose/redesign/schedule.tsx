@@ -169,7 +169,6 @@ const ScheduleDropdown: React.FC<{
         min={minDatetime}
         onChange={handleInputChange}
         onKeyDown={handleKeyDown}
-        // eslint-disable-next-line jsx-a11y/no-autofocus -- matches the legacy schedule popover, which focuses the datetime input on open
         autoFocus
       />
 
