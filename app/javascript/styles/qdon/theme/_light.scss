@@ -8,6 +8,9 @@
     var(--color-qdon-grey),
     white 92%
   );
+
+  // Qdon uses a saturated blue brand background; keep white text for contrast
+  --base-color-fg-on-accent: var(--color-white);
 }
 
 // Qdon light theme token overrides

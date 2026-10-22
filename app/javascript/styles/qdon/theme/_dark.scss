@@ -6,6 +6,9 @@
 @mixin base {
   --base-color-bg: var(--color-grey-950);
   --base-color-bg-desktop: color-mix(in srgb, var(--color-grey-950), black 30%);
+
+  // Qdon uses a saturated blue brand background; keep white text for contrast
+  --base-color-fg-on-accent: var(--color-white);
 }
 
 // Qdon dark theme token overrides
