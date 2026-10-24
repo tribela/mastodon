@@ -29,6 +29,20 @@
     )};
   --color-bg-brand-softest: hsl(212deg 25% 20%);
 
+  /* ERROR TOKENS */
+
+  // The upstream 5.0 redesign re-pointed the dark theme error tokens at the
+  // light palette (danger -> red-200 #ffc9c9), which turns danger buttons
+  // (`.button--dangerous`), destructive links and error text pink. Restore the
+  // pre-redesign dark values so danger UI keeps the original red.
+  --color-text-error: var(--color-red-300);
+  --color-text-on-error-base: var(--color-white);
+  --color-bg-error-base: var(--color-red-700);
+  --color-bg-error-base-hover: var(--color-red-800);
+  --color-bg-error-soft: var(--color-red-900);
+  --color-bg-error-softest: var(--color-red-950);
+  --color-border-error: var(--color-red-300);
+
   /* BORDER TOKENS */
 
   --color-border-primary: #{utils.css-alpha(hsl(212deg 100% 90%), 18%)};
